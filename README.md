@@ -1,6 +1,6 @@
 
 
-# bounswe2018group7
+# <div align="center">Boun SWE-2018 Group7</div> 
 
 <p align="center">
 <a><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/master/Docs/g4150.png" alt="g4150" border="0" width = "150%" height = "80%"/></a>
