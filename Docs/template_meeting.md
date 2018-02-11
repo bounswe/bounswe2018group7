@@ -1,6 +1,6 @@
 ## :book: Details
 
-| **Location** | **Date** | **Time** |
+| Location | Date | Time |
 | ---      | ---       | ---           |
 | Boun CmpE Student Lounge | February 12th, 2018 | 15:00 - 16:00 |
 
@@ -11,9 +11,7 @@
 
 ## :busts_in_silhouette: Contribution
 
-<p align="left">
-<a><img src="https://github.com/bounswe/bounswe2018group7/blob/master/Docs/g4150.png" alt="Meeting #1 Photo" border="0" width = "100%" height = "100%"/></a>
-</p>
+<img src="https://github.com/bounswe/bounswe2018group7/blob/master/Docs/g4150.png" alt="Meeting #1 Photo" border="0" width = "50%" align="right">
 
  #### Attended: :thumbsup:
   * [Serdar Ada](https://github.com/bounswe/bounswe2018group7/wiki/Serdar-Ada)
@@ -37,8 +35,8 @@
 
 ## :black_nib: Assignments
 
-| **Assignee**  :busts_in_silhouette: | **Assignment** :heavy_check_mark: | **Deadline**   :skull: |
-| ---      | ---       | ---           |
+| Assignee  :busts_in_silhouette: | Assignment :heavy_check_mark: | Deadline   :skull: |
+| :---:      | :---:       | :---:           |
 | **All Members** | Some assignments | Feb 16th (Friday) 23:59 |
 |   :zap:    |    :zap:  |    :zap:     |
 | Dilruba Reyyan Kılıç | Some assignments | Feb 16th (Friday) 23:59 |
