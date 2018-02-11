@@ -8,22 +8,27 @@
 
 > ### This is the main project repository for Boğaziçi University Cmpe352-Cmpe451.
 
-check out our [wiki page](https://github.com/bounswe/bounswe2018group7/wiki) for more information. 
+check out our [wiki page](https://github.com/bounswe/bounswe2018group7/wiki) for more information.
+<p align="left">
+<a><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/d604ccb8f2e0759ee176c73ad18d267ab75e4dfe/Docs/g12.png" alt="g4150" border="0" height = "13%" width = "13%"/></a>
+</p>
 
-## Members
+## MEMBERS
 
-[SERDAR ADA](https://github.com/bounswe/bounswe2018group7/wiki/Serdar-Ada)
+[Serdar ADA](https://github.com/bounswe/bounswe2018group7/wiki/Serdar-Ada)
 
-[RAMAZAN ARSLAN](https://github.com/bounswe/bounswe2018group7/wiki/Ramazan-Arslan)
+[Ramazan ARSLAN](https://github.com/bounswe/bounswe2018group7/wiki/Ramazan-Arslan)
 
-[CEMAL BURAK AYGÜN](https://github.com/bounswe/bounswe2018group7/wiki/Cemal-Burak-Ayg%C3%BCn)
+[Cemal Burak AYGÜN](https://github.com/bounswe/bounswe2018group7/wiki/Cemal-Burak-Ayg%C3%BCn)
 
-[FERHAT MELİH DAL](https://github.com/bounswe/bounswe2018group7/wiki/Ferhat-Melih-Dal)
+[Ferhat Melih DAL](https://github.com/bounswe/bounswe2018group7/wiki/Ferhat-Melih-Dal)
 
-[FAİK EMRE DERİN](https://github.com/bounswe/bounswe2018group7/wiki/Faik-Emre-Derin)
+[Faik Emre DERİN](https://github.com/bounswe/bounswe2018group7/wiki/Faik-Emre-Derin)
 
-[DİLRUBA REYYAN KILIÇ](https://github.com/bounswe/bounswe2018group7/wiki/Dilruba-Reyyan-K%C4%B1l%C4%B1%C3%A7) (Communicator)
+[Dilruba Reyyan KILIÇ](https://github.com/bounswe/bounswe2018group7/wiki/Dilruba-Reyyan-K%C4%B1l%C4%B1%C3%A7) (Communicator)
 
-[ENES KOŞAR](https://github.com/bounswe/bounswe2018group7/wiki/Enes-Ko%C5%9Far)
+[Enes KOŞAR](https://github.com/bounswe/bounswe2018group7/wiki/Enes-Ko%C5%9Far)
 
-[NEVAL TÜLLÜK](https://github.com/bounswe/bounswe2018group7/wiki/Neval-T%C3%BCll%C3%BCk)
+[Neval TÜLLÜK](https://github.com/bounswe/bounswe2018group7/wiki/Neval-T%C3%BCll%C3%BCk)
+
+
