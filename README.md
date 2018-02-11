@@ -10,7 +10,7 @@
 
 check out our [wiki page](https://github.com/bounswe/bounswe2018group7/wiki) for more information.
 <p align="left">
-<a><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/d604ccb8f2e0759ee176c73ad18d267ab75e4dfe/Docs/g12.png" alt="g4150" border="0" height = "13%" width = "13%"/></a>
+<a href = "https://github.com/bounswe/bounswe2018group7/wiki/Assignment-%231"><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/d604ccb8f2e0759ee176c73ad18d267ab75e4dfe/Docs/g12.png" alt="g4150" border="0" height = "13%" width = "13%"/></a>
 </p>
 
 ## MEMBERS
