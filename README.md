@@ -1,13 +1,13 @@
 
 
 <p align="center">
-<a><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/master/Docs/banner.png" alt="banner" border="0" width = "150%" height = "100%"/></a>
+<a href = "https://github.com/bounswe/bounswe2018group7/wiki"><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/master/Docs/banner.png" alt="banner" border="0" width = "150%" height = "100%"/></a>
 </p>
 
 > ## We are bounswe2018group7 named as SE7EN
 > Check out our [wiki page](https://github.com/bounswe/bounswe2018group7/wiki) for more information.
 <p align="left">
-<a href = "https://github.com/bounswe/bounswe2018group7/wiki/Assignment-%231"><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/d604ccb8f2e0759ee176c73ad18d267ab75e4dfe/Docs/g12.png" alt="g4150" border="0" height = "13%" width = "13%"/></a>
+<a href = "https://github.com/bounswe/bounswe2018group7/wiki/Meeting-%232"><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/d604ccb8f2e0759ee176c73ad18d267ab75e4dfe/Docs/g12.png" alt="g4150" border="0" height = "13%" width = "13%"/></a>
 </p>
 
 ## MEMBERS
