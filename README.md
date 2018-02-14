@@ -1,12 +1,10 @@
 
 
-# <div align="center">Boun SWE-2018 Group7</div> 
-
 <p align="center">
 <a><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/master/Docs/banner.png" alt="banner" border="0" width = "150%" height = "100%"/></a>
 </p>
 
-> ### This is the main project repository for Boğaziçi University Cmpe352-Cmpe451.
+> ## We are bounswe2018group7 named as SE7EN
 > Check out our [wiki page](https://github.com/bounswe/bounswe2018group7/wiki) for more information.
 <p align="left">
 <a href = "https://github.com/bounswe/bounswe2018group7/wiki/Assignment-%231"><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/d604ccb8f2e0759ee176c73ad18d267ab75e4dfe/Docs/g12.png" alt="g4150" border="0" height = "13%" width = "13%"/></a>
