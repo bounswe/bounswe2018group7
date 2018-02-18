@@ -7,8 +7,7 @@
 > ## We are bounswe2018group7 named as SE7EN
 > This is the project: `A Living History – A Crowdsourcing Platform` which is a crowdsourcing application for documenting stories of people. Check out our [wiki page](https://github.com/bounswe/bounswe2018group7/wiki) for more information.
 <p align="left">
-<a href = "https://github.com/bounswe/bounswe2018group7/wiki/Meeting-%232"><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/d604ccb8f2e0759ee176c73ad18d267ab75e4dfe/Docs/g12.png" alt="g4150" border="0" height = "13%" width = "13%"/></a>
-</p>
+
 
 ## Group Members
 
