@@ -4,7 +4,7 @@
 
 > ### we are team se7en
 
-> This is the project: `hiStory – A Living History Project` which is a crowdsourcing application for documenting stories of people about historical issues. 
+> This is the project: `hi Story – A Living History Project` which is a crowdsourcing application for documenting stories of people about historical issues. 
 >
 > Check out our [wiki page](https://github.com/bounswe/bounswe2018group7/wiki) for more information.
 <p align="left">
