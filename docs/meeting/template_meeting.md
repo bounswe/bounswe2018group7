@@ -11,7 +11,7 @@
 
 ## :busts_in_silhouette: Contribution
 
-<img src="https://github.com/bounswe/bounswe2018group7/blob/master/Docs/g4150.png" alt="Meeting #1 Photo" border="0" width = "50%" align="right">
+<img src="https://github.com/bounswe/bounswe2018group7/blob/master/docs/meeting/meeting_3.jpeg" alt="Meeting #1 Photo" border="0" width = "50%" align="right">
 
  #### Attended: :thumbsup:
   * [Serdar Ada](https://github.com/bounswe/bounswe2018group7/wiki/Serdar-Ada)
