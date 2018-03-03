@@ -1,5 +1,5 @@
 <p align="center">
-<a href = "https://github.com/bounswe/bounswe2018group7/wiki"><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/master/docs/temporary.jpg" alt="banner" border="0" width = "100%" height = "100%"/></a>
+<a href = "https://github.com/bounswe/bounswe2018group7/wiki"><img src="https://raw.githubusercontent.com/bounswe/bounswe2018group7/master/docs/banner/temporary.jpg" alt="banner" border="0" width = "100%" height = "100%"/></a>
 </p>
 
 > ### we are team se7en
