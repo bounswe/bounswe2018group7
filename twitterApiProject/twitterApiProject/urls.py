@@ -20,5 +20,7 @@ from Api import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/memory_posts/', views.memoryPosts.as_view()),
+    url(r'^api/memory_posts/create.json', views.createMemoryPost.as_view()),
+    url(r'^api/memory_posts/search.json', views.searchMemoryPosts.as_view()),
+    url(r'^api/memory_posts/all.json', views.allMemoryPosts.as_view()),
 ]

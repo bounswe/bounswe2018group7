@@ -1,0 +1,3 @@
+class TwitterKeys:
+	CONSUMER_KEY = 'JkVIMDAYOtg5MzhfTR3ngrXIQ'
+	CONSUMER_SECRET = 'G1SsWHmLtzkPRZm3zMYxFakaPhNrvC56SPlAKXvz9idNiQAMDV'
