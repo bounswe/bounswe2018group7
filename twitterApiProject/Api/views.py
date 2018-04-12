@@ -7,6 +7,7 @@ from rest_framework import status
 
 from Api.functions.createMemoryPost import createMemoryPostTweet
 from Api.functions.retrieveAllTweets import retrieveAllTweets
+from Api.functions.searchTweets import searchTweets
 
 class createMemoryPost(APIView):
 	def post(self, request):
@@ -50,6 +51,22 @@ class allMemoryPosts(APIView):
 
 class searchMemoryPosts(APIView):
 	def get(self, request):
-		# Handle searching tweets here.
-		result = {'test': 'search_tweets'}
+		"""
+			Send a GET request to '/api/memory_posts/search.json'. Request body should contain a JSON object in the form:
+			{
+			'username': <A String of username>,
+			'tags': <A List of Strings representing tags for memory post.>
+			}
+
+			Only one field must be included.
+
+			Response:
+			A JSON object in the following form:
+			{ tweet_id: {
+			body : full text of the tweet,
+			created_at : time the tweet has been created
+			}}
+
+		"""
+		result = searchTweets(request.data)
 		return Response(result)
