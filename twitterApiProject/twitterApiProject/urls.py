@@ -1,18 +1,3 @@
-"""twitterApiProject URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.11/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.conf.urls import url, include
-    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
-"""
 from django.conf.urls import url
 from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
@@ -20,7 +5,9 @@ from Api import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/memory_posts/create.json', views.createMemoryPost.as_view()),
-    url(r'^api/memory_posts/search.json', views.searchMemoryPosts.as_view()),
-    url(r'^api/memory_posts/all.json', views.allMemoryPosts.as_view()),
+    url(r'^create/$', views.createMemoryPost.as_view(),name='create'),
+    url(r'^api/memory_posts/search.json', views.searchMemoryPosts.as_view(),name='search'),
+    url(r'^api/memory_posts/all.json', views.allMemoryPosts.as_view(),name='all'),
+    url(r'^geturl/$', views.findOnlyUrlTweet.as_view(),name='geturl'),
+    url(r'^', views.index.as_view(),name='index'),
 ]

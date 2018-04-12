@@ -1,0 +1,22 @@
+{% extends 'Ui/base.html' %}
+{% block title %}HiStory{% endblock %}
+
+
+{% block body %}
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <ul class="list-group">
+                    {% for tweet in all %}
+                    <li class="list-group-item list-group-item-success">{{ tweet }}/li>
+                  {% endfor%}
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
