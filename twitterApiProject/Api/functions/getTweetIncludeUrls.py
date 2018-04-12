@@ -14,5 +14,4 @@ def getTweetIncludeUrls():
     for tweet in public_tweets:
         if  str(tweet.text).__contains__("http"):
             filterOnlyUrls.append(tweet.text)
-
     return filterOnlyUrls

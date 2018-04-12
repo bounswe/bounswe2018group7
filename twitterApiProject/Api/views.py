@@ -12,20 +12,6 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from .forms import *
 from .models import *
 
-#
-# def post_new(request):
-#     if request.method == "POST":
-#         form = PostForm(request.POST)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.author = request.user
-#             post.published_date = timezone.now()
-#             post.save()
-#             return redirect('post_detail', pk=post.pk)
-#     else:
-#         form = PostForm()
-#     return render(request, 'blog/post_edit.html', {'form': form})
-#
 
 class createMemoryPost(APIView):
     template_name = 'Ui/create.html'
@@ -39,12 +25,6 @@ class createMemoryPost(APIView):
 
         return render(request, self.template_name,{'result':result})
 
-    # def post(self, request):
-    #
-    #     # result = createMemoryPostTweet(request.data)
-    #     # return Response(result)
-    #
-    #     return render(request, self.template_name, {'form': self.response})
 
     def get(self, request):
 
