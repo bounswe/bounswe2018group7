@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from Api.functions.createMemoryPost import createMemoryPostTweet
+from Api.functions.retrieveAllTweets import retrieveAllTweets
 
 class createMemoryPost(APIView):
 	def post(self, request):
@@ -32,8 +33,18 @@ class createMemoryPost(APIView):
 
 class allMemoryPosts(APIView):
 	def get(self, request):
-		# Handle retrieving all tweets here.
-		result = {'test': 'all_tweets'}
+		'''
+		Send a GET request to '/api/memory_posts/all.json'.
+
+		Response:
+		A JSON object in the following form:
+		{ tweet_id: {
+					body : full text of the tweet,
+					created_at : time the tweet has been created
+		}}
+		
+		'''
+		result = retrieveAllTweets()
 		return Response(result)
 
 
