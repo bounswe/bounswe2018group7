@@ -1,0 +1,36 @@
+{% extends 'Ui/base.html' %}
+{% block title %}HiStory{% endblock %}
+
+
+{% block body %}
+
+    <style>
+      .tweet-card {
+        padding: 10px;
+        margin: 10px 30px;
+        border: 1px solid white;
+        border-radius: 10px;
+      }
+
+      body {
+        text-align: center;
+      }
+    </style>
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <ul class="list-group">
+                  {% for id, tweet in tweets.items %}
+                  <div class="tweet-card">
+                      <p> {{ tweet.body }} </p>
+                  </div>
+                  {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
