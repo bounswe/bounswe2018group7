@@ -17,15 +17,15 @@ class createMemoryPost(APIView):
 				'username': <A String of username>,
 				'tags': <A List of Strings representing tags for memory post.>
 			}
-			
+
 			Only 'tags' field is optional.
-		
+
 			RESPONSE:
 			A JSON object consisting of two keys only: 'result' and 'message'.
 				'result' will be either 'error' or 'success' (String).
 				'message' will contain the posted Tweet in case of 'success'.
 				'message' will contain a specific error message in case of 'error'.
-			
+
 			FOR MORE INFORMATION, see the function 'createMemoryPostTweet' in the file 'Api/functions/createMemoryPost.py'
 		"""
 		result = createMemoryPostTweet(request.data)
@@ -43,11 +43,10 @@ class allMemoryPosts(APIView):
 					body : full text of the tweet,
 					created_at : time the tweet has been created
 		}}
-		
+
 		'''
 		result = retrieveAllTweets()
-		return Response(result)
-
+		return render(request, 'list_tweets.html', {'tweets': result})
 
 class searchMemoryPosts(APIView):
 	def get(self, request):

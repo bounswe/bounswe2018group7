@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>hiStory Tweets</title>
+    </head>
+    <style>
+      .tweet-card {
+        padding: 10px;
+        margin: 10px 30px;
+        border: 1px solid black;
+        border-radius: 10px;
+      }
+
+      body {
+        text-align: center;
+      }
+    </style>
+    <body>
+        <div>
+            <h1><a href="https://twitter.com/hiStory_g7">hiStory Tweets</a></h1>
+        </div>
+        {% for id, tweet in tweets.items %}
+        <div class="tweet-card">
+            <h3> <b>Author:</b> {{ tweet.author }}</h3>
+            <p> <b>Tags:</b> {{ tweet.tags }}</p>
+            <p> <b>Created:</b> {{ tweet.created_at }}</p>
+            <p> {{ tweet.body }} </p>
+        </div>
+        {% endfor %}
+    </body>
+</html>
