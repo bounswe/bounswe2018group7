@@ -17,10 +17,12 @@ from django.conf.urls import url
 from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
 from Api import views
+from Ui import views as ui_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/memory_posts/create.json', views.createMemoryPost.as_view()),
     url(r'^api/memory_posts/search.json', views.searchMemoryPosts.as_view()),
     url(r'^api/memory_posts/all.json', views.allMemoryPosts.as_view()),
+    url(r'^ui/create_post$', ui_views.create_post),
 ]
