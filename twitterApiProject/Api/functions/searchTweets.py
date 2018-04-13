@@ -10,7 +10,11 @@ def searchTweets(memory_post):
 
 	api = tweepy.API(auth)
 
+	try:
 	userTweets = tweepy.Cursor(api.user_timeline,id='history_g7',tweet_mode='extended').items()
+	except:
+		return error('RETRIEVAL_ERROR')
+
 	
 	data = {}
 
@@ -20,7 +24,8 @@ def searchTweets(memory_post):
 		if len(username) < 3:
 			return error('USERNAME_LENGTH_UNDER_50')
 		for tweet in userTweets:
-			data[tweet.id] = {'body' : tweet.full_text, 'created_at' : tweet.created_at}
+			if (username == tweet.full_text.split("AUTHOR: ")[1].split(" ")[0]):
+				data[tweet.id] = {'body' : tweet.full_text, 'created_at' : tweet.created_at}
 
 	elif 'tags' in memory_post: #Checks for 'tags' key in 'memory_post'
 		# We are searching tweets by 'tags'
