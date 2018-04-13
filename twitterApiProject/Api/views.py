@@ -46,7 +46,7 @@ class allMemoryPosts(APIView):
 		}}
 
 		'''
-        result = getTweetIncludeUrls()
+        result = retrieveAllTweets()
         return Response(result)
 
 
@@ -83,5 +83,5 @@ class getOnlyUrlsTweet(APIView):
 		}}
 
 		'''
-        result = retrieveAllTweets()
+        result = getTweetIncludeUrls()
         return Response(result)
