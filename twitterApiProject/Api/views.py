@@ -8,6 +8,7 @@ from rest_framework import status
 from Api.functions.createMemoryPost import createMemoryPostTweet
 from Api.functions.retrieveAllTweets import retrieveAllTweets
 from Api.functions.searchTweets import searchTweets
+from Api.functions.getTweetIncludeUrls import getTweetIncludeUrls
 
 
 class createMemoryPost(APIView):
@@ -45,7 +46,7 @@ class allMemoryPosts(APIView):
 		}}
 
 		'''
-        result = retrieveAllTweets()
+        result = getTweetIncludeUrls()
         return Response(result)
 
 
@@ -66,4 +67,21 @@ class searchMemoryPosts(APIView):
 			}}
 		"""
         result = searchTweets(request.data)
+        return Response(result)
+
+
+
+class getOnlyUrlsTweet(APIView):
+    def get(self, request):
+        '''
+		Send a GET request to '/api/memory_posts/geturl.json/'.
+		Response:
+		A JSON object in the following form:
+		{ tweet_id: {
+					body : full text of the tweet,
+					created_at : time the tweet has been created
+		}}
+
+		'''
+        result = retrieveAllTweets()
         return Response(result)
