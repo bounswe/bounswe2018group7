@@ -76,11 +76,8 @@ class getOnlyUrlsTweet(APIView):
         '''
 		Send a GET request to '/api/memory_posts/geturl.json/'.
 		Response:
-		A JSON object in the following form:
-		{ tweet_id: {
-					body : full text of the tweet,
-					created_at : time the tweet has been created
-		}}
+		A LIST object in the following form:
+		[<tweet_text>, <tweet_text>, ...]
 
 		'''
         result = getTweetIncludeUrls()

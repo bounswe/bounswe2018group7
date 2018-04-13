@@ -39,13 +39,12 @@
 
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav js-nav-add-active-class">
-                        <li><a href="">Home</a></li>
-                        <li><a href="">Create Tweet</a></li>
-                        <li><a href="">Retrieve Tweet</a></li>
-                        <li><a href="">Search Tweet</a></li>
-                        <li><a href="{% url 'geturl' %}">Fetch Only Url Include in Tweet</a></li>
-                        <li><a href="https://github.com/bounswe/bounswe2018group7">Contact Us</a></li>
-                        <li class="visible-xs-block"><a href="https://github.com/bounswe/bounswe2018group7">About Us</a>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="">All Posts</a></li>
+                        <li><a href="{% url 'geturl' %}">Posts Including URLs</a></li>
+                        <li><a href="">Create Post</a></li>
+                        <li><a href="">Search Posts</a></li>
+                        <li><a href="https://github.com/bounswe/bounswe2018group7">About Us</a></li>
                         </li>
                     </ul>
 
@@ -56,9 +55,5 @@
 </div>
 {% block body %}
 {% endblock %}
-
-<footer style="background-color: antiquewhite; height: 400px;">
-
-</footer>
 </body>
 </html>
