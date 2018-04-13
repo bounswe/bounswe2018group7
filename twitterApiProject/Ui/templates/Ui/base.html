@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body style="background-color: darksalmon; color: #fff;">
+<body style="background-color: darksalmon;">
 <div class="container">
     <!-- Topper w/ logo -->
     <div class="row hidden-xs topper text-center">
@@ -42,7 +42,7 @@
                         <li><a href="/">Home</a></li>
                         <li><a href="">All Posts</a></li>
                         <li><a href="{% url 'geturl' %}">Posts Including URLs</a></li>
-                        <li><a href="">Create Post</a></li>
+                        <li><a href="{% url 'create_post' %}">Create Post</a></li>
                         <li><a href="">Search Posts</a></li>
                         <li><a href="https://github.com/bounswe/bounswe2018group7">About Us</a></li>
                         </li>

@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^api/memory_posts/all.json', views.allMemoryPosts.as_view()),
     url(r'^api/memory_posts/geturl.json/$', views.getOnlyUrlsTweet.as_view()),
     url(r'^ui/get_only_url_tweets', ui_views.getUrlsUi,name="geturl"),
-    url(r'^ui/create_post$', ui_views.create_post)
+    url(r'^ui/create_post$', ui_views.create_post,name='create_post')
 ]

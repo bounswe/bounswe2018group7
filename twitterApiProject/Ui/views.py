@@ -21,13 +21,13 @@ def create_post(request):
             response = requests.post("http://127.0.0.1:8000/api/memory_posts/create.json", json = api_data)
             response_data = response.json()
             form = PostCreateForm()		# Create an empty form
-            return render(request, 'create_post.html', {'status': response_data['result'], 'message': response_data['message'], 'form': form})
+            return render(request, 'Ui/create_post.html', {'status': response_data['result'], 'message': response_data['message'], 'form': form})
 
     # If a GET (or any other method) we'll create an empty form
     else:
         form = PostCreateForm()
 
-    return render(request, 'create_post.html', {'form': form})
+    return render(request, 'Ui/create_post.html', {'form': form})
 
 
 def getUrlsUi(request):
