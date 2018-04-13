@@ -6,7 +6,7 @@ def createMemoryPostTweet(memory_post):
 		Creates a Tweet in @hiStory_g7 account on Twitter.
 
 		PARAMETERS:
-		'memory_post': A Dictionary object expected in the form:
+		'memory_ post': A Dictionary object expected in the form:
 		{
 			'story': <A String of Tweet text>,
 			'username': <A String of username>,
@@ -36,15 +36,15 @@ def createMemoryPostTweet(memory_post):
 
 	if 'story' in memory_post:			# Checks for 'story' key in `memory_post`
 		story = memory_post['story']
-		if len(story) < 50:
-			return error('STORY_LENGTH_UNDER_50')
+		if len(story) < 10:
+			return error('STORY_LENGTH_UNDER_10')
 	else:
 		return error('MISSING_STORY')
 		
 	if 'username' in memory_post:		# Checks for 'username' key in `memory_post`
 		username = memory_post['username'].split()[0]		# Discards the words except the first one.
 		if len(username) < 3:
-			return error('USERNAME_LENGTH_UNDER_50')
+			return error('USERNAME_LENGTH_UNDER_3')
 	else:
 		return error('MISSING_USERNAME')
 

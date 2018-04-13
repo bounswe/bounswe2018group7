@@ -1,5 +1,4 @@
 """twitterApiProject URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
 Examples:
@@ -24,5 +23,7 @@ urlpatterns = [
     url(r'^api/memory_posts/create.json', views.createMemoryPost.as_view()),
     url(r'^api/memory_posts/search.json', views.searchMemoryPosts.as_view()),
     url(r'^api/memory_posts/all.json', views.allMemoryPosts.as_view()),
-    url(r'^ui/create_post$', ui_views.create_post),
+    url(r'^api/memory_posts/geturl.json/$', views.getOnlyUrlsTweet.as_view()),
+    url(r'^ui/get_only_url_tweets', ui_views.getUrlsUi,name="geturl"),
+    url(r'^ui/create_post$', ui_views.create_post)
 ]
