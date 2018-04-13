@@ -11,7 +11,7 @@ def searchTweets(memory_post):
 	api = tweepy.API(auth)
 
 	try:
-	userTweets = tweepy.Cursor(api.user_timeline,id='history_g7',tweet_mode='extended').items()
+		userTweets = tweepy.Cursor(api.user_timeline,id='history_g7',tweet_mode='extended').items()
 	except:
 		return error('RETRIEVAL_ERROR')
 
