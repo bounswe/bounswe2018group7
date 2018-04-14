@@ -1,0 +1,41 @@
+
+
+{% extends 'Ui/base.html' %}
+{% block title %}HiStory{% endblock %}
+
+
+{% block body %}
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <div style="color: white">
+                    {% if status == 'error' %}
+                        PROCESS WAS NOT SUCCESSFUL. ERROR MESSAGE: {{ message }}
+                    {% elif status == 'success' %}
+                        PROCESS WAS  SUCCESSFUL. CREATED POST (TWEET): {{ message }}
+                    {% endif %}
+
+                </div>
+
+                CREATE A POST (TWEET):
+                </br>
+
+                <form action="/ui/create_post" method="post">
+                    {% csrf_token %}
+                    <p>STORY: {{ form.story }}</p>
+                    <p>USERNAME: {{ form.username }}</p>
+                    <p>TAGS: (Comma Separated) {{ form.tags }}</p>
+                    <input type="submit" value="Submit"/>
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+

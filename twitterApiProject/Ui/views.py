@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+
 from .forms import PostCreateForm
 import requests
 import json
@@ -15,9 +16,9 @@ def create_post(request):
             form_story = str(form_data['story'])
             form_username = str(form_data['username'])
             form_tags = str(form_data['tags']).split(',')
-            
+
             api_data = {'story': form_story, 'username': form_username, 'tags': form_tags}
-            
+
             response = requests.post("http://127.0.0.1:8000/api/memory_posts/create.json", json = api_data)
             response_data = response.json()
             form = PostCreateForm()		# Create an empty form
@@ -43,3 +44,8 @@ def list_tweets(request):
     response_data = response.json()
 
     return render(request, 'Ui/list_tweets.html', {'tweets': response_data})
+
+
+def indexView(request):
+
+    return render(request, 'Ui/index.html')
