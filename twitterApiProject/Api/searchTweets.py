@@ -24,8 +24,6 @@ def searchTweets(memory_post):
 		if len(username) < 3:
 			return error('USERNAME_LENGTH_UNDER_50')
 		for tweet in userTweets:
-			print("...**...")
-			print(tweet.full_text.split("AUTHOR: "))
 			if "AUTHOR: " in tweet.full_text:
 				if (username == tweet.full_text.split("AUTHOR: ")[1].split(" ")[0]):
 					data[tweet.id] = {'body' : tweet.full_text, 'created_at' : tweet.created_at}
