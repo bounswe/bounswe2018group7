@@ -1,0 +1,55 @@
+{% extends 'Ui/base.html' %}
+{% block title %}HiStory{% endblock %}
+
+
+{% block body %}
+
+
+<style>
+ body {
+        text-align: center;
+      }
+    </style>
+
+<h1>Enter Username or Tag to Search for Post</h1>
+
+<form action="/ui/search_post" method="post">
+  <div class="form-group">
+	{% csrf_token %}
+    <label for="username">USERNAME: </label>
+    <input id="username" type="text" name="username" class="form-control" value="{{ username }}">
+    </div>
+    <div class="form-group">
+    <label for="tag">TAG: </label>
+    <input id="tag" type="text" class="form-control" name="tag" value="{{ tag }}">
+    <br>
+    <button type="submit">Search</button><br>
+    </div>
+</form>
+
+
+<br>
+
+<div class="container">
+  <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center" >
+            {% if search.result == 'error' %}
+            <h2>{{ search.message }}</h2>
+            <br>
+            {% elif search.result == 'success' %}
+						<ul class="list-group">
+                  {% for id, post in search.data.items %}
+                  <div class="tweet-card">
+                      <p> {{ post.body }} </p>
+                  </div>
+                  {% endfor %}
+                </ul>
+             <br>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+{% endblock %}

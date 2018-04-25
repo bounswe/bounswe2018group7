@@ -46,6 +46,39 @@ def list_tweets(request):
     return render(request, 'Ui/list_tweets.html', {'tweets': response_data})
 
 
+
+
+
+def search_post(request):
+    
+    if request.method == 'POST':
+        query=request.POST
+        body={}
+        if 'username' in query:
+         username=query['username']
+         if( len(username)>0 ):
+          body={'username': username} 
+        elif 'tags' in query:
+         tags=query['tags']
+         if( len(tags)>0 ):
+          body={'tags': tags } 
+
+        response = requests.get("http://127.0.0.1:8000/api/memory_posts/search.json", json=body)
+        response_data = response.json()
+
+        return render(request, 'Ui/search_post.html', {'search': response_data}) 
+
+    else:
+      #body={'username': '','tags': '' } 
+
+      response = requests.get("http://127.0.0.1:8000/api/memory_posts/search.json" )
+      response_data = response.json()
+    
+    response_data={'result':None,'data':None,'message':None}
+    return render(request, 'Ui/search_post.html', {'search': response_data}) 
+
+
+
 def indexView(request):
 
     return render(request, 'Ui/index.html')

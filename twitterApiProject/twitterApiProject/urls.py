@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^ui/get_only_url_tweets', ui_views.getUrlsUi,name="geturl"),
     url(r'^ui/create_post$', ui_views.create_post,name='create_post'),
     url(r'^ui/list_tweets', ui_views.list_tweets,name='list_tweets'),
+    url(r'^ui/search_post$', ui_views.search_post,name='search_post'),
     url(r'^$', ui_views.indexView, name='index'),
 
 ]
