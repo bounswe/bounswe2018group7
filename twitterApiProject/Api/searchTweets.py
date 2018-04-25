@@ -20,6 +20,7 @@ def searchTweets(memory_post):
 	if 'username' in memory_post:		# Checks for 'username' key in `memory_post`
 		# We are searching tweets by 'username'
 		username = memory_post['username'].split()[0]		# Discards the words except the first one.
+
 		if len(username) < 3:
 			return error('USERNAME_LENGTH_UNDER_50')
 		for tweet in userTweets:
@@ -30,8 +31,6 @@ def searchTweets(memory_post):
 	elif 'tags' in memory_post: #Checks for 'tags' key in 'memory_post'
 		# We are searching tweets by 'tags'
 		tags = memory_post['tags']
-		#print("***........**")
-		#print(tags)
 		if type(tags) != list:		# Expects 'tags' to be a List
 			return error('INVALID_TAGS_FORMAT')
 
@@ -47,6 +46,8 @@ def searchTweets(memory_post):
 
 
 	return success(data)
+
+
 
 def error(message):
 	return {
