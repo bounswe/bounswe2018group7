@@ -54,14 +54,13 @@ def search_post(request):
     if request.method == 'POST':
         query=request.POST
         body={}
-        if 'username' in query:
+        if (len(query['username']) >0):
          username=query['username']
-         if( len(username)>0 ):
-          body={'username': username} 
-        elif 'tags' in query:
+         body={'username': username} 
+
+        elif ( len(query['tags'])>0 ):
          tags=query['tags']
-         if( len(tags)>0 ):
-          body={'tags': tags } 
+         body={'tags': tags } 
 
         response = requests.get("http://127.0.0.1:8000/api/memory_posts/search.json", json=body)
         response_data = response.json()
