@@ -9,7 +9,8 @@
 > Check out our **[wiki page](https://github.com/bounswe/bounswe2018group7/wiki)** for more information.
 
 > Twitter Practice Application **[Wiki](https://github.com/bounswe/bounswe2018group7/wiki/Twitter-Practice-Application)**
-> **[Link to hiStory](http://ec2-34-209-155-12.us-west-2.compute.amazonaws.com:8000)** Twitter App
+
+> **[Link to hiStory Twitter App](http://ec2-34-209-155-12.us-west-2.compute.amazonaws.com:8000)**
 <p align="left">
 
 
