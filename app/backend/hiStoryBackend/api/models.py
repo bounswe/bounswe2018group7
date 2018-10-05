@@ -18,7 +18,7 @@ class User(models.Model):
     password_hash = models.CharField(null=False,
                                      max_length=255
                                      )
-    real_name = models.CharField(max_length=255,
+    full_name = models.CharField(max_length=255,
                                  validators=[RegexValidator(r'^[a-zA-Z]{2,}[a-zA-Z ]*$')]
                                  )
 
