@@ -34,5 +34,6 @@ def homepage_json():
                 'Ferhat Melih Dal',
                 'Neval Tüllük'
             ]
-        }
+        },
+        json_dumps_params={'ensure_ascii': False}
     )
