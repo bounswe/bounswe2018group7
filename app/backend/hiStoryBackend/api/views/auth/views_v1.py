@@ -24,6 +24,9 @@ def sign_in(request):
 	else:
 		return jrh.bad_request(["username and email are both missing"])
 
+	if 'password' not in content:
+		return jrh.bad_request(["password is missing"])
+
 	if check_password(content['password'], user.password_hash) == False:
 		return jrh.unauthorized(["wrong password"])
 
