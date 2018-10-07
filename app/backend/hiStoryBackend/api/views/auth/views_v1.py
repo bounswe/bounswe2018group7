@@ -1,10 +1,10 @@
 from django.http import JsonResponse
-from api.views.helpers import json_response_helper as jrh
 from django.contrib.auth.hashers import check_password, make_password
 import json
 from api.models import User
 import jwt
 from hiStoryBackend.settings import SECRET_KEY
+from api.helpers import json_response_helper as jrh
 
 def sign_in(request):
 	if not request.method == 'POST':
