@@ -19,21 +19,22 @@ def sign_up(request):
 
     r = json.loads(request.body)
 
-    username = r['username']
-    email = r['email']
-    password = r['password']
-    password_confirmation = r['password_confirmation']
-    full_name = r['full_name']
+    username = r.get('username')
+    email = r.get('email')
+    password = r.get('password')
+    password_confirmation = r.get('password_confirmation')
+    full_name = r.get('full_name')
 
     if(password != password_confirmation):
-    	return jrh.fail(['Passwords don\'t match.'])
+    	return jrh.fail(["Passwords don't match."])
 
     password_hash = make_password(password)
 
     u = User(username=username,
     	email=email,
     	password_hash=password_hash,
-    	full_name=full_name
+    	full_name=full_name,
+    	confirmed=True
     	)
     
     try:
