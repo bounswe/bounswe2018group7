@@ -61,7 +61,7 @@ class Login extends Component {
     return (
       <div className="wrapper">
         <div className="container">
-          <h1>Rewes 'e Hoşgeldiniz !</h1>
+          <h1>Welcome to HiStory!</h1>
 
           <form className="form">
             {emailError !== "" && (
