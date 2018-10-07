@@ -1,10 +1,11 @@
 from django.http import JsonResponse
 from api.helpers import json_response_helper as jrh
-#from api.views.helpers import custom_helper as jrh
+from api.helpers import custom_helper
 from django.contrib.auth.hashers import check_password, make_password
 import json
 import jwt
 from api.models import User
+from django.core.exceptions import ValidationError
 
 def sign_in(request):
     if not request.method == 'POST':
@@ -24,12 +25,6 @@ def sign_up(request):
     password_confirmation = r['password_confirmation']
     full_name = r['full_name']
 
-    '''if(User.objects.filter(username=username)):
-    	return JsonResponse({'errors': ('This username is already in the database: ' + username)})
-
-    if(User.objects.filter(email=email)):
-    	return JsonResponse({'errors': ('This email is already in the database: ' + email)})'''
-
     if(password != password_confirmation):
     	return jrh.fail(['Passwords don\'t match.'])
 
@@ -41,11 +36,11 @@ def sign_up(request):
     	full_name=full_name
     	)
     
-    #use helper
     try:
-    	u.full_clean()
-    except ValidationError:
-    	return jrh.unauthorized(parse_validation_error(ValidationError))
+        u.full_clean()
+    except ValidationError as ve:
+        errors_arr = custom_helper.parse_validation_error(ve)
+        return jrh.fail(errors_arr)
 
     u.save()
 
