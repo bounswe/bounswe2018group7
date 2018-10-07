@@ -15,24 +15,21 @@ def sign_in(request):
 		try:
 			user = User.objects.get(username = content['username'])
 		except User.DoesNotExist:
-			return JsonResponse({"errors": ["username does not exist"]})
+			return jrh.unauthorized(["username does not exist"])
 	elif 'email' in content:
 		try:
 			user = User.objects.get(email = content['email'])
 		except User.DoesNotExist:
-			return JsonResponse({"errors": ["email does not exist"]})
+			return jrh.unauthorized(["email does not exist"])
 	else:
-		return JsonResponse({"errors": ["username or email fields could not be found"]})
+		return jrh.bad_request(["username and email are both missing"])
 
 	if check_password(content['password'], user.password_hash) == False:
-		return JsonResponse({"errors": ["wrong password"]})
-
-	if user.banned:
-		return JsonResponse({"errors": ["user is banned"]})
+		return jrh.unauthorized(["wrong password"])
 
 	token = jwt.encode({"id": user.id}, SECRET_KEY)
 
-	return JsonResponse({"username": user.username, "email": user.email, "full_name": user.full_name, "admin": user.admin, "banned": user.banned, "auth_token": token.decode("utf-8")})
+	return jrh.success({"username": user.username, "email": user.email, "full_name": user.full_name, "admin": user.admin, "banned": user.banned, "auth_token": token.decode("utf-8")})
 
 
 def sign_up(request):
