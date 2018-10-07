@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from api.views.helpers import json_response_helper as jrh
+#from api.views.helpers import custom_helper as jrh
+from django.contrib.auth.hashers import check_password, make_password
 import json
 import jwt
 from api.models import User
@@ -19,27 +21,33 @@ def sign_up(request):
     username = r['username']
     email = r['email']
     password = r['password']
-    passwordConfirmation = r['password_confirmation']
-    fullName = r['full_name']
+    password_confirmation = r['password_confirmation']
+    full_name = r['full_name']
 
-    if(User.objects.filter(username=username)):
+    '''if(User.objects.filter(username=username)):
     	return JsonResponse({'errors': ('This username is already in the database: ' + username)})
 
     if(User.objects.filter(email=email)):
-    	return JsonResponse({'errors': ('This email is already in the database: ' + email)})
+    	return JsonResponse({'errors': ('This email is already in the database: ' + email)})'''
 
-    if(password != passwordConfirmation):
-    	return JsonResponse({'errors': 'Passwords don\'t match.'})
+    if(password != password_confirmation):
+    	return jrh.fail(['Passwords don\'t match.'])
 
-    passwordHash = jwt.encode({ 'password': password}, 'secret', algorithm='HS256')
+    password_hash = make_password(password)
 
     u = User(username=username,
     	email=email,
-    	password_hash=passwordHash,
-    	full_name=fullName
+    	password_hash=password_hash,
+    	full_name=full_name
     	)
-    # ask about clean all
+    
+    #use helper
+    try:
+    	u.full_clean()
+    except ValidationError:
+    	return jrh.unauthorized(parse_validation_error(ValidationError))
+
     u.save()
 
     
-    return JsonResponse({'username': username, 'email': email, 'full_name': fullName})
+    return jrh.success({'username': username, 'email': email, 'full_name': full_name})
