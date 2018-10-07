@@ -2,7 +2,11 @@ from django.http import JsonResponse
 
 
 def success(data_hash):
-    return JsonResponse(data_hash, status=200)
+    return JsonResponse(
+        data_hash,
+        status=200,
+        json_dumps_params={'ensure_ascii': False}
+    )
 
 
 # Use when there is a problem with request format, e.g. unsupported HTTP verb or missing request paramater
@@ -24,8 +28,12 @@ def not_found(errors_arr):
 
 # Use when a validation error occurs while updating a Model
 def fail(errors_arr):
-    return JsonResponse({'errors': errors_arr}, status=422)  # Unprocessable entity
+    return error_response(errors_arr, 422)  # Unprocessable Entity
 
 
 def error_response(errors_arr, status_code):
-    return JsonResponse({'errors': errors_arr}, status=status_code)
+    return JsonResponse(
+        {'errors': errors_arr},
+        status=status_code,
+        json_dumps_params={'ensure_ascii': False}
+    )

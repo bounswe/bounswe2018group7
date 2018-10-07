@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from api.views.helpers import json_response_helper as jrh
+from api.helpers import json_response_helper as jrh
 
 
 def response(request):
