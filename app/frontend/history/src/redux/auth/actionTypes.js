@@ -1,0 +1,7 @@
+export const SIGNIN_REQUEST = "SIGNIN_REQUEST";
+export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
+export const SIGNIN_FAILURE = "SIGNIN_FAILURE";
+export const SIGNIN_RESET = "SIGNIN_RESET";
+
+export const AUTO_LOGIN = "AUTO_LOGIN";
+export const SIGNOUT_REQUEST = "SIGNOUT_REQUEST";

@@ -20,7 +20,6 @@ class App extends React.Component {
 
         <Route path="/home" component={Home} />
         <Route path="/auth" component={Auth} />
-        <Route path="/app" component={Home} />
         <Route path="*" component={NotFound} />
       </Switch>
     );
