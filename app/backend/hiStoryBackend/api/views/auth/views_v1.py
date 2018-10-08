@@ -25,6 +25,12 @@ def sign_up(request):
     password_confirmation = r.get('password_confirmation')
     full_name = r.get('full_name')
 
+    if(len(password) < 8):
+        return jrh.fail(["Passwords shall contain at least 8 characters."])
+
+    if(len(password) > 24):
+        return jrh.fail(["Passwords shall contain at most 24 characters."])
+
     if(password != password_confirmation):
     	return jrh.fail(["Passwords don't match."])
 
