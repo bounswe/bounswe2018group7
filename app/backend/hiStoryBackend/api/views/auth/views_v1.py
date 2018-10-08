@@ -1,12 +1,14 @@
-from api.helpers import json_response_helper as jrh
-from hiStoryBackend.settings import SECRET_KEY
-from api.helpers import custom_helper
-from django.contrib.auth.hashers import check_password, make_password
-from django.http import JsonResponse
 import json
+
 import jwt
-from api.models import User
+from django.contrib.auth.hashers import check_password, make_password
 from django.core.exceptions import ValidationError
+
+from api.helpers import custom_helper
+from api.helpers import json_response_helper as jrh
+from api.models import User
+from hiStoryBackend.settings import SECRET_KEY
+
 
 def sign_in(request):
 	if not request.method == 'POST':
