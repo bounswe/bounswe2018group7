@@ -26,7 +26,7 @@ def sign_up(request):
     full_name = r.get('full_name')
 
     if(password is None):
-        return jrh.fail(["Password cannot be empty."])
+        return jrh.bad_request(["Password cannot be empty."])
 
     if(len(password) < 8):
         return jrh.fail(["Passwords shall contain at least 8 characters."])
