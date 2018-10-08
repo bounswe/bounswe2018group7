@@ -11,6 +11,10 @@ def sign_in(request):
 		return jrh.bad_request(['Unsupported HTTP verb'])
 
 	content = json.loads(request.body)
+
+	if 'password' not in content:
+		return jrh.bad_request(["password is missing"])
+
 	if 'username' in content:
 		try:
 			user = User.objects.get(username = content['username'])
@@ -23,9 +27,6 @@ def sign_in(request):
 			return jrh.unauthorized(["email does not exist"])
 	else:
 		return jrh.bad_request(["username and email are both missing"])
-
-	if 'password' not in content:
-		return jrh.bad_request(["password is missing"])
 
 	if check_password(content['password'], user.password_hash) == False:
 		return jrh.unauthorized(["wrong password"])
