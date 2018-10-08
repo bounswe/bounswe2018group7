@@ -1,8 +1,8 @@
 import { getCookie, TOKEN_COOKIE } from "utils/cookies.js";
 
 const Configuration = {
-  API_URL: "",
-  STATIC_HOST: "",
+  API_URL: "https://history-backend.herokuapp.com/",
+  STATIC_HOST: "https://history-backend.herokuapp.com/",
   HTTP_TIMEOUT_MS: 40000 /* 40 sec */
 };
 

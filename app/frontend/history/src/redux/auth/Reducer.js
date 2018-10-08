@@ -4,6 +4,10 @@ import {
   SIGNIN_FAILURE,
   SIGNIN_RESET,
   SIGNOUT_REQUEST,
+  SIGNUP_REQUEST,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE,
+  SIGNUP_RESET,
   AUTO_LOGIN
 } from "./actionTypes";
 
@@ -16,7 +20,12 @@ const initialState = {
   signinInProgress: false,
   signinHasError: false,
   signinCompleted: false,
-  signinError: ""
+  signinError: "",
+
+  signupInProgress: false,
+  signupHasError: false,
+  signupCompleted: false,
+  signupError: ""
 };
 
 export default function(state = initialState, action) {
@@ -52,6 +61,39 @@ export default function(state = initialState, action) {
       signinInProgress: false,
       signinHasError: false,
       signinCompleted: false
+    };
+  }
+  if (action.type === SIGNUP_REQUEST) {
+    return {
+      ...state,
+      signupInProgress: true,
+      signupHasError: false,
+      signupCompleted: false
+    };
+  } else if (action.type === SIGNUP_SUCCESS) {
+    return {
+      ...state,
+      user: payload.user,
+      token: payload.token,
+      loggedIn: true,
+      signupInProgress: false,
+      signupHasError: false,
+      signupCompleted: true
+    };
+  } else if (action.type === SIGNUP_FAILURE) {
+    return {
+      ...state,
+      signupInProgress: false,
+      signupHasError: true,
+      signupCompleted: true,
+      signupError: payload.detail[0]
+    };
+  } else if (action.type === SIGNUP_RESET) {
+    return {
+      ...state,
+      signupInProgress: false,
+      signupHasError: false,
+      signupCompleted: false
     };
   } else if (action.type === AUTO_LOGIN) {
     const { user, token } = payload;
