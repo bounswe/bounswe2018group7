@@ -34,7 +34,7 @@ class Login extends Component {
     const { history } = this.props;
 
     const loggedIn = getCookie(LOGGEDIN_COOKIE);
-    if (loggedIn) return history.push("/menu");
+    if (loggedIn) return history.push("/home");
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -48,7 +48,7 @@ class Login extends Component {
       setCookie(USER_COOKIE, user, { path: "/" });
       setCookie(LOGGEDIN_COOKIE, loggedIn, { path: "/" });
       this.props.signinReset();
-      history.push("/menu");
+      history.push("/home");
     } else if (!signinInProgress && signinHasError && signinCompleted) {
       this.props.signinReset();
     }
