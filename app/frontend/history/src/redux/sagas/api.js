@@ -3,7 +3,7 @@ import httpService from "services/HttpService";
 class api {
   doSignIn = (email, password) => {
     return httpService.fetch({
-      path: "/api/v1/signin/",
+      path: "api/v1/signin/",
       method: "POST",
       body: {
         email,
