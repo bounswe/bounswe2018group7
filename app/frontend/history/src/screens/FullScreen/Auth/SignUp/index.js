@@ -35,7 +35,7 @@ class SignUp extends Component {
     return prevState;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     const { signupInProgress, signupHasError, signupCompleted } = this.props.auth;
 
     if (!signupInProgress && !signupHasError && signupCompleted) {
