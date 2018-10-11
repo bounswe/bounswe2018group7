@@ -74,7 +74,7 @@ class Login extends Component {
               onChange={event => this.setState({ email: event.target.value })}
               onFocus={() => this.setState({ emailError: "" })}
               type="email"
-              placeholder="Email"
+              placeholder="Email | Username"
             />
             {passwordError !== "" && (
               <Typography variant="body2" gutterBottom color={"inherit"}>
@@ -89,7 +89,7 @@ class Login extends Component {
               value={this.state.password}
             />
             <button onClick={event => this.handleLoginSubmit(event)} id="login-button">
-              Giriş Yap
+              Login
             </button>
           </form>
         </div>
