@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
+import Button from "@material-ui/core/Button";
 import {
   removeCookie,
   getCookie,
@@ -31,7 +31,9 @@ class Home extends Component {
     return (
       <div>
         Home
-        <button onClick={this.signOut}> Log Out</button>
+        <Button onClick={this.signOut} variant="contained" color="primary">
+          Log Out
+        </Button>
       </div>
     );
   }
