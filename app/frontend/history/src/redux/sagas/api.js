@@ -3,7 +3,7 @@ import httpService from "services/HttpService";
 class api {
   doSignIn = (email, password) => {
     return httpService.fetch({
-      path: "auth/login/",
+      path: "api/v1/signin/",
       method: "POST",
       body: {
         email,
@@ -14,7 +14,7 @@ class api {
   };
   doSignUp = (username, email, password, password_confirmation, full_name) => {
     return httpService.fetch({
-      path: "auth/signup/",
+      path: "api/v1/signup/",
       method: "POST",
       body: {
         username,

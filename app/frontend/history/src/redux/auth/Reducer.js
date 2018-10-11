@@ -41,7 +41,7 @@ export default function(state = initialState, action) {
     return {
       ...state,
       user: payload.user,
-      token: payload.token,
+      token: payload.auth_token,
       loggedIn: true,
       signinInProgress: false,
       signinHasError: false,
@@ -74,7 +74,7 @@ export default function(state = initialState, action) {
     return {
       ...state,
       user: payload.user,
-      token: payload.token,
+      token: payload.auth_token,
       loggedIn: true,
       signupInProgress: false,
       signupHasError: false,

@@ -4,7 +4,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import { connect } from "react-redux";
 import { trySignin, signinReset, trySignup, signupReset } from "redux/auth/Actions.js";
-import "./index.css";
+// import "./index.css";
 import { checkEmailValidity } from "utils";
 
 class SignUp extends Component {

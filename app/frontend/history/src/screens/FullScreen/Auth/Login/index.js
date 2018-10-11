@@ -34,7 +34,7 @@ class Login extends Component {
     const { history } = this.props;
 
     const loggedIn = getCookie(LOGGEDIN_COOKIE);
-    if (loggedIn) return history.push("/menu");
+    if (loggedIn) return history.push("/home");
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -48,7 +48,7 @@ class Login extends Component {
       setCookie(USER_COOKIE, user, { path: "/" });
       setCookie(LOGGEDIN_COOKIE, loggedIn, { path: "/" });
       this.props.signinReset();
-      history.push("/menu");
+      history.push("/home");
     } else if (!signinInProgress && signinHasError && signinCompleted) {
       this.props.signinReset();
     }
@@ -74,7 +74,7 @@ class Login extends Component {
               onChange={event => this.setState({ email: event.target.value })}
               onFocus={() => this.setState({ emailError: "" })}
               type="email"
-              placeholder="Email"
+              placeholder="Email | Username"
             />
             {passwordError !== "" && (
               <Typography variant="body2" gutterBottom color={"inherit"}>
@@ -89,7 +89,7 @@ class Login extends Component {
               value={this.state.password}
             />
             <button onClick={event => this.handleLoginSubmit(event)} id="login-button">
-              Giriş Yap
+              Login
             </button>
           </form>
         </div>
