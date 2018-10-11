@@ -48,7 +48,7 @@ class SignUp extends Component {
   }
 
   render() {
-    const { emailError, passwordError } = this.state;
+    const { emailError, passwordError, usernameError, full_nameError, password_confirmationError } = this.state;
     const { signupError } = this.props.auth;
 
     return (
@@ -57,6 +57,11 @@ class SignUp extends Component {
           <h1>Welcome to HiStory!</h1>
 
           <form className="form">
+            {usernameError !== "" && (
+              <Typography variant="body2" gutterBottom color={"inherit"}>
+                {emailError}
+              </Typography>
+            )}
             <input
               value={this.state.username}
               onChange={event => this.setState({ username: event.target.value })}
@@ -88,6 +93,11 @@ class SignUp extends Component {
               placeholder="Password"
               value={this.state.password}
             />
+            {password_confirmationError !== "" && (
+              <Typography variant="body2" gutterBottom color={"inherit"}>
+                {password_confirmationError}
+              </Typography>
+            )}
             <input
               type="password"
               onChange={event => this.setState({ password_confirmation: event.target.value })}
@@ -95,6 +105,11 @@ class SignUp extends Component {
               placeholder="Confirm Password"
               value={this.state.password_confirmation}
             />
+            {full_nameError !== "" && (
+              <Typography variant="body2" gutterBottom color={"inherit"}>
+                {passwordError}
+              </Typography>
+            )}
             <input
               value={this.state.full_name}
               onChange={event => this.setState({ full_name: event.target.value })}
@@ -156,8 +171,28 @@ class SignUp extends Component {
       full_nameError: "",
       password_confirmationError: ""
     });
+
     const { email, password, username, password_confirmation, full_name } = this.state;
-    if (email && password && username && password_confirmation && full_name) {
+
+    if (!email || !password || !username || !password_confirmation || !full_name) {
+      if (!email) {
+        this.setState({ emailError: "Please fill this area" });
+      }
+
+      if (!password) {
+        this.setState({ passwordError: "Please fill this area" });
+      }
+
+      if (!username) {
+        this.setState({ usernameError: "Please fill this area" });
+      }
+      if (!full_name) {
+        this.setState({ full_nameError: "Please fill this area" });
+      }
+      if (!password_confirmation) {
+        this.setState({ password_confirmationError: "Please fill this area" });
+      }
+    } else {
       if (!checkEmailValidity(email)) {
         if (password === password_confirmation) {
           this.props.trySignup(username, email, password, password_confirmation, full_name);
@@ -166,26 +201,6 @@ class SignUp extends Component {
         }
       } else {
         this.setState({ emailError: "Invalid Email" });
-      }
-    } else {
-      if (!email && !password && !username && !full_name && !password_confirmation) {
-        this.setState({
-          emailError: "Please fill this area",
-          passwordError: "Please fill this area",
-          usernameError: "Please fill this area",
-          full_nameError: "Please fill this area",
-          password_confirmationError: "Please fill this area"
-        });
-      } else if (!email) {
-        this.setState({ emailError: "Please fill this area" });
-      } else if (!password) {
-        this.setState({ passwordError: "Please fill this area" });
-      } else if (!username) {
-        this.setState({ usernameError: "Please fill this area" });
-      } else if (!full_name) {
-        this.setState({ full_nameError: "Please fill this area" });
-      } else if (!password_confirmation) {
-        this.setState({ password_confirmationError: "Please fill this area" });
       }
     }
     event.preventDefault();
