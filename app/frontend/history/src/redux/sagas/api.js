@@ -14,7 +14,7 @@ class api {
   };
   doSignUp = (username, email, password, password_confirmation, full_name) => {
     return httpService.fetch({
-      path: "auth/signup/",
+      path: "api/v1/signup/",
       method: "POST",
       body: {
         username,
