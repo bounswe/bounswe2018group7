@@ -37,8 +37,12 @@ class SignUp extends Component {
 
   componentDidUpdate() {
     const { signupInProgress, signupHasError, signupCompleted } = this.props.auth;
+    const { history } = this.props;
 
     if (!signupInProgress && !signupHasError && signupCompleted) {
+      this.props.signupReset();
+      history.push("/auth/login");
+    } else if (!signupInProgress && signupHasError && signupCompleted) {
       this.props.signupReset();
     }
   }
