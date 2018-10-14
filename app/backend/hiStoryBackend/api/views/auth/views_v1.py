@@ -8,7 +8,9 @@ from api.helpers import custom_helper
 from api.helpers import json_response_helper as jrh
 from api.models import User
 from hiStoryBackend.settings import SECRET_KEY
+import re
 
+email_regex = re.compile('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
 
 def sign_in(request):
 	if not request.method == 'POST':
@@ -19,20 +21,21 @@ def sign_in(request):
 	if 'password' not in content:
 		return jrh.bad_request(["password is missing"])
 
-	if 'username' in content:
-		try:
-			user = User.objects.get(username = content['username'])
-		except User.DoesNotExist:
-			return jrh.unauthorized(["username does not exist"])
-	elif 'email' in content:
-		try:
-			user = User.objects.get(email = content['email'])
-		except User.DoesNotExist:
-			return jrh.unauthorized(["email does not exist"])
+	if 'name' in content:
+		if email_regex.match(content['name']):
+			try:
+				user = User.objects.get(email = content['name'])
+			except User.DoesNotExist:
+				return jrh.unauthorized(["email does not exist"])
+		else:
+			try:
+				user = User.objects.get(username = content['name'])
+			except User.DoesNotExist:
+				return jrh.unauthorized(["username does not exist"])
 	else:
 		return jrh.bad_request(["username and email are both missing"])
 
-	if check_password(content['password'], user.password_hash) == False:
+	if not check_password(content['password'], user.password_hash):
 		return jrh.unauthorized(["wrong password"])
 
 	token = jwt.encode({"id": user.id}, SECRET_KEY)
