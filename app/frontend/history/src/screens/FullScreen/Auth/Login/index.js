@@ -15,7 +15,7 @@ class Login extends Component {
       email: "",
       emailError: "",
       password: "",
-      passwordError: "",
+      passwordErrowr: "",
       isSnackbarOpen: false
     };
   }
