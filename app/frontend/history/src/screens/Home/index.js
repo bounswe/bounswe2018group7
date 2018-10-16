@@ -11,6 +11,7 @@ import {
   USER_COOKIE
 } from "utils/cookies.js";
 import { signout } from "redux/auth/Actions";
+import { Link } from "react-router-dom";
 
 class Home extends Component {
   constructor(props) {
@@ -34,6 +35,12 @@ class Home extends Component {
         <Button onClick={this.signOut} variant="contained" color="primary">
           Log Out
         </Button>
+        <Link to="/auth/login">
+          <Button>Login</Button>
+        </Link>
+        <Link to="/auth/signup">
+          <Button>Signup</Button>
+        </Link>
       </div>
     );
   }

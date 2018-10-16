@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Typography, Snackbar, IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { connect } from "react-redux";
 import { trySignin, signinReset } from "redux/auth/Actions.js";
@@ -72,7 +73,7 @@ class Login extends Component {
             <input
               value={this.state.email}
               onChange={event => this.setState({ email: event.target.value })}
-              onFocus={() => this.setState({ emailError: "" })}
+              // onFocus={() => this.setState({ emailError: "" })}
               type="email"
               placeholder="Email | Username"
             />
@@ -88,9 +89,13 @@ class Login extends Component {
               placeholder="Password"
               value={this.state.password}
             />
-            <button onClick={event => this.handleLoginSubmit(event)} id="login-button">
-              Login
-            </button>
+            {!this.props.auth.signinInProgress ? (
+              <button onClick={event => this.handleLoginSubmit(event)} id="login-button">
+                Login
+              </button>
+            ) : (
+              <CircularProgress thickness={3} />
+            )}
           </form>
         </div>
 
@@ -138,7 +143,7 @@ class Login extends Component {
     this.setState({ emailError: "", passwordError: "" });
     const { email, password } = this.state;
     if (email && password) {
-      if (!checkEmailValidity(email)) {
+      if (email.length > 3) {
         this.props.trySignin(email, password);
       } else {
         this.setState({ emailError: "Invalid Email" });
