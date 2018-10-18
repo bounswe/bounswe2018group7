@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { store, history } from "redux/configureStore.js";
@@ -10,8 +9,7 @@ import { ConnectedRouter } from "connected-react-router";
 import Home from "./screens/Home";
 import Auth from "./screens/FullScreen/Auth";
 import NotFound from "./components/NotFound/index";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "assets/scss/custom.scss";
+import './assets/scss/custom.scss';
 class App extends React.Component {
   render() {
     return (

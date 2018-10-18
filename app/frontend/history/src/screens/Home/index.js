@@ -12,7 +12,6 @@ import {
 } from "utils/cookies.js";
 import { signout } from "redux/auth/Actions";
 import XButton from "components/XButton/index";
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +31,9 @@ class Home extends Component {
     return (
       <div>
         Home
-        <XButton onClick={this.signOut}>Log Out</XButton>
+        <XButton color={'primary'}  onClick={this.signOut}>
+          Log Out
+        </XButton>
       </div>
     );
   }

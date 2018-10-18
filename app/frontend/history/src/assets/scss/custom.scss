@@ -1,7 +1,6 @@
-@import "../../../node_modules/bootstrap/scss/functions";
-@import "../../../node_modules/bootstrap/scss/variables";
-@import "../../../node_modules/bootstrap/scss/mixins";
-$theme-colors: (
-  "warning": #0074d9,
-  "primary": #ff4136
-);
+// $theme-colors: (
+//   "primary": #ff4,
+//   "danger": #ff4136
+// );
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
