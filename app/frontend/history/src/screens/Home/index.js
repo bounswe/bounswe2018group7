@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Button from "@material-ui/core/Button";
+
 import {
   removeCookie,
   getCookie,
@@ -12,7 +12,7 @@ import {
 } from "utils/cookies.js";
 import { signout } from "redux/auth/Actions";
 import { Link } from "react-router-dom";
-
+import { Button } from 'reactstrap';
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +32,7 @@ class Home extends Component {
     return (
       <div>
         Home
-        <Button onClick={this.signOut} variant="contained" color="primary">
+        <Button color={'primary'} text={'blabla'} onClick={this.signOut}>
           Log Out
         </Button>
         <Link to="/auth/login">

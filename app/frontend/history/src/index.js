@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { store, history } from "redux/configureStore.js";
@@ -10,17 +9,19 @@ import { ConnectedRouter } from "connected-react-router";
 import Home from "./screens/Home";
 import Auth from "./screens/FullScreen/Auth";
 import NotFound from "./components/NotFound/index";
-
+import './assets/scss/custom.scss';
 class App extends React.Component {
   render() {
     return (
-      <Switch>
-        <Route exact path="/" render={() => <Redirect to={"/home"} />} />
+      <div>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to={"/home"} />} />
 
-        <Route path="/home" component={Home} />
-        <Route path="/auth" component={Auth} />
-        <Route path="*" component={NotFound} />
-      </Switch>
+          <Route path="/home" component={Home} />
+          <Route path="/auth" component={Auth} />
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </div>
     );
   }
 }

@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Typography, Snackbar, IconButton } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { Snackbar } from "@material-ui/core";
+import { Alert, Button } from "reactstrap";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { connect } from "react-redux";
 import { trySignin, signinReset } from "redux/auth/Actions.js";
 import "./index.css";
-import { checkEmailValidity } from "utils";
 import { setCookie, getCookie, LOGGEDIN_COOKIE, TOKEN_COOKIE, USER_COOKIE } from "utils/cookies.js";
 
 class Login extends Component {
@@ -16,7 +15,7 @@ class Login extends Component {
       email: "",
       emailError: "",
       password: "",
-      passwordError: "",
+      passwordErrowr: "",
       isSnackbarOpen: false
     };
   }
@@ -65,11 +64,7 @@ class Login extends Component {
           <h1>Welcome to HiStory!</h1>
 
           <form className="form">
-            {emailError !== "" && (
-              <Typography variant="body2" gutterBottom color={"inherit"}>
-                {emailError}
-              </Typography>
-            )}
+            {emailError !== "" && <Alert color="warning">{emailError}</Alert>}
             <input
               value={this.state.email}
               onChange={event => this.setState({ email: event.target.value })}
@@ -77,11 +72,7 @@ class Login extends Component {
               type="email"
               placeholder="Email | Username"
             />
-            {passwordError !== "" && (
-              <Typography variant="body2" gutterBottom color={"inherit"}>
-                {passwordError}
-              </Typography>
-            )}
+            {passwordError !== "" && <Alert color="warning">{passwordError}</Alert>}
             <input
               type="password"
               onChange={event => this.setState({ password: event.target.value })}
@@ -125,14 +116,9 @@ class Login extends Component {
           }}
           message={<span id="message-id">{signinError}</span>}
           action={
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              onClick={() => this.setState({ isSnackbarOpen: false })}
-            >
-              <CloseIcon />
-            </IconButton>
+            <Button close aria-label="Cancel" onClick={() => this.setState({ isSnackbarOpen: false })}>
+              <span aria-hidden>&#88;</span>
+            </Button>
           }
         />
       </div>
@@ -146,7 +132,7 @@ class Login extends Component {
       if (email.length > 3) {
         this.props.trySignin(email, password);
       } else {
-        this.setState({ emailError: "Invalid Email" });
+        this.setState({ emailError: "Invalid Email | Username (Min 3 character) " });
       }
     } else {
       if (!email && !password) {

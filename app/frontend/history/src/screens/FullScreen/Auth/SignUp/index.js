@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Typography, Snackbar, IconButton } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { Snackbar } from "@material-ui/core";
+import { Alert, Button } from "reactstrap";
 
 import { connect } from "react-redux";
 import { trySignin, signinReset, trySignup, signupReset } from "redux/auth/Actions.js";
@@ -57,11 +57,7 @@ class SignUp extends Component {
           <h1>Welcome to HiStory!</h1>
 
           <form className="form">
-            {usernameError !== "" && (
-              <Typography variant="body2" gutterBottom color={"inherit"}>
-                {emailError}
-              </Typography>
-            )}
+            {usernameError !== "" && <Alert color="warning">{usernameError}</Alert>}
             <input
               value={this.state.username}
               onChange={event => this.setState({ username: event.target.value })}
@@ -69,11 +65,7 @@ class SignUp extends Component {
               type="string"
               placeholder="User Name"
             />
-            {emailError !== "" && (
-              <Typography variant="body2" gutterBottom color={"inherit"}>
-                {emailError}
-              </Typography>
-            )}
+            {emailError !== "" && <Alert color="warning">{emailError}</Alert>}
             <input
               value={this.state.email}
               onChange={event => this.setState({ email: event.target.value })}
@@ -81,11 +73,7 @@ class SignUp extends Component {
               type="email"
               placeholder="Email"
             />
-            {passwordError !== "" && (
-              <Typography variant="body2" gutterBottom color={"inherit"}>
-                {passwordError}
-              </Typography>
-            )}
+            {passwordError !== "" && <Alert color="warning">{passwordError}</Alert>}
             <input
               type="password"
               onChange={event => this.setState({ password: event.target.value })}
@@ -93,11 +81,7 @@ class SignUp extends Component {
               placeholder="Password"
               value={this.state.password}
             />
-            {password_confirmationError !== "" && (
-              <Typography variant="body2" gutterBottom color={"inherit"}>
-                {password_confirmationError}
-              </Typography>
-            )}
+            {password_confirmationError !== "" && <Alert color="warning">{password_confirmationError}</Alert>}
             <input
               type="password"
               onChange={event => this.setState({ password_confirmation: event.target.value })}
@@ -105,11 +89,7 @@ class SignUp extends Component {
               placeholder="Confirm Password"
               value={this.state.password_confirmation}
             />
-            {full_nameError !== "" && (
-              <Typography variant="body2" gutterBottom color={"inherit"}>
-                {passwordError}
-              </Typography>
-            )}
+            {full_nameError !== "" && <Alert color="warning">{password_confirmationError}</Alert>}
             <input
               value={this.state.full_name}
               onChange={event => this.setState({ full_name: event.target.value })}
@@ -149,14 +129,9 @@ class SignUp extends Component {
           }}
           message={<span id="message-id">{signupError}</span>}
           action={
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              onClick={() => this.setState({ isSnackbarOpen: false })}
-            >
-              <CloseIcon />
-            </IconButton>
+            <Button close aria-label="Cancel" onClick={() => this.setState({ isSnackbarOpen: false })}>
+              <span aria-hidden>&ndash;</span>
+            </Button>
           }
         />
       </div>
