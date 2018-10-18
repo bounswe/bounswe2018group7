@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.urls import path, include
 
 urlpatterns = [
-    path('', lambda request : homepage_json()),
+    path('', lambda request: homepage_json()),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls'))
 ]
