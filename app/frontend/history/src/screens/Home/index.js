@@ -31,7 +31,7 @@ class Home extends Component {
     return (
       <div>
         Home
-        <XButton color={'primary'}  onClick={this.signOut}>
+        <XButton color={'primary'} text={'blabla'} onClick={this.signOut}>
           Log Out
         </XButton>
       </div>

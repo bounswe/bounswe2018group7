@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 
 class XButton extends Component {
   render() {
-    const { color } = this.props;
+    const { color,text } = this.props;
     return (
       <div>
-       <Button color="primary">primary</Button>
+       <Button color={color}>{text}</Button>
 
       </div>
     );
