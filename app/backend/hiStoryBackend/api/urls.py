@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views.auth.views_v1 import SignUpView, SignInView, SignOutView, EmailConfirmationView
+from .views.v1.auth_views import SignUpView, SignInView, SignOutView, EmailConfirmationView
 
 app_name = 'api'
 
