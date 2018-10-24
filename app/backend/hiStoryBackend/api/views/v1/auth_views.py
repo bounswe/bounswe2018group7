@@ -48,14 +48,16 @@ class SignInView(APIView):
         if not user.check_password(request.data.get('password')):
             return jrh.unauthorized(["Wrong password."])
 
-        token, _ = Token.objects.get_or_create(user=user)
+        auth_token = None
 
-        user.last_login = timezone.now()
-
-        user.save(update_fields=['last_login'])
+        if user.confirmed and not user.banned:
+            token, _ = Token.objects.get_or_create(user=user)
+            user.last_login = timezone.now()
+            user.save(update_fields=['last_login'])
+            auth_token = token.key
 
         return jrh.success(
-            {**UserSerializer(user).data, **{'auth_token': token.key}}
+            {**UserSerializer(user).data, **{'auth_token': auth_token}}
         )
 
 

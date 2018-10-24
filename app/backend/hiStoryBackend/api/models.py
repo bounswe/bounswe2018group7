@@ -37,7 +37,7 @@ class User(AbstractUser):
 
     @property
     def admin(self):
-        return self.is_superuser
+        return self.is_staff
 
     @property
     def banned(self):
@@ -51,6 +51,11 @@ class User(AbstractUser):
         """
         self.is_active = not ban
         self.save(update_fields=['is_active'])
+        if ban:
+            try:
+                self.auth_token.delete()
+            except User.auth_token.RelatedObjectDoesNotExist:
+                pass
 
     def create_token_for(self, token_field_name):
         """
