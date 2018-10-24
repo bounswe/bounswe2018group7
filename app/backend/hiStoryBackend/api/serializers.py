@@ -1,8 +1,15 @@
 from api.models import User
 from rest_framework import serializers
+from api.helpers.custom_helpers import errors_from_dict_to_arr
 
 
-class UserSerializer(serializers.ModelSerializer):
+class CustomBaseSerializer(serializers.ModelSerializer):
+    @property
+    def errors_arr(self):
+        return errors_from_dict_to_arr(self.errors)
+
+
+class UserSerializer(CustomBaseSerializer):
     password_confirmation = serializers.CharField(max_length=255, write_only=True)
 
     class Meta:

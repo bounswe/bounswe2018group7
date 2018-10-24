@@ -5,7 +5,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 
 from api.helpers import json_response_helpers as jrh
-from api.helpers.custom_helpers import errors_from_dict_to_arr
 from api.models import User
 from api.serializers import UserSerializer
 
@@ -24,7 +23,7 @@ class SignUpView(APIView):
             return jrh.success(user_serializer.data)
 
         else:
-            return jrh.fail(errors_from_dict_to_arr(user_serializer.errors))
+            return jrh.fail(user_serializer.errors_arr)
 
 
 class SignInView(APIView):
@@ -129,7 +128,7 @@ class PasswordResetView(APIView):
                 user_serializer.save()
                 return jrh.success({})
             else:
-                return jrh.fail(errors_from_dict_to_arr(user_serializer.errors))
+                return jrh.fail(user_serializer.errors_arr)
 
         elif email:  # If 'email' parameter is given, send a password reset email to that User
             try:
