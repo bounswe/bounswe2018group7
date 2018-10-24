@@ -32,7 +32,7 @@ class SignInView(APIView):
     def post(self, request, format=None):
         identity = request.data.get('identity')
         if not identity:
-            return jrh.bad_request(["'identity' parameter is missing"])
+            return jrh.fail(["'identity' parameter is missing"])
 
         if email_regex.match(identity):
             try:
@@ -101,7 +101,7 @@ class EmailConfirmationView(APIView):
                 return jrh.fail(['An error occurred while trying to send a confirmation email.'])
 
         else:
-            return jrh.bad_request(["Both 'email' and 'token' parameters are missing."])
+            return jrh.fail(["Both 'email' and 'token' parameters are missing."])
 
 
 class PasswordResetView(APIView):
@@ -142,4 +142,4 @@ class PasswordResetView(APIView):
                 return jrh.fail(['An error occurred while trying to send a password reset email.'])
 
         else:
-            return jrh.bad_request(["Both 'email' and 'token' parameters are missing."])
+            return jrh.fail(["Both 'email' and 'token' parameters are missing."])
