@@ -1,0 +1,7 @@
+{%  if user.first_name %}
+Hello, {{  user.first_name }}
+{% else %}
+Hello
+{% endif %}
+
+To confirm your email address, you can visit this page: {{ base_url }}?token={{ user.confirmation_token }}

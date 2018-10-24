@@ -1,0 +1,7 @@
+{%  if user.first_name %}
+<p>Hello, {{  user.first_name }}</p>
+{% else %}
+<p>Hello</p>
+{% endif %}
+
+<p>To confirm your email address, you can visit <a href="{{ base_url }}?token={{ user.confirmation_token }}">here</a>.</p>
