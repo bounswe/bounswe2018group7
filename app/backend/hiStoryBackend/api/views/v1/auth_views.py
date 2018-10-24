@@ -24,7 +24,7 @@ class SignUpView(APIView):
             return jrh.success(user_serializer.data)
 
         else:
-            return jrh.error_response(errors_from_dict_to_arr(user_serializer.errors))
+            return jrh.fail(errors_from_dict_to_arr(user_serializer.errors))
 
 
 class SignInView(APIView):
@@ -100,6 +100,47 @@ class EmailConfirmationView(APIView):
                 return jrh.success({})
             else:
                 return jrh.fail(['An error occurred while trying to send a confirmation email.'])
+
+        else:
+            return jrh.bad_request(["Both 'email' and 'token' parameters are missing."])
+
+
+class PasswordResetView(APIView):
+    permission_classes = ()
+
+    def post(self, request, format=None):
+        email = request.data.get("email")
+        token = request.data.get("token")
+        password = request.data.get("password")
+        password_confirmation = request.data.get("password_confirmation")
+
+        if token:  # If 'token' parameter is given, reset that User's password
+            try:
+                user = User.objects.get(password_reset_token=token)
+            except User.DoesNotExist:
+                return jrh.not_found(['User not found.'])
+
+            user_serializer = UserSerializer(user,
+                                             {'password': password, 'password_confirmation': password_confirmation},
+                                             partial=True
+                                             )
+
+            if user_serializer.is_valid():
+                user_serializer.save()
+                return jrh.success({})
+            else:
+                return jrh.fail(errors_from_dict_to_arr(user_serializer.errors))
+
+        elif email:  # If 'email' parameter is given, send a password reset email to that User
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return jrh.not_found(['User not found.'])
+
+            if user.send_password_reset_email():
+                return jrh.success({})
+            else:
+                return jrh.fail(['An error occurred while trying to send a password reset email.'])
 
         else:
             return jrh.bad_request(["Both 'email' and 'token' parameters are missing."])

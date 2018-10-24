@@ -42,6 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
         password = validated_data.get('password', None)
         if password:
             instance.set_password(password)
+            instance.password_reset_token = None
 
         instance.save()
 
