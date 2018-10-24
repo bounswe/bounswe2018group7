@@ -1,12 +1,13 @@
-from django.core.exceptions import ValidationError
+import re
+
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 
-from api.helpers import custom_helpers
 from api.helpers import json_response_helpers as jrh
+from api.helpers.custom_helpers import errors_from_dict_to_arr
 from api.models import User
-import re
+from api.serializers import UserSerializer
 
 email_regex = re.compile('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
 
@@ -15,48 +16,15 @@ class SignUpView(APIView):
     permission_classes = ()
 
     def post(self, request, format=None):
-        username = request.data.get('username')
-        email = request.data.get('email')
-        password = request.data.get('password', '')
-        password_confirmation = request.data.get('password_confirmation', '')
-        first_name = request.data.get('first_name')
-        last_name = request.data.get('last_name')
+        user_serializer = UserSerializer(data=request.data)
+        if user_serializer.is_valid():
+            user = user_serializer.save()
+            user.send_confirmation_email()
 
-        if len(password) < 8:
-            return jrh.fail(["Passwords shall contain at least 8 characters."])
+            return jrh.success(user_serializer.data)
 
-        if password != password_confirmation:
-            return jrh.fail(["Passwords don't match."])
-
-        user = User(username=username, email=email)
-
-        if first_name:
-            user.first_name = first_name
-
-        if last_name:
-            user.last_name = last_name
-
-        user.set_password(password)
-
-        try:
-            user.full_clean()
-        except ValidationError as ve:
-            errors_arr = custom_helpers.parse_validation_error(ve)
-            return jrh.fail(errors_arr)
-
-        user.save()
-
-        user.send_confirmation_email()
-
-        return jrh.success(
-            {
-                'username': user.username,
-                'email': user.email,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'confirmed': user.confirmed
-            }
-        )
+        else:
+            return jrh.error_response(errors_from_dict_to_arr(user_serializer.errors))
 
 
 class SignInView(APIView):
@@ -84,19 +52,11 @@ class SignInView(APIView):
         token, _ = Token.objects.get_or_create(user=user)
 
         user.last_login = timezone.now()
+
         user.save(update_fields=['last_login'])
 
         return jrh.success(
-            {
-                'username': user.username,
-                'email': user.email,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'confirmed': user.confirmed,
-                'admin': user.admin,
-                'banned': user.banned,
-                'auth_token': token.key
-            }
+            {**UserSerializer(user).data, **{'auth_token': token.key}}
         )
 
 
