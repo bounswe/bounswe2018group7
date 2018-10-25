@@ -100,7 +100,7 @@ class EmailConfirmationView(APIView):
             if user.send_confirmation_email():
                 return jrh.success({})
             else:
-                return jrh.fail(['An error occurred while trying to send a confirmation email.'])
+                return jrh.error_response(['An error occurred while trying to send a confirmation email.'], 500)
 
         else:
             return jrh.fail(["Both 'email' and 'token' parameters are missing."])
@@ -141,7 +141,7 @@ class PasswordResetView(APIView):
             if user.send_password_reset_email():
                 return jrh.success({})
             else:
-                return jrh.fail(['An error occurred while trying to send a password reset email.'])
+                return jrh.error_response(['An error occurred while trying to send a password reset email.'], 500)
 
         else:
             return jrh.fail(["Both 'email' and 'token' parameters are missing."])
