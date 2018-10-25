@@ -14,9 +14,18 @@ import GridItem from "components/Grid/GridItem.jsx";
 import NavPills from "components/NavPills/NavPills.jsx";
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
 
+import AroundYou from "views/Components/Sections/AroundYou";
 class SectionPills extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      companyName: ""
+    };
+  }
   render() {
     const { classes } = this.props;
+    const { companyName } = this.state;
     return (
       <div className={classes.section}>
         <div className={classes.container}>
@@ -32,254 +41,12 @@ class SectionPills extends React.Component {
                   tabs={[
                     {
                       tabButton: "Recent Posts",
-                      tabIcon: Dashboard,
-                      tabContent: (
-                        <span>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                        </span>
-                      )
+                      tabIcon: Dashboard
                     },
                     {
                       tabButton: "Around You",
                       tabIcon: Schedule,
-                      tabContent: (
-                        <span>
-                          <p>
-                            Efficiently unleash cross-media information without cross-media value. Quickly maximize
-                            timely deliverables for real-time schemas.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically maintain clicks-and-mortar solutions without functional solutions. Dramatically
-                            visualize customer directed convergence without revolutionary ROI. Collaboratively
-                            administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C
-                            users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <p>
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                          <br />
-                          <p>
-                            Dramatically visualize customer directed convergence without revolutionary ROI.
-                            Collaboratively administrate empowered markets via plug-and-play networks. Dynamically
-                            procrastinate B2C users after installed base benefits.
-                          </p>
-                        </span>
-                      )
+                      tabContent: <AroundYou />
                     }
                   ]}
                 />
