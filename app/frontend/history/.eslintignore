@@ -3,3 +3,4 @@ documentation/
 build/
 *.jsx
 *.jsx
+*.js
