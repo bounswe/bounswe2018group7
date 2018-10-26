@@ -7,6 +7,9 @@ import PSound from "../PSound/index";
 import Typography from "@material-ui/core/Typography";
 import Card from "../Card/Card";
 import PTitle from "../PTitle";
+import PComment from "../PComment";
+
+import Divider from "@material-ui/core/Divider";
 
 class Post extends Component {
   render() {
@@ -37,6 +40,9 @@ class Post extends Component {
             }
           })}
         </div>
+
+        <Divider />
+        <PComment />
       </Card>
     );
   }

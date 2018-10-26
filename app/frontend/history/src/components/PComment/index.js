@@ -1,32 +1,17 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import PTextInput from "components/PTextInput";
-import CustomButtons from "components/CustomButtons/Button";
+import PAddComment from "../PAddComment/index";
 
-class PComment extends React.Component {
+class PComment extends Component {
   render() {
-    const { comments } = this.props;
     return (
       <div>
-        <PTextInput
-          value={comments}
-          onChange={event => this.setState({ comments: event.target.value })}
-          label={"Your Comments"}
-          multiline
-          rows={5}
-          fullWidth
-        />
-        <CustomButtons>Add Comment</CustomButtons>
+        <PAddComment />
       </div>
     );
   }
 }
 
-PComment.propTypes = {
-  comments: PropTypes.string
-};
+PComment.propTypes = {};
 
-PComment.defaultProps = {
-  comments: "This is awesome place for visiting"
-};
 export default PComment;
