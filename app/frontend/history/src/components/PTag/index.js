@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import { WithContext as ReactTags } from "react-tag-input";
 const KeyCodes = {
   comma: 188,
-  enter: 13
+  enter: 13,
+  SPACE: 32
 };
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
