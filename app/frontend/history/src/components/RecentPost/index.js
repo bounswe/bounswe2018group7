@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import PVideo from "../PVideo";
-import PImg from "../PImg/index";
-import PSound from "../PSound/index";
 
+import Post from "../Post/index";
+import postListData from "../../assets/dummy.json";
+import { clSuccess } from "../../utils/consolelog";
 class RecentPost extends Component {
   render() {
     return (
       <div>
-        <PImg />
-        <PVideo />
-
-        <PSound />
+        {postListData.map((post, index) => {
+          return <Post data={post} />;
+        })}
       </div>
     );
   }

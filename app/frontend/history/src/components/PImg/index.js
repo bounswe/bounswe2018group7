@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Img from "react-image";
-
+import "./style.css";
 class PImg extends Component {
   render() {
     const { url } = this.props;
     return (
-      <div>
+      <div className={"imgStyle"}>
         <Img src={url} />
       </div>
     );

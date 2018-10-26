@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Player } from "video-react";
 import PropTypes from "prop-types";
-
+import "./style.css";
 import "../../../node_modules/video-react/dist/video-react.css"; // import css
 class PVideo extends Component {
   render() {
     const { poster, url } = this.props;
     return (
-      <div>
+      <div className={"videoStyle"}>
         <Player playsInline poster={poster} src={url} />
       </div>
     );
