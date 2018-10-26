@@ -11,7 +11,7 @@
       },
       {
         "type": "image",
-        "payload": "https://pbs.twimg.com/media/DhHiz70X4AMzadT.jpg"
+        "payload": "https://gezipgordum.com/wp-content/uploads/2015/10/k%C4%B1z-kulesi-640x360.jpg"
       },
       {
         "type": "text",
@@ -65,16 +65,16 @@
     "tags": ["uskudar", "kizkulesi", "istanbul"],
     "location": [
       {
-        "lat": 123411231,
-        "long": 1234
+        "lat": "38.356869",
+        "long": "38.309669"
       },
       {
-        "lat": 423131,
-        "long": 52231
+        "lat": "38.356869",
+        "long": "38.309669"
       },
       {
-        "lat": 523431,
-        "long": 823341
+        "lat": "38.356869",
+        "long": "38.309669"
       }
     ],
     "history_time": "once upon a time or 1940s"
@@ -145,16 +145,16 @@
     "tags": ["uskudar", "kizkulesi", "istanbul"],
     "location": [
       {
-        "lat": 123411231,
-        "long": 1234
+        "lat": "38.356869",
+        "long": "38.309669"
       },
       {
-        "lat": 423131,
-        "long": 52231
+        "lat": "38.356869",
+        "long": "38.309669"
       },
       {
-        "lat": 523431,
-        "long": 823341
+        "lat": "38.356869",
+        "long": "38.309669"
       }
     ],
     "history_time": "once upon a time or 1940s"

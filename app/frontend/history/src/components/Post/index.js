@@ -6,6 +6,7 @@ import PImg from "../PImg/index";
 import PSound from "../PSound/index";
 import Typography from "@material-ui/core/Typography";
 import Card from "../Card/Card";
+import PTitle from "../PTitle";
 
 class Post extends Component {
   render() {
@@ -13,11 +14,7 @@ class Post extends Component {
 
     return (
       <Card className={"postComponent"}>
-        <Typography>{data.username}</Typography>
-        <Typography>{data.header}</Typography>
-        <Typography>{data.creation_date}</Typography>
-        <Typography>{data.creation_time}</Typography>
-        <Typography>LIKE: {data.like}</Typography>
+        <PTitle username={data.username} creation_date={data.creation_date} creation_time={data.creation_time} />
 
         {data.content.map((element, index) => {
           if (element.type === "text") {
@@ -30,6 +27,8 @@ class Post extends Component {
             return <PSound />;
           }
         })}
+
+        <Typography>LIKE: {data.like}</Typography>
       </Card>
     );
   }
