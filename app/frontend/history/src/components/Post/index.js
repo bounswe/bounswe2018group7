@@ -5,13 +5,14 @@ import PVideo from "../PVideo";
 import PImg from "../PImg/index";
 import PSound from "../PSound/index";
 import Typography from "@material-ui/core/Typography";
+import Card from "../Card/Card";
 
 class Post extends Component {
   render() {
     const { data } = this.props;
 
     return (
-      <div className={"postComponent"}>
+      <Card className={"postComponent"}>
         <Typography>{data.username}</Typography>
         <Typography>{data.header}</Typography>
         <Typography>{data.creation_date}</Typography>
@@ -29,7 +30,7 @@ class Post extends Component {
             return <PSound />;
           }
         })}
-      </div>
+      </Card>
     );
   }
 }
