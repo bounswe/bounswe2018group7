@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import ReactGoogleMapLoader from "react-google-maps-loader";
 import ReactGoogleMap from "react-google-map";
+import iconMarker from "assets/marker.png";
+import iconMarkerHover from "assets/markerHover.jpg";
+
 import PropTypes from "prop-types";
 
 class PMaps extends Component {
@@ -19,6 +22,50 @@ class PMaps extends Component {
             key: "AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q", // Define your api key here
             libraries: "places,geometry" // To request multiple libraries, separate them with a comma
           }}
+          coordinates={[
+            {
+              title: "Toulouse",
+              position: {
+                lat: newLat,
+                lng: newlng
+              },
+              onLoaded: (googleMaps, map, marker) => {
+                // Set Marker animation
+                marker.setAnimation(googleMaps.Animation.BOUNCE);
+
+                // Define Marker InfoWindow
+                const infoWindow = new googleMaps.InfoWindow({
+                  content: `
+                <div>
+                  <h3>Toulouse<h3>
+                  <div>
+                    Toulouse is the capital city of the southwestern
+                    French department of Haute-Garonne,
+                    as well as of the Occitanie region.
+                  </div>
+                </div>
+              `
+                });
+
+                // Open InfoWindow when Marker will be clicked
+                googleMaps.event.addListener(marker, "click", () => {
+                  infoWindow.open(map, marker);
+                });
+
+                // Change icon when Marker will be hovered
+                googleMaps.event.addListener(marker, "mouseover", () => {
+                  marker.setIcon(iconMarkerHover);
+                });
+
+                googleMaps.event.addListener(marker, "mouseout", () => {
+                  marker.setIcon(iconMarker);
+                });
+
+                // Open InfoWindow directly
+                infoWindow.open(map, marker);
+              }
+            }
+          ]}
           render={googleMaps =>
             googleMaps && (
               <div style={{ height: 300 }}>

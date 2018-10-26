@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
 import PComment from "components/PComment";
 import PMaps from "components/PMaps";
+import PTag from "components/PTag";
 class AroundYou extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +35,7 @@ class AroundYou extends Component {
           }
         />
         <PMaps />
+        <PTag />
       </div>
     );
   }

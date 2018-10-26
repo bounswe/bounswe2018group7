@@ -27,6 +27,7 @@
     "react-sound": "^1.2.0",
     "react-soundplayer": "^1.0.4",
     "react-swipeable-views": "0.13.0",
+    "react-tag-input": "^5.2.3",
     "reactstrap": "^6.5.0",
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2",
