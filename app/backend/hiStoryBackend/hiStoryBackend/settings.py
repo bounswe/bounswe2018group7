@@ -1,4 +1,5 @@
 import os
+
 import dj_database_url
 import django_heroku
 
@@ -131,8 +132,21 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
+
+# MEDIA FILES
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
+
+# AWS CREDENTIALS
+AWS_S3_ACCESS_KEY_ID = os.environ.get('DJANGO_AWS_S3_ACCESS_KEY_ID')
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get('DJANGO_AWS_S3_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('DJANGO_AWS_STORAGE_BUCKET_NAME')
+
+if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_QUERYSTRING_AUTH = False  # Don't add complex authentication-related query parameters for requests
+
 
 django_heroku.settings(locals())

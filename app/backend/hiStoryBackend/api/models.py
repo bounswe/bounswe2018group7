@@ -1,9 +1,13 @@
+import datetime
 from smtplib import SMTPException
 
 from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
 from django.db import models, IntegrityError
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.template.loader import render_to_string
+from jsonfield import JSONField
 from rest_framework.authtoken.models import Token
 
 from hiStoryBackend import settings
@@ -123,3 +127,50 @@ class User(AbstractUser):
             return sent_email_count != 0
         except SMTPException:
             return False
+
+
+# hiStory Models
+
+
+class BaseModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class MemoryPost(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    story = JSONField()
+    time = JSONField()
+    location = JSONField()
+
+
+def upload_memory_media_to(instance, filename):
+    """
+    Returns a custom name for the file stored in 'file' field of Memory Media.
+    :param instance: MemoryMedia object
+    :param filename: Name of the file stored in 'file' field
+    :return: A string in the format <memory_post_id>_<year>-<month>-<day>_<hour>_<minute>_<second>_<original_file_name>
+    """
+    return 'memory_post/{0}_{1}_{2}'.format(
+        instance.memory_post.id,
+        datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
+        filename
+    )
+
+
+class MemoryMedia(BaseModel):
+    memory_post = models.ForeignKey(MemoryPost, on_delete=models.CASCADE)
+    type = models.CharField(max_length=64)
+    file = models.FileField(upload_to=upload_memory_media_to)
+
+
+@receiver(post_delete, sender=MemoryMedia)
+def submission_delete(sender, instance, **kwargs):
+    """
+    This method makes sure to delete the actual file when the related MemoryMedia object is deleted.
+    """
+    instance.file.delete(False)
