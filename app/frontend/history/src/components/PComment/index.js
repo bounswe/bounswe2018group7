@@ -17,6 +17,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PTextInput from "components/PTextInput";
+import CustomButtons from "components/CustomButtons/Button";
 
 const styles = theme => ({
   card: {
@@ -111,6 +112,7 @@ class PComment extends React.Component {
           rows={5}
           fullWidth
         />
+        <CustomButtons>Add Comment</CustomButtons>
       </div>
     );
   }
