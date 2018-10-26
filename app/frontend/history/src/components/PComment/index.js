@@ -56,15 +56,14 @@ class PComment extends React.Component {
   };
 
   render() {
-    const { classes, title, MainText, SubText, companyName } = this.props;
-
+    const { classes, title, comments, username, creation_date, creation_time } = this.props;
     return (
       <div>
         <Card className={classes.card}>
           <CardHeader
             avatar={
               <Avatar aria-label="Recipe" className={classes.avatar}>
-                R
+                {username.charAt(0).toUpperCase()}
               </Avatar>
             }
             action={
@@ -73,39 +72,12 @@ class PComment extends React.Component {
               </IconButton>
             }
             title={title}
-            subheader="September 14, 2016"
+            subheader={creation_date + creation_time}
           />
-          <CardMedia className={classes.media} image="/static/images/cards/paella.jpg" title="Contemplative Reptile" />
-          <CardContent>
-            <Typography component="p">{MainText}</Typography>
-          </CardContent>
-          <CardActions className={classes.actions} disableActionSpacing>
-            <IconButton aria-label="Add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="Share">
-              <ShareIcon />
-            </IconButton>
-            <IconButton
-              className={classnames(classes.expand, {
-                [classes.expandOpen]: this.state.expanded
-              })}
-              onClick={this.handleExpandClick}
-              aria-expanded={this.state.expanded}
-              aria-label="Show more"
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </CardActions>
-          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography paragraph>{SubText}</Typography>
-            </CardContent>
-          </Collapse>
         </Card>
         <PTextInput
-          value={companyName}
-          onChange={event => this.setState({ companyName: event.target.value })}
+          value={comments}
+          onChange={event => this.setState({ comments: event.target.value })}
           label={"Your Comments"}
           className={classes.dialogTextInput}
           multiline
@@ -119,7 +91,19 @@ class PComment extends React.Component {
 }
 
 PComment.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  username: PropTypes.string,
+  title: PropTypes.string,
+  creation_date: PropTypes.string,
+  creation_time: PropTypes.string,
+  comments: PropTypes.string
 };
 
+PComment.defaultProps = {
+  username: "BBA",
+  title: "BBA",
+  creation_date: "November,29 2018",
+  creation_date: "13:45",
+  comments: "This is awesome place for visiting"
+};
 export default withStyles(styles)(PComment);
