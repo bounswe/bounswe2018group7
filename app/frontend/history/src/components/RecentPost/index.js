@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import Post from "../Post/index";
 import postListData from "../../assets/dummy.json";
-import { clSuccess } from "../../utils/consolelog";
 class RecentPost extends Component {
   render() {
     return (

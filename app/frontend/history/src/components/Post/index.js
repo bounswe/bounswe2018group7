@@ -7,6 +7,7 @@ import PSound from "../PSound/index";
 import Typography from "@material-ui/core/Typography";
 import Card from "../Card/Card";
 import PTitle from "../PTitle";
+import PTagList from "../PTagList";
 import PComment from "../PComment";
 
 import Divider from "@material-ui/core/Divider";
@@ -23,6 +24,11 @@ class Post extends Component {
           creation_date={data.creation_date}
           creation_time={data.creation_time}
         />
+        <Divider />
+        <Typography style={{ textAlign: "center", marginTop: 10 }} variant="headline" gutterBottom>
+          {data.header}
+        </Typography>
+
         <div className="postContentStyle">
           {data.content.map((element, index) => {
             if (element.type === "text") {
@@ -38,16 +44,22 @@ class Post extends Component {
             } else if (element.type === "sound") {
               return <PSound url={element.payload} />;
             }
+            return <div />;
           })}
-        </div>
 
-        <Divider />
-        <PComment />
+          <PTagList tags={data.tags} />
+          <div style={{ marginTop: 20, marginBottom: 20, marginLeft: 20, marginRight: 20 }}>
+            <Divider />
+          </div>
+          <PComment data={data.comments} />
+        </div>
       </Card>
     );
   }
 }
 
-Post.propTypes = {};
+Post.propTypes = {
+  data: PropTypes.object
+};
 
 export default Post;

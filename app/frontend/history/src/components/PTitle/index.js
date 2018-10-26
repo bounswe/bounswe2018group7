@@ -62,7 +62,7 @@ PTitle.defaultProps = {
   username: "BBA",
 
   creation_date: "November,29 2018",
-  creation_date: "13:45",
+  creation_time: "13:45",
   like: 123
 };
 

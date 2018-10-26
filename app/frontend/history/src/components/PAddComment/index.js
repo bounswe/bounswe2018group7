@@ -1,29 +1,40 @@
 import React from "react";
-import PropTypes from "prop-types";
-import PTextInput from "components/PTextInput";
-import CustomButtons from "components/CustomButtons/Button";
+import SendIcon from "@material-ui/icons/Send";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 class PAddComment extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      commentText: "Başka söze gerek yok, Mükemmel ! "
+      commentText: ""
     };
   }
 
   render() {
-    const {} = this.props;
     return (
       <div>
-        <PTextInput
-          value={commentText}
-          onChange={event => this.setState({ commentText: event.target.value })}
-          label={"Your Comments"}
-          multiline
-          rows={5}
-          fullWidth
-        />
-        <CustomButtons>Add Comment</CustomButtons>
+        <div>
+          <TextField
+            id="outlined-full-width"
+            label="Your Comments"
+            style={{ margin: 8 }}
+            placeholder="Write Something"
+            fullWidth
+            margin="normal"
+            value={this.state.commentText}
+            onChange={event => this.setState({ commentText: event.target.value })}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+        </div>
+        <div style={{ margin: 10 }}>
+          <Button variant="fab" mini color="secondary" aria-label="Add">
+            <SendIcon />
+          </Button>
+        </div>
       </div>
     );
   }
