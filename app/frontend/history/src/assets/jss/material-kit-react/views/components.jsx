@@ -1,16 +1,18 @@
 import { container } from "assets/jss/material-kit-react.jsx";
+import { SECONDARY } from "../../../../variables/commonColor";
 
 const componentsStyle = {
   container,
   brand: {
-    color: "#FFFFFF",
+    color: SECONDARY,
     textAlign: "left"
   },
   title: {
     fontSize: "4.2rem",
     fontWeight: "600",
     display: "inline-block",
-    position: "relative"
+    position: "relative",
+    color: SECONDARY
   },
   subtitle: {
     fontSize: "1.313rem",
@@ -18,7 +20,7 @@ const componentsStyle = {
     margin: "10px 0 0"
   },
   main: {
-    background: "#FFFFFF",
+    background: SECONDARY,
     position: "relative",
     zIndex: "3"
   },

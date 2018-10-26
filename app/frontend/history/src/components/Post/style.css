@@ -3,3 +3,11 @@
 
   margin-bottom: 30px;
 }
+
+.postContentStyle {
+  margin: 24px;
+}
+.postTextStyle {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

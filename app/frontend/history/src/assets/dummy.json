@@ -10,6 +10,189 @@
         "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
       },
       {
+        "type": "sound",
+        "payload": "http://www.diyanetradyo.com/resim_arsivi/icerik_galerisi/5+1-yarisma-85wb5x8f33/256---5+1-Yarisma---04.12.2017-18667280.mp3"
+      }
+    ],
+    "comments": [
+      {
+        "creation_time": "12.12.2012",
+        "text": "cok iyisin",
+        "username": "abcdrk"
+      },
+      {
+        "creation_time": "12.12.2014",
+        "text": "cok kotu bence",
+        "username": "rmznarsln"
+      },
+      {
+        "creation_time": "12.12.2011",
+        "text": " resimde resim ha",
+        "username": "mfb"
+      },
+      {
+        "creation_time": "12.12.2012",
+        "text": "la noluyo",
+        "username": "laaaa"
+      }
+    ],
+    "username": "abcdrkSivas",
+    "like": 43,
+    "tags": ["uskudar", "kizkulesi", "istanbul"],
+    "location": [
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      },
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      },
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      }
+    ],
+    "history_time": "once upon a time or 1940s"
+  },
+
+  {
+    "id": 1,
+    "creation_date": "22.12.2018",
+    "creation_time": "12:30",
+    "header": "The Maiden's Tower",
+    "content": [
+      {
+        "type": "text",
+        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
+      },
+      {
+        "type": "image",
+        "payload": "https://gezipgordum.com/wp-content/uploads/2015/10/k%C4%B1z-kulesi-640x360.jpg"
+      },
+      {
+        "type": "text",
+        "payload": "yukariki resimde de demis oldugum gibi"
+      },
+      {
+        "type": "sound",
+        "payload": "http://www.diyanetradyo.com/resim_arsivi/icerik_galerisi/5+1-yarisma-85wb5x8f33/256---5+1-Yarisma---04.12.2017-18667280.mp3"
+      }
+    ],
+    "comments": [
+      {
+        "creation_time": "12.12.2012",
+        "text": "cok iyisin",
+        "username": "abcdrk"
+      },
+      {
+        "creation_time": "12.12.2014",
+        "text": "cok kotu bence",
+        "username": "rmznarsln"
+      },
+      {
+        "creation_time": "12.12.2011",
+        "text": " resimde resim ha",
+        "username": "mfb"
+      },
+      {
+        "creation_time": "12.12.2012",
+        "text": "la noluyo",
+        "username": "laaaa"
+      }
+    ],
+    "username": "mfbalin",
+    "like": 43,
+    "tags": ["uskudar", "kizkulesi", "istanbul"],
+    "location": [
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      },
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      },
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      }
+    ],
+    "history_time": "once upon a time or 1940s"
+  },
+  {
+    "id": 2,
+    "creation_date": "22.12.2018",
+    "creation_time": "12:30",
+    "header": "The Maiden's Tower",
+    "content": [
+      {
+        "type": "video",
+        "payload": "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+      },
+      {
+        "type": "text",
+        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
+      },
+
+      {
+        "type": "sound",
+        "payload": "http://www.diyanetradyo.com/resim_arsivi/icerik_galerisi/5+1-yarisma-85wb5x8f33/256---5+1-Yarisma---04.12.2017-18667280.mp3"
+      }
+    ],
+    "comments": [
+      {
+        "creation_time": "12.12.2012",
+        "text": "cok iyisin",
+        "username": "abcdrk"
+      },
+      {
+        "creation_time": "12.12.2014",
+        "text": "cok kotu bence",
+        "username": "rmznarsln"
+      },
+      {
+        "creation_time": "12.12.2011",
+        "text": " resimde resim ha",
+        "username": "mfb"
+      },
+      {
+        "creation_time": "12.12.2012",
+        "text": "la noluyo",
+        "username": "laaaa"
+      }
+    ],
+    "username": "abcdrkSivas",
+    "like": 43,
+    "tags": ["uskudar", "kizkulesi", "istanbul"],
+    "location": [
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      },
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      },
+      {
+        "lat": "38.356869",
+        "long": "38.309669"
+      }
+    ],
+    "history_time": "once upon a time or 1940s"
+  },
+
+  {
+    "id": 3,
+    "creation_date": "22.12.2018",
+    "creation_time": "12:30",
+    "header": "Malatya da bi gun",
+    "content": [
+      {
+        "type": "text",
+        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
+      },
+      {
         "type": "image",
         "payload": "https://gezipgordum.com/wp-content/uploads/2015/10/k%C4%B1z-kulesi-640x360.jpg"
       },
@@ -60,87 +243,7 @@
         "username": "laaaa"
       }
     ],
-    "username": "crazyBoy34",
-    "like": 43,
-    "tags": ["uskudar", "kizkulesi", "istanbul"],
-    "location": [
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      },
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      },
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      }
-    ],
-    "history_time": "once upon a time or 1940s"
-  },
-  {
-    "id": 1,
-    "creation_date": "22.12.2018",
-    "creation_time": "12:30",
-    "header": "Malatya da bi gun",
-    "content": [
-      {
-        "type": "text",
-        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
-      },
-      {
-        "type": "image",
-        "payload": "https://pbs.twimg.com/media/DhHiz70X4AMzadT.jpg"
-      },
-      {
-        "type": "text",
-        "payload": "yukariki resimde de demis oldugum gibi"
-      },
-      {
-        "type": "video",
-        "payload": "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-      },
-      {
-        "type": "text",
-        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the "
-      },
-      {
-        "type": "sound",
-        "payload": "http://www.diyanetradyo.com/resim_arsivi/icerik_galerisi/5+1-yarisma-85wb5x8f33/256---5+1-Yarisma---04.12.2017-18667280.mp3"
-      },
-      {
-        "type": "text",
-        "payload": "asagi resimde de demis oldugum gibi"
-      },
-      {
-        "type": "video",
-        "payload": "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-      }
-    ],
-    "comments": [
-      {
-        "creation_time": "12.12.2012",
-        "text": "cok iyisin",
-        "username": "abcdrk"
-      },
-      {
-        "creation_time": "12.12.2014",
-        "text": "cok kotu bence",
-        "username": "rmznarsln"
-      },
-      {
-        "creation_time": "12.12.2011",
-        "text": " resimde resim ha",
-        "username": "mfb"
-      },
-      {
-        "creation_time": "12.12.2012",
-        "text": "la noluyo",
-        "username": "laaaa"
-      }
-    ],
-    "username": "crazyBoy34",
+    "username": "CrayzMahmud",
     "like": 43,
     "tags": ["uskudar", "kizkulesi", "istanbul"],
     "location": [

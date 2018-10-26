@@ -7,8 +7,8 @@ class PVideo extends Component {
   render() {
     const { poster, url } = this.props;
     return (
-      <div className={"videoStyle"}>
-        <Player playsInline poster={poster} src={url} />
+      <div>
+        <Player className={"videoStyle"} playsInline poster={poster} src={url} />
       </div>
     );
   }

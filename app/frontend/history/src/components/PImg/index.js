@@ -5,11 +5,7 @@ import "./style.css";
 class PImg extends Component {
   render() {
     const { url } = this.props;
-    return (
-      <div className={"imgStyle"}>
-        <Img src={url} />
-      </div>
-    );
+    return <Img className={"imgStyle"} src={url} />;
   }
 }
 

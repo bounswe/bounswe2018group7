@@ -14,21 +14,29 @@ class Post extends Component {
 
     return (
       <Card className={"postComponent"}>
-        <PTitle username={data.username} creation_date={data.creation_date} creation_time={data.creation_time} />
-
-        {data.content.map((element, index) => {
-          if (element.type === "text") {
-            return <Typography>{element.payload}</Typography>;
-          } else if (element.type === "video") {
-            return <PVideo />;
-          } else if (element.type === "image") {
-            return <PImg />;
-          } else if (element.type === "sound") {
-            return <PSound />;
-          }
-        })}
-
-        <Typography>LIKE: {data.like}</Typography>
+        <PTitle
+          username={data.username}
+          like={data.like}
+          creation_date={data.creation_date}
+          creation_time={data.creation_time}
+        />
+        <div className="postContentStyle">
+          {data.content.map((element, index) => {
+            if (element.type === "text") {
+              return (
+                <div className={"postTextStyle"}>
+                  <Typography component="p">{element.payload}</Typography>
+                </div>
+              );
+            } else if (element.type === "video") {
+              return <PVideo url={element.payload} />;
+            } else if (element.type === "image") {
+              return <PImg url={element.payload} />;
+            } else if (element.type === "sound") {
+              return <PSound url={element.payload} />;
+            }
+          })}
+        </div>
       </Card>
     );
   }

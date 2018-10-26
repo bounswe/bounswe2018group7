@@ -1,8 +1,9 @@
 import { container, title } from "assets/jss/material-kit-react.jsx";
-
+import { SECONDARY } from "../../../../../variables/commonColor";
 const pillsStyle = {
   section: {
-    padding: "70px 0"
+    padding: "70px 03",
+    backgroundColor: SECONDARY
   },
   container,
   title: {
