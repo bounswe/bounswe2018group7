@@ -11,6 +11,7 @@ import PTagList from "../PTagList";
 import PComment from "../PComment";
 
 import Divider from "@material-ui/core/Divider";
+import PMaps from "../PMaps/index";
 
 class Post extends Component {
   render() {
@@ -34,13 +35,15 @@ class Post extends Component {
             if (element.type === "text") {
               return (
                 <div key={index} className={"postTextStyle"}>
-                  <Typography component="p">{element.payload}</Typography>
+                  <Typography color={"textSecondary"} component="p">
+                    {element.payload}
+                  </Typography>
                 </div>
               );
             } else if (element.type === "video") {
               return <PVideo key={index} url={element.payload} />;
             } else if (element.type === "image") {
-              return <PImg key={index} url={element.payload} />;
+              return <PImg content={data.content} key={index} url={element.payload} />;
             } else if (element.type === "sound") {
               return <PSound key={index} url={element.payload} />;
             }
@@ -48,9 +51,24 @@ class Post extends Component {
           })}
 
           <PTagList tags={data.tags} />
-          <div style={{ marginTop: 20, marginBottom: 20, marginLeft: 20, marginRight: 20 }}>
+          <div style={{ marginTop: 20, marginBottom: 20 }}>
             <Divider />
           </div>
+          <Typography align={"center"} variant="headline" gutterBottom>
+            {data.history_time}
+          </Typography>
+          <div style={{ marginTop: 20, marginBottom: 20 }}>
+            <Divider />
+          </div>
+
+          <div style={{ marginTop: 20, marginBottom: 20 }}>
+            <Divider />
+          </div>
+          <PMaps />
+          <div style={{ marginTop: 20, marginBottom: 20 }}>
+            <Divider />
+          </div>
+
           <PComment comments={data.comments} />
         </div>
       </Card>

@@ -4,7 +4,6 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import AnnotateImage from "@material-ui/icons/AspectRatio";
 import "./style.css";
 import { withStyles } from "@material-ui/core/styles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
@@ -36,10 +35,6 @@ class PTitle extends Component {
             <IconButton aria-label="Add to favorites">
               <FavoriteIcon />
               <Typography style={{ margin: 3 }}>{like}</Typography>
-            </IconButton>
-            <IconButton aria-label="Add Annotate">
-              <AnnotateImage />
-              <Typography style={{ margin: 3 }}>Annotate</Typography>
             </IconButton>
           </div>
         }

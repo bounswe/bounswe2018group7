@@ -38,8 +38,8 @@ PMaps.propTypes = {
 };
 
 PMaps.defaultProps = {
-  longtitude: "43.604363",
-  latitude: "1.443363",
-  zoom: 8
+  longtitude: "29.0041",
+  latitude: "41.0211",
+  zoom: 15
 };
 export default PMaps;
