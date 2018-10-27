@@ -94,7 +94,6 @@ class MemoryPostSerializer(CustomBaseSerializer):
 	def create(self, validated_data):
 		memory_post = MemoryPost(	user = validated_data['user'],
 									title = validated_data['title'],
-									story = [],
 									time = validated_data.get('time'),
 									location = validated_data.get('location'))
 		memory_post.save()
@@ -103,11 +102,10 @@ class MemoryPostSerializer(CustomBaseSerializer):
 			if isinstance(item, File):
 				if not item.content_type.startswith('image') and not item.content_type.startswith('video') and not item.content_type.startswith('audio'):
 					continue
-				memory_media = MemoryMedia()
-				memory_media.memory_post = memory_post
-				memory_media.type = item.content_type
-				memory_media.order = i
-				memory_media.file = item
+				memory_media = MemoryMedia(	memory_post = memory_post,
+											type = item.content_type,
+											order = i,
+											file = item)
 				memory_media.save()
 				story.append({"type": item.content_type, "payload": memory_media.file.url})
 			else:
