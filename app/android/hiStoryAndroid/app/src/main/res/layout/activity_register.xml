@@ -14,7 +14,7 @@
         android:layout_height="50dp"
         android:layout_above="@+id/getLastNameEditText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:hint="First Name" />
 
@@ -100,37 +100,5 @@
         android:layout_margin="10dp"
         android:text="Back"
         android:onClick="openLoginActivity"/>
-
-
-
-
-    <!--<Spinner-->
-        <!--android:id="@+id/times"-->
-        <!--android:layout_width="96dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/name"-->
-        <!--android:layout_alignParentRight="true" />-->
-
-    <!--<EditText-->
-        <!--android:id="@+id/name"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="@+string/reminder" />-->
-    <!--<Spinner-->
-        <!--android:id="@+id/dates"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/name"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_toLeftOf="@+id/times" />-->
-
-    <!--<Button-->
-        <!--android:layout_width="96dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/times"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:text="done" />-->
-
-
 
 </android.widget.RelativeLayout>
