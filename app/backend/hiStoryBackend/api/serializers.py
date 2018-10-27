@@ -63,6 +63,10 @@ class MemoryPostSerializer(CustomBaseSerializer):
 	story = serializers.JSONField(required = False)
 	location = serializers.JSONField(required = False)
 	time = serializers.JSONField(required = False)
+	username = serializers.SerializerMethodField()
+	
+	def get_username(self, obj):
+		return obj.user.username
 
 	class Meta:
 		model = MemoryPost
