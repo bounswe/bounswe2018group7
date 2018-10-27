@@ -1,23 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import classnames from "classnames";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import red from "@material-ui/core/colors/red";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PTextInput from "components/PTextInput";
 import CustomButtons from "components/CustomButtons/Button";
+import Avatar from "react-avatar";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   card: {
@@ -56,7 +47,7 @@ class PComment extends React.Component {
   };
 
   render() {
-    const { classes, title, comments, username, creation_date, creation_time } = this.props;
+    const { classes, comments, username, creation_date, creation_time } = this.props;
     return (
       <div>
         <Card className={classes.card}>
@@ -71,7 +62,7 @@ class PComment extends React.Component {
                 <MoreVertIcon />
               </IconButton>
             }
-            title={title}
+            title={username}
             subheader={creation_date + creation_time}
           />
         </Card>
@@ -93,7 +84,6 @@ class PComment extends React.Component {
 PComment.propTypes = {
   classes: PropTypes.object.isRequired,
   username: PropTypes.string,
-  title: PropTypes.string,
   creation_date: PropTypes.string,
   creation_time: PropTypes.string,
   comments: PropTypes.string
@@ -101,7 +91,6 @@ PComment.propTypes = {
 
 PComment.defaultProps = {
   username: "BBA",
-  title: "BBA",
   creation_date: "November,29 2018",
   creation_date: "13:45",
   comments: "This is awesome place for visiting"

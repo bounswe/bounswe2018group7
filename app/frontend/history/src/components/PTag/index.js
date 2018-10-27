@@ -51,7 +51,7 @@ class PTag extends Component {
   render() {
     const { tags, suggestions } = this.state;
     return (
-      <div>
+      <div style={{ width: "100%" }}>
         <ReactTags
           tags={tags}
           suggestions={suggestions}
