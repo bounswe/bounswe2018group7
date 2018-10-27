@@ -1,22 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import PAddComment from "../PAddComment/index";
-import Typography from "@material-ui/core/Typography";
+import PCommentAdd from "./PCommentAdd/index";
+import PCommentList from "./PCommentList/index";
 class PComment extends Component {
   render() {
-    const { data } = this.props;
+    const { comments } = this.props;
 
     return (
       <div>
-        {data.maps((element, index) => {
-          return <Typography> {element.text}</Typography>;
-        })}
-        <PAddComment />
+        <PCommentList comments={comments} />
+        <PCommentAdd />
       </div>
     );
   }
 }
 
-PComment.propTypes = { comments: PropTypes.array.isRequired };
+PComment.propTypes = { comments: PropTypes.array };
 
 export default PComment;

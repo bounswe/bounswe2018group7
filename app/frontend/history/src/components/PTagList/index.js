@@ -7,11 +7,12 @@ class PTagList extends Component {
     console.log("TCL: -------------------------------------");
     console.log("TCL: PTagList -> render -> tags", tags);
     console.log("TCL: -------------------------------------");
+
     return (
       <div>
         {tags.map((element, index) => {
           return (
-            <div style={{ backgroundColor: "red" }}>
+            <div key={index} style={{ backgroundColor: "red" }}>
               <div>{element}</div>
             </div>
           );

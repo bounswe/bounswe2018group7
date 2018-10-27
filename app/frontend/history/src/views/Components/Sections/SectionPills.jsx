@@ -12,9 +12,10 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import NavPills from "components/NavPills/NavPills.jsx";
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
-import RecentPost from "../../../components/RecentPost";
 
+import RecentPost from "views/Components/Sections/RecentPost";
 import AroundYou from "views/Components/Sections/AroundYou";
+
 class SectionPills extends React.Component {
   render() {
     const { classes } = this.props;

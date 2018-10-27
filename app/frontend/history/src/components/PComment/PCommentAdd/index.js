@@ -3,7 +3,7 @@ import SendIcon from "@material-ui/icons/Send";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-class PAddComment extends React.Component {
+class PCommentAdd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,4 +40,4 @@ class PAddComment extends React.Component {
   }
 }
 
-export default PAddComment;
+export default PCommentAdd;

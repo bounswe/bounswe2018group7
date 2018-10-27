@@ -33,25 +33,25 @@ class Post extends Component {
           {data.content.map((element, index) => {
             if (element.type === "text") {
               return (
-                <div className={"postTextStyle"}>
+                <div key={index} className={"postTextStyle"}>
                   <Typography component="p">{element.payload}</Typography>
                 </div>
               );
             } else if (element.type === "video") {
-              return <PVideo url={element.payload} />;
+              return <PVideo key={index} url={element.payload} />;
             } else if (element.type === "image") {
-              return <PImg url={element.payload} />;
+              return <PImg key={index} url={element.payload} />;
             } else if (element.type === "sound") {
-              return <PSound url={element.payload} />;
+              return <PSound key={index} url={element.payload} />;
             }
-            return <div />;
+            return <div key={index} />;
           })}
 
           <PTagList tags={data.tags} />
           <div style={{ marginTop: 20, marginBottom: 20, marginLeft: 20, marginRight: 20 }}>
             <Divider />
           </div>
-          <PComment data={data.comments} />
+          <PComment comments={data.comments} />
         </div>
       </Card>
     );
