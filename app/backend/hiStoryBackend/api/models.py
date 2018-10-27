@@ -157,7 +157,7 @@ def upload_memory_media_to(instance, filename):
     """
     return 'memory_post/{0}_{1}_{2}'.format(
         instance.memory_post.id,
-        datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
+        datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f'),
         filename
     )
 
