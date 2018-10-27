@@ -52,11 +52,7 @@ class PComment extends React.Component {
       <div>
         <Card className={classes.card}>
           <CardHeader
-            avatar={
-              <Avatar aria-label="Recipe" className={classes.avatar}>
-                {username.charAt(0).toUpperCase()}
-              </Avatar>
-            }
+            avatar={<Avatar className={classes.avatar}>H</Avatar>}
             action={
               <IconButton>
                 <MoreVertIcon />
