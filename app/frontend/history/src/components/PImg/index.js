@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Img from "react-image";
+import "./style.css";
+import Dialog from "../Dialog/index";
 
 class PImg extends Component {
   render() {
-    const { url } = this.props;
+    const { url, content } = this.props;
     return (
-      <div>
-        <Img src={url} />
+      <div className={"imgDivStyle"}>
+        <Img className={"imgStyle"} src={url} />
+        <Dialog content={content} />
       </div>
     );
   }

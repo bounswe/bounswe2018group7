@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AudioPlayer from "react-h5-audio-player";
-
+import "./style.css";
 class PSound extends Component {
   render() {
     const { url } = this.props;
     return (
-      <AudioPlayer
-        autoPlay
-        src={url}
-        onPlay={e => console.log("onPlay")}
-        // other props here
-      />
+      <div className="soundStyle">
+        <AudioPlayer
+          src={url}
+          onPlay={e => console.log("onPlay")}
+          // other props here
+        />
+      </div>
     );
   }
 }

@@ -6,27 +6,19 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Schedule from "@material-ui/icons/LocationSearching";
-import List from "@material-ui/icons/List";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import NavPills from "components/NavPills/NavPills.jsx";
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
-import RecentPost from "../../../components/RecentPost";
 
+import RecentPost from "views/Components/Sections/RecentPost";
 import AroundYou from "views/Components/Sections/AroundYou";
-class SectionPills extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      companyName: ""
-    };
-  }
+class SectionPills extends React.Component {
   render() {
     const { classes } = this.props;
-    const { companyName } = this.state;
     return (
       <div className={classes.section}>
         <div className={classes.container}>
