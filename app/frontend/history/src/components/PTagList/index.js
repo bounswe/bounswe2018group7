@@ -1,22 +1,29 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import "./style.css";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import { Typography } from "@material-ui/core";
 
 class PTagList extends Component {
   render() {
-    const { tags } = this.props;
-    console.log("TCL: -------------------------------------");
-    console.log("TCL: PTagList -> render -> tags", tags);
-    console.log("TCL: -------------------------------------");
+    const { tags, classes } = this.props;
 
     return (
       <div>
-        {tags.map((element, index) => {
-          return (
-            <div key={index} style={{ backgroundColor: "red" }}>
-              <div>{element}</div>
-            </div>
-          );
-        })}
+        <Grid container spacing={8}>
+          {tags.map((element, index) => {
+            return (
+              <Grid item xs={6} sm={3}>
+                <Paper elevation={1}>
+                  <Typography color={"secondary"} align="center" component="p">
+                    #{element}
+                  </Typography>
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
       </div>
     );
   }
