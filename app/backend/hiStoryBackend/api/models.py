@@ -155,9 +155,10 @@ def upload_memory_media_to(instance, filename):
     :param filename: Name of the file stored in 'file' field
     :return: A string in the format <memory_post_id>_<year>-<month>-<day>_<hour>_<minute>_<second>_<original_file_name>
     """
-    return 'memory_post/{0}_{1}_{2}'.format(
+    return 'memory_post/{0}_{1}_{2}_{3}'.format(
         instance.memory_post.id,
-        datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f'),
+        instance.order,
+        datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
         filename
     )
 
@@ -165,6 +166,7 @@ def upload_memory_media_to(instance, filename):
 class MemoryMedia(BaseModel):
     memory_post = models.ForeignKey(MemoryPost, on_delete=models.CASCADE)
     type = models.CharField(max_length=64)
+    order = models.IntegerField()
     file = models.FileField(upload_to=upload_memory_media_to)
 
 
