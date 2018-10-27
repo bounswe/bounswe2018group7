@@ -1,45 +1,45 @@
-import React, { Component } from "react";
-import ReactGoogleMapLoader from "react-google-maps-loader";
-import ReactGoogleMap from "react-google-map";
-import PropTypes from "prop-types";
+import React from "react";
+import { compose, withProps } from "recompose";
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
-class PMaps extends Component {
+const MyMaps = compose(
+  withProps({
+    googleMapURL:
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q&v=3.exp&libraries=geometry,drawing,places",
+    loadingElement: <div style={{ height: `100%` }} />,
+    containerElement: <div style={{ height: `400px` }} />,
+    mapElement: <div style={{ height: `100%` }} />
+  }),
+  withScriptjs,
+  withGoogleMap
+)(props => (
+  <GoogleMap onClick={props.onClick} defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+    {props.isMarkerShown && <Marker position={{ lat: props.lat, lng: props.lng }} onClick={props.onMarkerClick} />}
+  </GoogleMap>
+));
+
+class PMaps extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lat: -34.397,
+      lng: 150.644
+    };
+  }
+
   render() {
-    const { latitude, longtitude, zoom } = this.props;
-    var lat = latitude;
-    var newLat = parseFloat(lat);
-
-    var lng = longtitude;
-    var newlng = parseFloat(lng);
-
     return (
-      <div>
-        <ReactGoogleMapLoader
-          params={{
-            key: "AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q", // Define your api key here
-            libraries: "places,geometry" // To request multiple libraries, separate them with a comma
-          }}
-          render={googleMaps =>
-            googleMaps && (
-              <div style={{ height: 300 }}>
-                <ReactGoogleMap googleMaps={googleMaps} center={{ lat: newLat, lng: newlng }} zoom={zoom} />
-              </div>
-            )
-          }
-        />
-      </div>
+      <MyMaps
+        isMarkerShown={this.props.isMarkerShown}
+        onClick={ev => this.onMapClick(ev)}
+        lat={this.state.lat}
+        lng={this.state.lng}
+      />
     );
   }
+  onMapClick(ev) {
+    this.setState({ lat: ev.latLng.lat(), lng: ev.latLng.lng() });
+  }
 }
-PMaps.propTypes = {
-  longtitude: PropTypes.string,
-  latitude: PropTypes.string,
-  zoom: PropTypes.number
-};
 
-PMaps.defaultProps = {
-  longtitude: "29.0041",
-  latitude: "41.0211",
-  zoom: 15
-};
 export default PMaps;
