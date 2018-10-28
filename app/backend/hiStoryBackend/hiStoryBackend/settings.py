@@ -18,24 +18,26 @@ DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'api.apps.ApiConfig',
-    'rest_framework',
-    'rest_framework.authtoken',
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'api.apps.ApiConfig',
+	'rest_framework',
+	'rest_framework.authtoken',
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
+	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework.authentication.TokenAuthentication',
+	),
+	'DEFAULT_PERMISSION_CLASSES': (
+		'rest_framework.permissions.IsAuthenticated',
+	),
+	'EXCEPTION_HANDLER': 'api.helpers.custom_helpers.custom_exception_handler',
+	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 }
 
 # GMAIL CREDENTIALS
@@ -47,68 +49,68 @@ FRONTEND_CONFIRMATION_BASE_URL = os.environ.get('DJANGO_FRONTEND_CONFIRMATION_BA
 FRONTEND_PASSWORD_RESET_BASE_URL = os.environ.get('DJANGO_FRONTEND_PASSWORD_RESET_BASE_URL')
 
 if GMAIL_USERNAME and GMAIL_PASSWORD:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
-    EMAIL_HOST_USER = GMAIL_USERNAME
-    EMAIL_HOST_PASSWORD = GMAIL_PASSWORD
-    EMAIL_USE_TLS = True
+	EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+	EMAIL_HOST = 'smtp.gmail.com'
+	EMAIL_PORT = 587
+	EMAIL_HOST_USER = GMAIL_USERNAME
+	EMAIL_HOST_PASSWORD = GMAIL_PASSWORD
+	EMAIL_USE_TLS = True
 else:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.security.SecurityMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	# 'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'hiStoryBackend.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [],
+		'APP_DIRS': True,
+		'OPTIONS': {
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
+				'django.contrib.messages.context_processors.messages',
+			],
+		},
+	},
 ]
 
 WSGI_APPLICATION = 'hiStoryBackend.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.sqlite3',
+		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	}
 }
 DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+	{
+		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+	},
 ]
 
 # Internationalization
@@ -145,8 +147,8 @@ AWS_S3_SECRET_ACCESS_KEY = os.environ.get('DJANGO_AWS_S3_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('DJANGO_AWS_STORAGE_BUCKET_NAME')
 
 if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    AWS_QUERYSTRING_AUTH = False  # Don't add complex authentication-related query parameters for requests
+	DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+	AWS_QUERYSTRING_AUTH = False  # Don't add complex authentication-related query parameters for requests
 
 
 django_heroku.settings(locals())
