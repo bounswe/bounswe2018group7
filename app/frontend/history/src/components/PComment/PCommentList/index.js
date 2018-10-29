@@ -51,6 +51,7 @@ class PCommentList extends React.Component {
     );
   }
 }
+
 PCommentList.propTypes = {
   classes: PropTypes.object,
   comments: PropTypes.array
