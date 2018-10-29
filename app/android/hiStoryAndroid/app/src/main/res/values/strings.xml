@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HiStory</string>
+    <string name="title_activity_create_post">CreatePostActivity</string>
 </resources>
