@@ -9,8 +9,8 @@ class Auth extends Component {
     return (
       <div>
         <Switch>
-          <Route exact path="/auth" render={() => <Redirect to={"/auth/login"} />} />
-          <Route path="/auth/login" component={Login} />
+          <Route exact path="/auth" render={() => <Redirect to={"/auth/signin"} />} />
+          <Route path="/auth/signin" component={Login} />
           <Route path="/auth/signup" component={SignUp} /> */}
         </Switch>
       </div>

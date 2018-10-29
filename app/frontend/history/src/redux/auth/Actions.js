@@ -11,10 +11,10 @@ import {
   AUTO_LOGIN
 } from "./actionTypes";
 
-export const trySignin = (email, password) => ({
+export const trySignin = (identity, password) => ({
   type: SIGNIN_REQUEST,
   payload: {
-    email,
+    identity,
     password
   }
 });

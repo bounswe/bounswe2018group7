@@ -7,10 +7,10 @@ import api from "./api";
 import { clError, clWarning } from "utils/consolelog.js";
 
 const trySignInSaga = function*(action) {
-  const { email, password } = action.payload;
+  const { identity, password } = action.payload;
 
   try {
-    const signinResponse = yield call(api.doSignIn, email, password);
+    const signinResponse = yield call(api.doSignIn, identity, password);
 
     if (signinResponse) {
       console.log("​signinResponse", signinResponse);

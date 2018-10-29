@@ -73,7 +73,7 @@ export default function(state = initialState, action) {
   } else if (action.type === SIGNUP_SUCCESS) {
     return {
       ...state,
-      user: payload.user,
+      //user: payload.username,
       token: payload.auth_token,
       loggedIn: true,
       signupInProgress: false,
