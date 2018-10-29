@@ -38,6 +38,7 @@ REST_FRAMEWORK = {
 	),
 	'EXCEPTION_HANDLER': 'api.helpers.custom_helpers.custom_exception_handler',
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+	'DATETIME_FORMAT': '%d-%m-%Y %H:%M:%S',
 }
 
 # GMAIL CREDENTIALS
