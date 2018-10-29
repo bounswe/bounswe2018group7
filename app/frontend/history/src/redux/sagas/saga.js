@@ -35,10 +35,18 @@ const trySignInSaga = function*(action) {
 };
 
 const trySignUpSaga = function*(action) {
-  const { username, email, password, password_confirmation, full_name } = action.payload;
+  const { username, email, password, password_confirmation, first_name, last_name } = action.payload;
 
   try {
-    const signupResponse = yield call(api.doSignUp, username, email, password, password_confirmation, full_name);
+    const signupResponse = yield call(
+      api.doSignUp,
+      username,
+      email,
+      password,
+      password_confirmation,
+      first_name,
+      last_name
+    );
 
     if (signupResponse) {
       console.log("​signupResponse", signupResponse);

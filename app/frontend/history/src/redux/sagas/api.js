@@ -12,7 +12,7 @@ class api {
       sendToken: false
     });
   };
-  doSignUp = (username, email, password, password_confirmation, full_name) => {
+  doSignUp = (username, email, password, password_confirmation, first_name, last_name) => {
     return httpService.fetch({
       path: "api/v1/signup/",
       method: "POST",
@@ -21,7 +21,8 @@ class api {
         email,
         password,
         password_confirmation,
-        full_name
+        first_name,
+        last_name
       },
       sendToken: false
     });
