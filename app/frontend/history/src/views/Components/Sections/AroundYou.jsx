@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import PTextInput from "components/PTextInput";
 import { withStyles } from "@material-ui/core/styles";
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
-import PComment from "components/PComment";
-import PMaps from "components/PMaps";
-import PTag from "components/PTag";
-import PCommentList from "components/PCommentList";
+// import PComment from "components/PComment";
+// import PMaps from "components/PMaps";
+// import PTag from "components/PTag";
+// import PCommentList from "components/PCommentList";
+import { Input } from "@material-ui/core";
 class AroundYou extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +37,7 @@ class AroundYou extends Component {
     const { companyName } = this.state;
     return (
       <div>
-        <PTextInput
+        {/* <Input
           value={companyName}
           onChange={event => this.setState({ companyName: event.target.value })}
           label={"Message Text"}
@@ -56,7 +56,7 @@ class AroundYou extends Component {
 
         <PTag />
         <PCommentList username="Burcu ASLAN" comments="I recommend this place for history lovers" />
-        <PMaps isMarkerShown={this.state.isMarkerShown} onMarkerClick={this.handleMarkerClick} />
+        <PMaps isMarkerShown={this.state.isMarkerShown} onMarkerClick={this.handleMarkerClick} /> */}
       </div>
     );
   }

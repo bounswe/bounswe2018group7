@@ -7,14 +7,14 @@ import { Typography } from "@material-ui/core";
 
 class PTagList extends Component {
   render() {
-    const { tags, classes } = this.props;
+    const { tags } = this.props;
 
     return (
       <div>
         <Grid container spacing={8}>
           {tags.map((element, index) => {
             return (
-              <Grid item xs={6} sm={3}>
+              <Grid key={index} item xs={6} sm={3}>
                 <Paper elevation={1}>
                   <Typography color={"secondary"} align="center" component="p">
                     #{element}

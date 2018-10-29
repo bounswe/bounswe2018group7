@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import PCommentAdd from "./PCommentAdd/index";
-import PCommentList from "./PCommentList/index";
+import PCommentList from "./PCommentList";
 class PComment extends Component {
   render() {
     const { comments } = this.props;
