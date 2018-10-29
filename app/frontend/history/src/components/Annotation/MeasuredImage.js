@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 // import PropTypes from "prop-types";
 
-import MeasurementLayer from "./lib/components/MeasurementLayer";
-import { calculateDistance, calculateArea } from "./lib/utils/MeasurementUtils";
+import MeasurementLayer from "./libraries/components/MeasurementLayer";
+import { calculateDistance, calculateArea } from "./libraries/utils/MeasurementUtils";
 import { EditorState, ContentState } from "draft-js";
 // import pollenImage from "./pollen.jpg";
 
