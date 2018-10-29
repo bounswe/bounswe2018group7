@@ -28,8 +28,8 @@ class PCommentList extends React.Component {
       <div>
         {comments.map((comment, index) => {
           return (
-            <div style={{ margin: 15 }}>
-              <Card key={index}>
+            <div key={index} style={{ margin: 15 }}>
+              <Card>
                 <CardHeader
                   avatar={<Avatar className={classes.orangeAvatar}>{comment.username.charAt(0).toUpperCase()}</Avatar>}
                   action={

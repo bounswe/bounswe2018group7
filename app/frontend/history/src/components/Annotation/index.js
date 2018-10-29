@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import MeasuredImage from "./MeasuredImage";
 import "./style.css";
 class Annotation extends Component {
@@ -23,6 +23,6 @@ class Annotation extends Component {
   onImageLoaded = () => this.setState({ ...this.state, loaded: true });
 }
 
-Annotation.propTypes = {};
+// Annotation.propTypes = {};
 
 export default Annotation;

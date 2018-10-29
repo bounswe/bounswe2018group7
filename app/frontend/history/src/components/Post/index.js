@@ -64,7 +64,9 @@ class Post extends Component {
           <div style={{ marginTop: 20, marginBottom: 20 }}>
             <Divider />
           </div>
+
           <PMaps />
+
           <div style={{ marginTop: 20, marginBottom: 20 }}>
             <Divider />
           </div>

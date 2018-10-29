@@ -14,7 +14,7 @@ import NavPills from "components/NavPills/NavPills.jsx";
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
 
 import RecentPost from "views/Components/Sections/RecentPost";
-import AroundYou from "views/Components/Sections/AroundYou";
+import AroundYou from "views/Components/Sections/AroundYou/index.js";
 
 class SectionPills extends React.Component {
   render() {

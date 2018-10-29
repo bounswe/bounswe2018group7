@@ -1,12 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
+import Post from "components/Post/index";
+import postListData from "assets/dummy.json";
 class AroundYou extends Component {
   render() {
-    return <div />;
+    return (
+      <div>
+        {postListData.map((post, index) => {
+          return <Post key={index} data={post} />;
+        })}
+      </div>
+    );
   }
 }
-
-//AroundYou.propTypes = {};
 
 export default AroundYou;

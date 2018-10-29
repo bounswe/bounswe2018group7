@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import MeasurementLayer from "./lib/components/MeasurementLayer";
 import { calculateDistance, calculateArea } from "./lib/utils/MeasurementUtils";
 import { EditorState, ContentState } from "draft-js";
-import pollenImage from "./pollen.jpg";
+// import pollenImage from "./pollen.jpg";
 
 import "./style.css";
 class MeasuredImage extends Component {
@@ -107,6 +107,6 @@ class MeasuredImage extends Component {
   ];
 }
 
-MeasuredImage.propTypes = {};
+// MeasuredImage.propTypes = {};
 
 export default MeasuredImage;
