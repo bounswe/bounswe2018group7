@@ -52,12 +52,13 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
                         Log.d("Success" , String.valueOf(response.body().username));
-                        Toast.makeText(RegisterActivity.this, "Welcome " + response.body().first_name, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Hello " + response.body().first_name +
+                                "\nYour account has been created. \nPlease confirm email and Login.", Toast.LENGTH_SHORT).show();
                         signUp(response.body());
 
                     } else {
                         Log.d("Failure", response.toString());
-                        Toast.makeText(RegisterActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Authentication Failed\n" + response.errorBody().source(), Toast.LENGTH_SHORT).show();
                         waitingResponse = false;
                     }
                 }
