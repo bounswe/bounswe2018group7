@@ -24,7 +24,7 @@ class Components extends React.Component {
     return (
       <div>
         <Header
-          brand="History"
+          brand="HiStory"
           rightLinks={<HeaderLinks />}
           fixed
           color="transparent"
