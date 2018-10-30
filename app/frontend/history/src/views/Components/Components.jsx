@@ -20,12 +20,12 @@ import componentsStyle from "assets/jss/material-kit-react/views/components.jsx"
 
 class Components extends React.Component {
   render() {
-    const { classes, ...rest } = this.props;
+    const { classes, history, ...rest } = this.props;
     return (
       <div>
         <Header
           brand="HiStory"
-          rightLinks={<HeaderLinks />}
+          rightLinks={<HeaderLinks history={history} />}
           fixed
           color="transparent"
           changeColorOnScroll={{

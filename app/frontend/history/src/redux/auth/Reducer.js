@@ -14,6 +14,7 @@ import {
 const initialState = {
   user: {},
   token: "",
+  username: "",
 
   loggedIn: false,
 
@@ -40,7 +41,9 @@ export default function(state = initialState, action) {
   } else if (action.type === SIGNIN_SUCCESS) {
     return {
       ...state,
-      user: payload.user,
+      // user: payload.user,
+      username: payload.username,
+
       token: payload.auth_token,
       loggedIn: true,
       signinInProgress: false,
@@ -74,6 +77,7 @@ export default function(state = initialState, action) {
     return {
       ...state,
       //user: payload.username,
+      username: payload.username,
       token: payload.auth_token,
       loggedIn: true,
       signupInProgress: false,
@@ -96,10 +100,11 @@ export default function(state = initialState, action) {
       signupCompleted: false
     };
   } else if (action.type === AUTO_LOGIN) {
-    const { user, token } = payload;
+    const { user, token, username } = payload;
     return {
       ...state,
       user,
+      username,
       token,
       loggedIn: true
     };
@@ -107,6 +112,7 @@ export default function(state = initialState, action) {
     return {
       ...state,
       user: {},
+      username: "",
       token: "",
 
       loggedIn: false,

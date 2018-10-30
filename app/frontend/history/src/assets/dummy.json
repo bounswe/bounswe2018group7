@@ -3,42 +3,53 @@
     "id": 1,
     "creation_date": "22.12.2018",
     "creation_time": "12:30",
-    "header": "The Maiden's Tower",
+    "header": "Haydarpaşa Station",
     "content": [
       {
-        "type": "text",
-        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
+        "type": "image",
+        "payload": "https://img-s2.onedio.com/id-54771ba4780507da6cda7903/rev-0/raw/s-893f2f553969b6af4ed0c50a36e10ab52cac893e.jpg"
       },
       {
-        "type": "sound",
-        "payload": "http://www.largesound.com/ashborytour/sound/brobob.mp3"
+        "type": "text",
+        "payload": "When the roof of Haydarpaşa Station was burned, so did a part of my chilhood. While my father was working as a revisor there, I couldn't tell which room was his room. He always listened to classic music on radio TRT3 channel. I would follow my ears through the music, and find him inside the building. All of the conductors would recognize me. Going to school,going home was always train, or the station itself for me."
+      },
+      {
+        "type": "image",
+        "payload": "http://www.istanbul.com/Files/haydarpasa-gari-foto-ts.jpg"
+      },
+      {
+        "type": "text",
+        "payload": "In June 19,2013 local trains got disabled. Binali Yıldırım ,the transport minister of that time, made a statement that the station was going to be disabled for two years, but he didn't say anything for the time after two years, not even detailing his statement. The trains going through the eastern part of the country was also disabled for the high-speed train project three years earlier from that date."
+      },
+      {
+        "type": "image",
+        "payload": "https://farm5.static.flickr.com/4566/38315647776_85ea19cdc4_b.jpg"
+      },
+      {
+        "type": "text",
+        "payload": "Today , the high speed train embark its passengers from Pendik Train Station, but Haydarpaşa still keeps it's silence.The train vagons waiting there for years and years now being used as a playground for graffiti artists."
       }
     ],
     "comments": [
       {
         "creation_time": "12.12.2012",
-        "text": "cok iyisin",
+        "text": "I was there, It was horrible",
         "username": "abcdrk"
       },
       {
         "creation_time": "12.12.2014",
-        "text": "cok kotu bence",
-        "username": "rmznarsln"
+        "text": "I don't remember this fire",
+        "username": "Ramazan Arslan"
       },
       {
         "creation_time": "12.12.2011",
-        "text": " resimde resim ha",
-        "username": "mfb"
-      },
-      {
-        "creation_time": "12.12.2012",
-        "text": "la noluyo",
-        "username": "laaaa"
+        "text": "Halil Sezai Yangın Var ",
+        "username": "Muhammet Fatih Balın"
       }
     ],
-    "username": "abcdrkSivas",
+    "username": "SevdeBozdogan",
     "like": 43,
-    "tags": ["uskudar", "kizkulesi", "istanbul", "marmara", "anadolu"],
+    "tags": ["haydarpasa", "Kadıköy", "istanbul", "fire", "firebase"],
     "location": [
       {
         "lat": "38.356869",
@@ -53,172 +64,30 @@
         "long": "38.309669"
       }
     ],
-    "history_time": "once upon a time or 1940s"
+    "history_time": "2010 November"
   },
 
   {
     "id": 1,
     "creation_date": "22.12.2018",
     "creation_time": "12:30",
-    "header": "The Maiden's Tower",
+    "header": "Nika Riot",
     "content": [
       {
         "type": "text",
-        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
+        "payload": "Nika Riot was one of the most violent incidents in the history of Istanbul.  It broke out in January 532 among the people and in few days it costed the lives of over 30,000 citizens, wrecking nearly half of the city.The inhabitants of Constantinople were divided into four different factions, especially the Green and the Blue teams were the most famous ones but there were also the White and the Red teams.These factions and spectators hold their own sections or seats in the ancient Hippodrome where they used to race horses and chariots. The Blues and the Greens, most frequented factions, formed even some street gangs to show their power and political parties to affect the policy of the Byzantine rulers.Sometimes they killed their rivals in the name of the 'game', so they were the first sort of modern soccer hooligans of the history.The incidents started after a chariot game in the Hippodrome, when some members of the Blues and the Greens were arrested for murder occurred during the clashes. Many of them were hanged, but some of them managed to escape from the prison with the help of their brotherhood. Justinian ordered their capture and death, but the factions demanded a full pardon and set fires in the city fighting against the security forces. The crowd got mad and emperor Justinian and his court locked themselves up in their palace, just in case."
       },
       {
         "type": "image",
-        "payload": "https://gezipgordum.com/wp-content/uploads/2015/10/k%C4%B1z-kulesi-640x360.jpg"
+        "payload": "https://yenisafak.feo.doracdn.com/resize/47uQufiZbmsgHk3H/750/0/resim/imagecrop/2017/01/18/11/28/resized_47a53-f62f4905kapak.png"
       },
       {
         "type": "text",
-        "payload": "yukariki resimde de demis oldugum gibi"
-      },
-      {
-        "type": "sound",
-        "payload": "http://www.largesound.com/ashborytour/sound/brobob.mp3"
-      }
-    ],
-    "comments": [
-      {
-        "creation_time": "12.12.2012",
-        "text": "cok iyisin",
-        "username": "abcdrk"
-      },
-      {
-        "creation_time": "12.12.2014",
-        "text": "cok kotu bence",
-        "username": "rmznarsln"
-      },
-      {
-        "creation_time": "12.12.2011",
-        "text": " resimde resim ha",
-        "username": "mfb"
-      },
-      {
-        "creation_time": "12.12.2012",
-        "text": "la noluyo",
-        "username": "laaaa"
-      }
-    ],
-    "username": "mfbalin",
-    "like": 43,
-    "tags": ["uskudar", "kizkulesi", "istanbul"],
-    "location": [
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      },
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      },
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      }
-    ],
-    "history_time": "once upon a time or 1940s"
-  },
-  {
-    "id": 2,
-    "creation_date": "22.12.2018",
-    "creation_time": "12:30",
-    "header": "The Maiden's Tower",
-    "content": [
-      {
-        "type": "video",
-        "payload": "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-      },
-      {
-        "type": "text",
-        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
-      },
-
-      {
-        "type": "sound",
-        "payload": "http://www.largesound.com/ashborytour/sound/brobob.mp3"
-      }
-    ],
-    "comments": [
-      {
-        "creation_time": "12.12.2012",
-        "text": "cok iyisin",
-        "username": "abcdrk"
-      },
-      {
-        "creation_time": "12.12.2014",
-        "text": "cok kotu bence",
-        "username": "rmznarsln"
-      },
-      {
-        "creation_time": "12.12.2011",
-        "text": " resimde resim ha",
-        "username": "mfb"
-      },
-      {
-        "creation_time": "12.12.2012",
-        "text": "la noluyo",
-        "username": "laaaa"
-      }
-    ],
-    "username": "abcdrkSivas",
-    "like": 43,
-    "tags": ["uskudar", "kizkulesi", "istanbul"],
-    "location": [
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      },
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      },
-      {
-        "lat": "38.356869",
-        "long": "38.309669"
-      }
-    ],
-    "history_time": "once upon a time or 1940s"
-  },
-
-  {
-    "id": 3,
-    "creation_date": "22.12.2018",
-    "creation_time": "12:30",
-    "header": "Malatya da bi gun",
-    "content": [
-      {
-        "type": "text",
-        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her."
+        "payload": "During all of these events, another chariot race was organised in the Hippodrome by the Greens and the Blues in order to rally people against Justinian. Thousands of people were shouting as 'Nika', which means Victory or Conquer in Greek. The crowds began attacking the Great Palace where the Emperor was, people besiged the palace for 5 days while fighting against the loyal soldiers at the same time. The crowd declared a new emperor, Hypatius who was the nephew of former Emperor Anastasius I. Hypatius was kicked out of the palace by Justinian in the beginning of the revolt because the emperor was afraid of some probable plot against him organised by Hypatius and by some of the Senate members.  Justinian was considering of fleeing with the ships, but his wife Theodora stopped him and encouraged with her speech. Than Justinian ordered his generals Belisarius and Mundus to stop the riots at whatever cost, which they did with lots of bloodshed. Rioters were trapped inside the Hippodrome and thousands of them were killed on site. Hypatius was executed the next day and senators who had supported the riot were exiled, this was the end of a bloody insurrection in Byzantium. "
       },
       {
         "type": "image",
-        "payload": "https://gezipgordum.com/wp-content/uploads/2015/10/k%C4%B1z-kulesi-640x360.jpg"
-      },
-      {
-        "type": "text",
-        "payload": "yukariki resimde de demis oldugum gibi"
-      },
-      {
-        "type": "video",
-        "payload": "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-      },
-      {
-        "type": "text",
-        "payload": "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the "
-      },
-      {
-        "type": "sound",
-        "payload": "http://www.largesound.com/ashborytour/sound/brobob.mp3"
-      },
-      {
-        "type": "text",
-        "payload": "asagi resimde de demis oldugum gibi"
-      },
-      {
-        "type": "video",
-        "payload": "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+        "payload": "http://www.gizistanbul.com/wp-content/uploads/2018/02/img12.jpg"
       }
     ],
     "comments": [
@@ -243,9 +112,9 @@
         "username": "laaaa"
       }
     ],
-    "username": "CrayzMahmud",
+    "username": "IsabellaCentore",
     "like": 43,
-    "tags": ["uskudar", "kizkulesi", "istanbul"],
+    "tags": ["Is a bella", "Nika", "Riot"],
     "location": [
       {
         "lat": "38.356869",

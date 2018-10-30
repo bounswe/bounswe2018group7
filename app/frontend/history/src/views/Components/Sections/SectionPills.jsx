@@ -39,7 +39,7 @@ class SectionPills extends React.Component {
                       tabContent: <RecentPost />
                     },
                     {
-                      tabButton: "Around You",
+                      tabButton: "Recommended for You",
                       tabIcon: Schedule,
                       tabContent: <AroundYou />
                     }
