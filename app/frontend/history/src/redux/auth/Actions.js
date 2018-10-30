@@ -30,14 +30,15 @@ export const signinReset = () => ({
   type: SIGNIN_RESET
 });
 
-export const trySignup = (username, email, password, password_confirmation, full_name) => ({
+export const trySignup = (username, email, password, password_confirmation, first_name, last_name) => ({
   type: SIGNUP_REQUEST,
   payload: {
     username,
     email,
     password,
     password_confirmation,
-    full_name
+    first_name,
+    last_name
   }
 });
 export const signupSuccess = res => ({

@@ -17,8 +17,10 @@ class SignUp extends Component {
       passwordError: "",
       username: "",
       usernameError: "",
-      full_name: "",
-      full_nameError: "",
+      first_name: "",
+      first_nameError: "",
+      last_name: "",
+      last_nameError: "",
       password_confirmation: "",
       password_confirmationError: "",
       isSnackbarOpen: false
@@ -41,14 +43,21 @@ class SignUp extends Component {
 
     if (!signupInProgress && !signupHasError && signupCompleted) {
       this.props.signupReset();
-      history.push("/auth/login");
+      history.push("/auth/signin");
     } else if (!signupInProgress && signupHasError && signupCompleted) {
       this.props.signupReset();
     }
   }
 
   render() {
-    const { emailError, passwordError, usernameError, full_nameError, password_confirmationError } = this.state;
+    const {
+      emailError,
+      passwordError,
+      usernameError,
+      first_nameError,
+      password_confirmationError,
+      last_nameError
+    } = this.state;
     const { signupError } = this.props.auth;
 
     return (
@@ -89,13 +98,21 @@ class SignUp extends Component {
               placeholder="Confirm Password"
               value={this.state.password_confirmation}
             />
-            {full_nameError !== "" && <Alert color="warning">{password_confirmationError}</Alert>}
+            {first_nameError !== "" && <Alert color="warning">{first_nameError}</Alert>}
             <input
-              value={this.state.full_name}
-              onChange={event => this.setState({ full_name: event.target.value })}
-              onFocus={() => this.setState({ full_nameError: "" })}
+              value={this.state.first_name}
+              onChange={event => this.setState({ first_name: event.target.value })}
+              onFocus={() => this.setState({ first_nameError: "" })}
               type="string"
-              placeholder="Full Name"
+              placeholder="First Name"
+            />
+            {last_nameError !== "" && <Alert color="warning">{last_nameError}</Alert>}
+            <input
+              value={this.state.last_name}
+              onChange={event => this.setState({ last_name: event.target.value })}
+              onFocus={() => this.setState({ last_nameError: "" })}
+              type="string"
+              placeholder="Last Name"
             />
             <button onClick={event => this.handleSingupSubmit(event)} id="login-button">
               Sign Up
@@ -144,12 +161,13 @@ class SignUp extends Component {
       passwordError: "",
       usernameError: "",
       full_nameError: "",
-      password_confirmationError: ""
+      password_confirmationError: "",
+      last_nameError: ""
     });
 
-    const { email, password, username, password_confirmation, full_name } = this.state;
+    const { email, password, username, password_confirmation, first_name, last_name } = this.state;
 
-    if (!email || !password || !username || !password_confirmation || !full_name) {
+    if (!email || !password || !username || !password_confirmation || !first_name || !last_name) {
       if (!email) {
         this.setState({ emailError: "Please fill this area" });
       }
@@ -161,8 +179,11 @@ class SignUp extends Component {
       if (!username) {
         this.setState({ usernameError: "Please fill this area" });
       }
-      if (!full_name) {
-        this.setState({ full_nameError: "Please fill this area" });
+      if (!first_name) {
+        this.setState({ first_nameError: "Please fill this area" });
+      }
+      if (!last_name) {
+        this.setState({ last_nameError: "Please fill this area" });
       }
       if (!password_confirmation) {
         this.setState({ password_confirmationError: "Please fill this area" });
@@ -170,7 +191,7 @@ class SignUp extends Component {
     } else {
       if (!checkEmailValidity(email)) {
         if (password === password_confirmation) {
-          this.props.trySignup(username, email, password, password_confirmation, full_name);
+          this.props.trySignup(username, email, password, password_confirmation, first_name, last_name);
         } else {
           this.setState({ password_confirmationError: "Your confirmation password is not same" });
         }
@@ -186,8 +207,8 @@ function bindAction(dispatch) {
   return {
     trySignin: (email, password) => dispatch(trySignin(email, password)),
 
-    trySignup: (username, email, password, password_confirmation, full_name) =>
-      dispatch(trySignup(username, email, password, password_confirmation, full_name)),
+    trySignup: (username, email, password, password_confirmation, first_name, last_name) =>
+      dispatch(trySignup(username, email, password, password_confirmation, first_name, last_name)),
     signinReset: () => dispatch(signinReset()),
     signupReset: () => dispatch(signupReset())
   };
