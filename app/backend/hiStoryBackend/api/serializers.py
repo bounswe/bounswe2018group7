@@ -65,8 +65,8 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 	story_arr = serializers.ListField(write_only=True)
 
 	story = serializers.JSONField(read_only=True, required=False)
-	location = serializers.JSONField(required=False)
-	time = serializers.JSONField(required=False)
+	location = serializers.JSONField(required=False, default=[])
+	time = serializers.JSONField(required=False, default=[])
 	username = serializers.SerializerMethodField()
 
 	class Meta:
@@ -87,7 +87,7 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 		elif isinstance(field_value, list):
 			return field_value
 
-		raise serializers.ValidationError({field_name: "must be an Array or a String representing a JSON-Array"})
+		raise serializers.ValidationError({field_name: "must be a JSON-Array (plain or String encoded)"})
 
 	def validate_time(self, value):
 		return self.validate_json_array('time', value)
@@ -114,13 +114,10 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 		return story
 
 	def create(self, validated_data):
-		memory_post = MemoryPost(user=validated_data['user'],
-								 title=validated_data['title'],
-								 time=validated_data.get('time'),
-								 location=validated_data.get('location')
-								 )
+		story_arr = validated_data.pop('story_arr')
+		memory_post = MemoryPost(**validated_data)
 		memory_post.save()
-		memory_post.story = self.create_memory_post_story(memory_post, validated_data['story_arr'])
+		memory_post.story = self.create_memory_post_story(memory_post, story_arr)
 		memory_post.save()
 
 		return memory_post

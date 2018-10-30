@@ -36,11 +36,19 @@ class MemoryPostView(mixins.ListModelMixin,
 			story_keys.sort()
 			story_arr = [request_data[key] for key in story_keys]
 
-		data = {'title': request_data.get('title'),
-				'time': request_data.get('time'),
-				'location': request_data.get('location'),
-				'story_arr': story_arr
-				}
+		data = {}
+
+		if story_arr:
+			data['story_arr'] = story_arr
+
+		if 'title' in request_data:
+			data['title'] = request_data.get('title')
+
+		if 'time' in request_data:
+			data['time'] = request_data.get('time')
+
+		if 'location' in request_data:
+			data['location'] = request_data.get('location')
 
 		return data
 
