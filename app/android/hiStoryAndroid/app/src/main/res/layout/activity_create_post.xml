@@ -56,7 +56,7 @@
         android:layout_below="@id/timeEditText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="Add Image"
+        android:text="Add Media"
         android:onClick="addImage"/>
 
     <Button
@@ -67,8 +67,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/addImageButton"
         android:layout_centerHorizontal="true"
-        android:text="Add Image"
-        android:onClick="addImage"/>
+        android:text="CREATE POST"
+        android:onClick="createPost"/>
 
 
 
