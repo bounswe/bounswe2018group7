@@ -25,4 +25,5 @@ public interface ApiEndpoints {
 
     @POST("/api/v1/memory_posts/")
     public Call<MemoryPost> createMemoryPost(@Header("Authorization") String token, @Body MemoryPost memoryPost);
+
 }
