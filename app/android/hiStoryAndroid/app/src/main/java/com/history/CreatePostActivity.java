@@ -47,6 +47,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 "isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all," +
                 " a snake hidden in a fruit basket brought from the city bit the princess and killed her.";
 
+
 //            memoryPost.time = new MemoryPostTime[1];
 //            memoryPost.time[0] = new MemoryPostTime();
 //            memoryPost.time[0].type = "year";
