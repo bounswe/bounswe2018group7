@@ -1,12 +1,8 @@
 package com.history;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -39,33 +35,37 @@ public class CreatePostActivity extends AppCompatActivity {
 
             ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
 
-            String firstName = ((EditText)findViewById(R.id.getFirstNameEditText)).getText().toString();
-            String lastName = ((EditText)findViewById(R.id.getLastNameEditText)).getText().toString();
+            String title = ((EditText)findViewById(R.id.titleEditText)).getText().toString();
+            String time = ((EditText)findViewById(R.id.timeEditText)).getText().toString();
+            String location = ((EditText)findViewById(R.id.locationEditText)).getText().toString();
+            String story = ((EditText)findViewById(R.id.storyEditText)).getText().toString();
+
+            MemoryPost memoryPost = new MemoryPost(title,time,location,story);
 
 
-//            final Call<User> call = apiEndpoints.signUp(user);
-//            call.enqueue(new Callback<User>() {
-//                @Override
-//                public void onResponse(Call<User> call, Response<User> response) {
-//                    if (response.isSuccessful()) {
-//                        Log.d("Success" , String.valueOf(response.body().username));
-//                        Toast.makeText(CreatePostActivity.this, "Welcome " + response.body().first_name, Toast.LENGTH_SHORT).show();
-//                        signUp(response.body());
-//
-//                    } else {
-//                        Log.d("Failure", response.toString());
-//                        Toast.makeText(CreatePostActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-//                        waitingResponse = false;
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<User> call, Throwable t) {
-//                    Log.d("Error", t.getMessage());
-//                    Toast.makeText(CreatePostActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
-//                    waitingResponse = false;
-//                }
-//            });
+            final Call<MemoryPost> call = apiEndpoints.createPost(memoryPost);
+            call.enqueue(new Callback<MemoryPost>() {
+                @Override
+                public void onResponse(Call<MemoryPost> call, Response<MemoryPost> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("Success" , String.valueOf(response.body().title));
+                        Toast.makeText(CreatePostActivity.this, "Post Created", Toast.LENGTH_SHORT).show();
+                        createPost(response.body());
+
+                    } else {
+                        Log.d("Failure", response.toString());
+                        Toast.makeText(CreatePostActivity.this, "Could not create post.", Toast.LENGTH_SHORT).show();
+                        waitingResponse = false;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MemoryPost> call, Throwable t) {
+                    Log.d("Error", t.getMessage());
+                    Toast.makeText(CreatePostActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
+                    waitingResponse = false;
+                }
+            });
         }
         else {
             Toast.makeText(CreatePostActivity.this, "Waiting Response to Previous Request", Toast.LENGTH_SHORT).show();
@@ -73,8 +73,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
     }
 
-    public void createPost(User user){
-
+    public void createPost(MemoryPost memoryPost){
+        backToHomePage(null);
     }
 
     public void addImage(View view){

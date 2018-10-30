@@ -1,33 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context=".CreatePostActivity">
 
-    <android.support.design.widget.AppBarLayout
+
+    <EditText
+        android:id="@+id/titleEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="left"
+        android:hint="Title" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    <EditText
+        android:id="@+id/storyEditText"
+        android:layout_alignLeft="@+id/titleEditText"
+        android:layout_alignRight="@+id/titleEditText"
+        android:layout_below="@id/titleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="5dp"
+        android:gravity="left"
+        android:hint="You can write your memories here." />
 
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_create_post" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <EditText
+        android:id="@+id/timeEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:layout_below="@+id/storyEditText"
+        android:hint="Time"/>
 
-</android.support.design.widget.CoordinatorLayout>
+    <EditText
+        android:id="@+id/locationEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/storyEditText"
+        android:layout_toRightOf="@id/timeEditText"
+        android:layout_alignParentRight="true"
+        android:hint="Location"/>
+
+
+    <Button
+        android:id="@+id/addImageButton"
+        android:layout_alignLeft="@+id/titleEditText"
+        android:layout_alignRight="@+id/titleEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/timeEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Add Image"
+        android:onClick="addImage"/>
+
+    <Button
+        android:id="@+id/createButton"
+        android:layout_alignLeft="@+id/titleEditText"
+        android:layout_alignRight="@+id/titleEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addImageButton"
+        android:layout_centerHorizontal="true"
+        android:text="Add Image"
+        android:onClick="addImage"/>
+
+
+
+    <Button
+        android:id="@+id/goBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:text="Back"
+        android:onClick="backToHomePage"/>
+
+
+</android.widget.RelativeLayout>
