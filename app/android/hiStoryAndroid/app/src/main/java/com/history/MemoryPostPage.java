@@ -6,5 +6,5 @@ public class MemoryPostPage {
     int count;
     String next;
     String previous;
-    MemoryPost posts[];
+    ArrayList<MemoryPost> results;
 }
