@@ -123,12 +123,15 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 		return memory_post
 
 	def update(self, instance, validated_data):
-		instance.memorymedia_set.all().delete()  # First, delete all old MemoryMedia items
+		instance.title = validated_data.get('title', instance.title)
+		instance.time = validated_data.get('time', instance.time)
+		instance.location = validated_data.get('location', instance.location)
 
-		instance.title = validated_data.get('title')
-		instance.time = validated_data.get('time')
-		instance.location = validated_data.get('location')
-		instance.story = self.create_memory_post_story(instance, validated_data['story_arr'])
+		story_arr = validated_data.get('story_arr')
+		if story_arr:
+			instance.memorymedia_set.all().delete()  # Delete all the old MemoryMedia items
+			instance.story = self.create_memory_post_story(instance, story_arr)
+
 		instance.save()
 
 		return instance

@@ -71,7 +71,7 @@ class MemoryPostView(mixins.ListModelMixin,
 		else:
 			return jrh.fail(memory_post_serializer.errors_arr)
 
-	def put(self, request, *args, **kwargs):
+	def patch(self, request, *args, **kwargs):
 		id_param = kwargs.get("id")
 		if not id_param:
 			return jrh.fail(["'id' URL parameter is missing."])
@@ -79,7 +79,7 @@ class MemoryPostView(mixins.ListModelMixin,
 		memory_post = get_object_or_404(MemoryPost, pk=id_param)
 		self.check_object_permissions(request, memory_post)
 
-		memory_post_serializer = self.get_serializer(memory_post, data=self.parse_request_data(request.data))
+		memory_post_serializer = self.get_serializer(memory_post, data=self.parse_request_data(request.data), partial=True)
 		if memory_post_serializer.is_valid():
 			memory_post_serializer.save()
 			return jrh.success(memory_post_serializer.data)
