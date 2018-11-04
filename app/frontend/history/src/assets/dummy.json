@@ -28,6 +28,10 @@
       {
         "type": "text",
         "payload": "Today , the high speed train embark its passengers from Pendik Train Station, but Haydarpaşa still keeps it's silence.The train vagons waiting there for years and years now being used as a playground for graffiti artists."
+      },
+      {
+        "type": "video",
+        "payload": "https://history-media.s3.amazonaws.com/memory_post/5_0_2018-10-30_10-48-14_haydarpasa_yangin.mp4"
       }
     ],
     "comments": [
@@ -93,23 +97,23 @@
     "comments": [
       {
         "creation_time": "12.12.2012",
-        "text": "cok iyisin",
+        "text": "Awesome",
         "username": "abcdrk"
       },
       {
         "creation_time": "12.12.2014",
-        "text": "cok kotu bence",
+        "text": "Great",
         "username": "rmznarsln"
       },
       {
         "creation_time": "12.12.2011",
-        "text": " resimde resim ha",
+        "text": "Wowwww",
         "username": "mfb"
       },
       {
         "creation_time": "12.12.2012",
-        "text": "la noluyo",
-        "username": "laaaa"
+        "text": "OK",
+        "username": "rmzn"
       }
     ],
     "username": "IsabellaCentore",

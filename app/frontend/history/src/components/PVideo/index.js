@@ -20,7 +20,7 @@ PVideo.propTypes = {
 };
 
 PVideo.defaultProps = {
-  poster: "https://pbs.twimg.com/media/DhHiz70X4AMzadT.jpg",
+  poster: "https://i.ytimg.com/vi/5WgTGVkaQJQ/maxresdefault.jpg",
   url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
 };
 
