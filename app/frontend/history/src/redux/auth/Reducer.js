@@ -8,6 +8,10 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
   SIGNUP_RESET,
+  EMAIL_REQUEST,
+  EMAIL_SUCCESS,
+  EMAIL_FAILURE,
+  EMAIL_RESET,
   AUTO_LOGIN
 } from "./actionTypes";
 
@@ -26,7 +30,12 @@ const initialState = {
   signupInProgress: false,
   signupHasError: false,
   signupCompleted: false,
-  signupError: ""
+  signupError: "",
+
+  verifyEmailInProgress: false,
+  verifyEmailHasError: false,
+  verifyEmailCompleted: false,
+  verifyEmailError: ""
 };
 
 export default function(state = initialState, action) {
@@ -66,6 +75,38 @@ export default function(state = initialState, action) {
       signinCompleted: false
     };
   }
+
+  if (action.type === EMAIL_REQUEST) {
+    return {
+      ...state,
+      verifyEmailInProgress: true,
+      verifyEmailHasError: false,
+      verifyEmailCompleted: false
+    };
+  } else if (action.type === EMAIL_SUCCESS) {
+    return {
+      ...state,
+      verifyEmailInProgress: false,
+      verifyEmailHasError: false,
+      verifyEmailCompleted: true
+    };
+  } else if (action.type === EMAIL_FAILURE) {
+    return {
+      ...state,
+      verifyEmailInProgress: false,
+      verifyEmailHasError: true,
+      verifyEmailCompleted: true,
+      verifyEmailError: payload.detail[0]
+    };
+  } else if (action.type === EMAIL_RESET) {
+    return {
+      ...state,
+      verifyEmailInProgress: false,
+      verifyEmailHasError: false,
+      verifyEmailCompleted: false
+    };
+  }
+
   if (action.type === SIGNUP_REQUEST) {
     return {
       ...state,
