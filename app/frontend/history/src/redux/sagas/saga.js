@@ -1,7 +1,14 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 
-import { SIGNIN_REQUEST, SIGNUP_REQUEST } from "../auth/actionTypes";
-import { signinSuccess, signinFailure, signupFailure, signupSuccess } from "../auth/Actions";
+import { SIGNIN_REQUEST, SIGNUP_REQUEST, EMAIL_REQUEST } from "../auth/actionTypes";
+import {
+  signinSuccess,
+  signinFailure,
+  signupFailure,
+  signupSuccess,
+  verifyEmailSuccess,
+  verifyEmailFailure
+} from "../auth/Actions";
 
 import api from "./api";
 import { clError, clWarning } from "utils/consolelog.js";
@@ -31,6 +38,34 @@ const trySignInSaga = function*(action) {
   } catch (err) {
     clWarning("SignIn failed by api. Error => ", err);
     yield put(signinFailure({ detail: [err.detail] }));
+  }
+};
+
+const tryVerifyEmailSaga = function*(action) {
+  const { token } = action.payload;
+
+  try {
+    const verifyEmailResponse = yield call(api.doVerifyIn, token);
+
+    if (verifyEmailResponse) {
+      console.log("​signinResponse", verifyEmailResponse);
+
+      if (verifyEmailResponse.status === 200) {
+        yield put(verifyEmailSuccess(verifyEmailResponse.responseBody));
+      } else if (verifyEmailResponse.status === 400) {
+        clError("Something wrong! Got a status 400", verifyEmailResponse.responseBody);
+        yield put(verifyEmailFailure(verifyEmailResponse.responseBody));
+      } else {
+        clError("Something wrong! Got an unknown status. API BOZUK!!!", verifyEmailResponse);
+        yield put(verifyEmailFailure({ detail: ["Unknown status. Check console!"] }));
+      }
+    } else {
+      clError("SignIn failed by api. No response !");
+      yield put(verifyEmailFailure({ detail: ["No response fetched. Please contact the API team!"] }));
+    }
+  } catch (err) {
+    clWarning("SignIn failed by api. Error => ", err);
+    yield put(verifyEmailFailure({ detail: [err.detail] }));
   }
 };
 
@@ -74,6 +109,7 @@ const saga = function*() {
   //AUTH
   yield takeLatest(SIGNIN_REQUEST, trySignInSaga);
   yield takeLatest(SIGNUP_REQUEST, trySignUpSaga);
+  yield takeLatest(EMAIL_REQUEST, tryVerifyEmailSaga);
 };
 
 export default saga;
