@@ -76,7 +76,7 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 	def get_username(self, obj):
 		return obj.user.username
 
-	def validate_json_array(self, field_name, field_value):
+	def validate_json_array(self, field_value):
 		if isinstance(field_value, str):
 			try:
 				field_arr = json.loads(field_value)
@@ -87,13 +87,13 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 		elif isinstance(field_value, list):
 			return field_value
 
-		raise serializers.ValidationError({field_name: "must be a JSON-Array (plain or String encoded)"})
+		raise serializers.ValidationError("This field must be a JSON-Array (plain or String encoded)")
 
 	def validate_time(self, value):
-		return self.validate_json_array('time', value)
+		return self.validate_json_array(value)
 
 	def validate_location(self, value):
-		return self.validate_json_array('location', value)
+		return self.validate_json_array(value)
 
 	def create_memory_post_story(self, memory_post, story_arr):
 		story = []
