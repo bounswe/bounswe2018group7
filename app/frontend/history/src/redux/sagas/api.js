@@ -12,6 +12,16 @@ class api {
       sendToken: false
     });
   };
+  doVerifyIn = token => {
+    return httpService.fetch({
+      path: "api/v1/email_confirmation/",
+      method: "POST",
+      body: {
+        token
+      },
+      sendToken: false
+    });
+  };
   doSignUp = (username, email, password, password_confirmation, first_name, last_name) => {
     return httpService.fetch({
       path: "api/v1/signup/",

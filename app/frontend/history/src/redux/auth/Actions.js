@@ -8,6 +8,10 @@ import {
   SIGNUP_FAILURE,
   SIGNUP_RESET,
   SIGNOUT_REQUEST,
+  EMAIL_REQUEST,
+  EMAIL_SUCCESS,
+  EMAIL_FAILURE,
+  EMAIL_RESET,
   AUTO_LOGIN
 } from "./actionTypes";
 
@@ -28,6 +32,24 @@ export const signinFailure = errorData => ({
 });
 export const signinReset = () => ({
   type: SIGNIN_RESET
+});
+
+export const tryVerifyEmail = token => ({
+  type: EMAIL_REQUEST,
+  payload: {
+    token
+  }
+});
+export const verifyEmailSuccess = res => ({
+  type: EMAIL_SUCCESS,
+  payload: res
+});
+export const verifyEmailFailure = errorData => ({
+  type: EMAIL_FAILURE,
+  payload: errorData
+});
+export const verifyEmailReset = () => ({
+  type: EMAIL_RESET
 });
 
 export const trySignup = (username, email, password, password_confirmation, first_name, last_name) => ({
