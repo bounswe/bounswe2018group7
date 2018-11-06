@@ -90,7 +90,17 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 		raise serializers.ValidationError("This field must be a JSON-Array (plain or String encoded)")
 
 	def validate_time(self, value):
-		return self.validate_json_array(value)
+		if isinstance(value, str):
+			try:
+				field_dict = json.loads(value)
+				if isinstance(field_dict, dict):
+					return field_dict
+			except JSONDecodeError:
+				pass
+		elif isinstance(value, dict):
+			return value
+
+		raise serializers.ValidationError("This field must be a JSON object (plain or String encoded)")
 
 	def validate_location(self, value):
 		return self.validate_json_array(value)
