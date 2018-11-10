@@ -65,8 +65,9 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 	story_arr = serializers.ListField(write_only=True)
 
 	story = serializers.JSONField(read_only=True, required=False)
+	time = serializers.JSONField(required=False, default={})
+	tags = serializers.JSONField(required=False, default=[])
 	location = serializers.JSONField(required=False, default=[])
-	time = serializers.JSONField(required=False, default=[])
 	username = serializers.SerializerMethodField()
 
 	class Meta:
@@ -102,6 +103,9 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 
 		raise serializers.ValidationError("This field must be a JSON object (plain or String encoded)")
 
+	def validate_tags(self, value):
+		return self.validate_json_array(value)
+
 	def validate_location(self, value):
 		return self.validate_json_array(value)
 
@@ -135,6 +139,7 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 	def update(self, instance, validated_data):
 		instance.title = validated_data.get('title', instance.title)
 		instance.time = validated_data.get('time', instance.time)
+		instance.tags = validated_data.get('tags', instance.tags)
 		instance.location = validated_data.get('location', instance.location)
 
 		story_arr = validated_data.get('story_arr')
