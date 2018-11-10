@@ -65,7 +65,7 @@ class MemoryPostSerializer(CustomBaseModelSerializer):
 	story_arr = serializers.ListField(write_only=True)
 
 	story = serializers.JSONField(read_only=True, required=False)
-	time = serializers.JSONField(required=False, default={})
+	time = serializers.JSONField(required=False)
 	tags = serializers.JSONField(required=False, default=[])
 	location = serializers.JSONField(required=False, default=[])
 	username = serializers.SerializerMethodField()
