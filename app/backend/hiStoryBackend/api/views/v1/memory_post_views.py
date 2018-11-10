@@ -47,6 +47,9 @@ class MemoryPostView(mixins.ListModelMixin,
 		if 'time' in request_data:
 			data['time'] = request_data.get('time')
 
+		if 'tags' in request_data:
+			data['tags'] = request_data.get('tags')
+
 		if 'location' in request_data:
 			data['location'] = request_data.get('location')
 

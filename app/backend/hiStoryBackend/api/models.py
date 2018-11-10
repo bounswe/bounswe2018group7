@@ -145,6 +145,7 @@ class MemoryPost(BaseModel):
 	title = models.CharField(max_length=255)
 	story = JSONField(blank=True, null=True)
 	time = JSONField(blank=True, null=True)
+	tags = JSONField(blank=True, null=True)
 	location = JSONField(blank=True, null=True)
 
 
