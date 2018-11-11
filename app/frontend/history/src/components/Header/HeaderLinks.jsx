@@ -10,7 +10,7 @@ import ListItem from "@material-ui/core/ListItem";
 import { signout } from "redux/auth/Actions";
 
 // @material-ui/icons
-import { Https, Person, ExitToApp, PersonAdd } from "@material-ui/icons";
+import { Https, Person, ExitToApp, PersonAdd, Create } from "@material-ui/icons";
 import { connect } from "react-redux";
 
 import {
@@ -63,6 +63,12 @@ class HeaderLinks extends Component {
     if (this.props.auth.username) {
       return (
         <List className={classes.list}>
+          <ListItem className={classes.listItem}>
+            <CustomButton href="home/createpost" color="transparent" className={classes.navLink}>
+              <Create className={classes.icons} /> Create Post
+            </CustomButton>
+          </ListItem>
+
           <ListItem className={classes.listItem}>
             <CustomButton href="auth/signin" color="transparent" className={classes.navLink}>
               <Person className={classes.icons} /> {this.props.auth.username}

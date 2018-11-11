@@ -31,7 +31,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 // import Home from "./screens/Home";
 import Auth from "./screens/FullScreen/Auth";
-import Component from "./views/Components/Components";
+import Home from "./screens/Home";
 // import NotFound from "./components/NotFound/index";
 
 class App extends React.Component {
@@ -40,7 +40,7 @@ class App extends React.Component {
       <Switch>
         <Route exact path="/" render={() => <Redirect to={"/home"} />} />
 
-        <Route path="/home" component={Component} />
+        <Route path="/home" component={Home} />
         <Route path="/auth" component={Auth} />
         {/* <Route path="*" component={NotFound} /> */}
       </Switch>
