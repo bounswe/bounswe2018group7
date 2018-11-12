@@ -1,8 +1,8 @@
 import { getCookie, TOKEN_COOKIE } from "utils/cookies.js";
 
 const Configuration = {
-  API_URL: "https://history-backend.herokuapp.com/",
-  STATIC_HOST: "https://history-backend.herokuapp.com/",
+  API_URL: "https://dev.panel.tropertymanagement.com/",
+  STATIC_HOST: "https://dev.panel.tropertymanagement.com/",
   HTTP_TIMEOUT_MS: 40000 /* 40 sec */
 };
 
@@ -21,8 +21,8 @@ class HttpService {
             typeof sendToken === "undefined"
               ? "JWT " + getCookie(TOKEN_COOKIE)
               : sendToken === false
-                ? null
-                : "JWT " + getCookie(TOKEN_COOKIE),
+              ? null
+              : "JWT " + getCookie(TOKEN_COOKIE),
           ...overriddenHeaders
         },
         timeout: Configuration.HTTP_TIMEOUT_MS
@@ -48,6 +48,31 @@ class HttpService {
             detail: "Something wrong happened when try to fetch data. Code-API"
           });
         });
+    });
+  }
+
+  xhrFormData(requestOptions) {
+    return new Promise((resolve, reject) => {
+      const url = this._createUrl(requestOptions);
+      const sendToken = requestOptions.sendToken || false;
+
+      var request = new XMLHttpRequest();
+      request.onload = oEvent => {
+        console.log(oEvent);
+        if (oEvent.target.status === 400) reject(oEvent);
+        else resolve(oEvent);
+      };
+
+      request.open(requestOptions.method, url);
+      request.setRequestHeader(
+        "Authorization",
+        typeof sendToken === "undefined"
+          ? "JWT " + getCookie(TOKEN_COOKIE)
+          : sendToken === false
+          ? null
+          : "JWT " + getCookie(TOKEN_COOKIE)
+      );
+      request.send(requestOptions.body);
     });
   }
 

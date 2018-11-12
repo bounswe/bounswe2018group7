@@ -12,13 +12,13 @@ class PTag extends Component {
     super(props);
 
     this.state = {
-      tags: [{ id: "Thailand", text: "Thailand" }, { id: "India", text: "India" }],
+      tags: [],
       suggestions: [
-        { id: "USA", text: "USA" },
-        { id: "Germany", text: "Germany" },
-        { id: "Austria", text: "Austria" },
-        { id: "Costa Rica", text: "Costa Rica" },
-        { id: "Sri Lanka", text: "Sri Lanka" },
+        { id: "Istanbul", text: "Istanbul" },
+        { id: "İstanbul", text: "İstanbul" },
+        { id: "Boğaziçi", text: "Boğaziçi" },
+        { id: "Kız Kulesi", text: "Kız Kulesi" },
+        { id: "SriLanka", text: "Sri Lanka" },
         { id: "Thailand", text: "Thailand" }
       ]
     };

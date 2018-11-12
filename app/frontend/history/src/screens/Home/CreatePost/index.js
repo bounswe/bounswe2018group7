@@ -10,11 +10,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import { Grid, TextField, Button, IconButton, Typography } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputMoment from "input-moment";
 import classNames from "classnames";
 import DatePicker from "../../../components/DatePicker";
 import DateTime from "../../../components/DateTime";
 import PMaps from "components/PMaps";
+
+import PTag from "../../../components/PTag";
 
 class CreatePost extends Component {
   componentDidMount() {
@@ -221,6 +222,14 @@ class CreatePost extends Component {
                 margin="normal"
                 variant="outlined"
               />
+            </Grid>
+
+            <Grid item xs={6} sm={3} />
+          </Grid>
+          <Grid container spacing={24}>
+            <Grid item xs={6} sm={3} />
+            <Grid item xs={12} sm={6}>
+              <PTag />
             </Grid>
 
             <Grid item xs={6} sm={3} />
