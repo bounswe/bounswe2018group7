@@ -56,11 +56,7 @@ class HeaderLinks extends Component {
   render() {
     const { classes } = this.props;
 
-    console.log("TCL: --------------------------------------------------------------");
-    console.log("TCL: HeaderLinks -> render -> this.props.authhistorysh", this.props.history);
-    console.log("TCL: --------------------------------------------------------------");
-
-    if (this.props.auth.username) {
+    if (this.props.auth.user.username) {
       return (
         <List className={classes.list}>
           <ListItem className={classes.listItem}>
@@ -71,7 +67,7 @@ class HeaderLinks extends Component {
 
           <ListItem className={classes.listItem}>
             <CustomButton href="auth/signin" color="transparent" className={classes.navLink}>
-              <Person className={classes.icons} /> {this.props.auth.username}
+              <Person className={classes.icons} /> {this.props.auth.user.username}
             </CustomButton>
           </ListItem>
           <ListItem className={classes.listItem}>

@@ -20,6 +20,8 @@
 //   document.getElementById("root")
 // );
 
+import { SnackbarProvider } from "notistack";
+
 import React from "react";
 import ReactDOM from "react-dom";
 // import "./index.css";
@@ -51,7 +53,9 @@ class App extends React.Component {
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <SnackbarProvider maxSnack={3}>
+        <App />
+      </SnackbarProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById("root")

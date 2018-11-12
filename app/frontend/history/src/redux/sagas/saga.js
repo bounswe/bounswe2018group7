@@ -12,6 +12,8 @@ import {
 
 import api from "./api";
 import { clError, clWarning } from "utils/consolelog.js";
+import { createPostFailure, createPostSuccess, createPost } from "../post/Actions";
+import { CREATE_POST_REQUEST } from "../post/actionTypes";
 
 const trySignInSaga = function*(action) {
   const { identity, password } = action.payload;
@@ -105,11 +107,48 @@ const trySignUpSaga = function*(action) {
   }
 };
 
+const tryCreatePostSaga = function*(action) {
+  const { title, time, location, stories } = action.payload;
+  console.log("​------------------------------");
+  console.log("​action.payload", action.payload);
+  console.log("​------------------------------");
+
+  try {
+    const createPostResponse = yield call(api.createPost, title, time, location, stories);
+
+    if (createPostResponse) {
+      console.log("createPostResponse", createPostResponse);
+
+      if (createPostResponse.status === 200) {
+        yield put(createPostSuccess());
+      } else if (createPostResponse.status === 201) {
+        yield put(createPostSuccess());
+      } else if (createPostResponse.status === 400) {
+        clError("Something wrong! Got a status 400", createPostResponse.responseBody);
+        yield put(createPostFailure(createPostResponse.responseBody));
+      } else if (createPostResponse.status === 401) {
+        clError("Unauthorized request!");
+        yield put(createPostFailure({ detail: ["Unauthorized request!"] }));
+      } else {
+        clError("Something wrong! Got an unknown status. API BOZUK!!!", createPostResponse);
+        yield put(createPostFailure({ detail: ["Unknown status. Check console!"] }));
+      }
+    } else {
+      clError("Creating Post failed by api. No response !");
+      yield put(createPostFailure({ detail: ["No response fetched. Please contact the API team"] }));
+    }
+  } catch (err) {
+    clWarning("Creating Post failed by api. Error => ", err);
+    yield put(createPostFailure({ detail: [err.detail] }));
+  }
+};
+
 const saga = function*() {
   //AUTH
   yield takeLatest(SIGNIN_REQUEST, trySignInSaga);
   yield takeLatest(SIGNUP_REQUEST, trySignUpSaga);
   yield takeLatest(EMAIL_REQUEST, tryVerifyEmailSaga);
+  yield takeLatest(CREATE_POST_REQUEST, tryCreatePostSaga);
 };
 
 export default saga;

@@ -1,8 +1,8 @@
 import { getCookie, TOKEN_COOKIE } from "utils/cookies.js";
 
 const Configuration = {
-  API_URL: "https://dev.panel.tropertymanagement.com/",
-  STATIC_HOST: "https://dev.panel.tropertymanagement.com/",
+  API_URL: "https://history-backend.herokuapp.com/",
+  STATIC_HOST: "https://history-backend.herokuapp.com/",
   HTTP_TIMEOUT_MS: 40000 /* 40 sec */
 };
 
@@ -19,10 +19,10 @@ class HttpService {
           "Content-Type": "application/json",
           Authorization:
             typeof sendToken === "undefined"
-              ? "JWT " + getCookie(TOKEN_COOKIE)
+              ? "TOKEN " + getCookie(TOKEN_COOKIE)
               : sendToken === false
               ? null
-              : "JWT " + getCookie(TOKEN_COOKIE),
+              : "TOKEN " + getCookie(TOKEN_COOKIE),
           ...overriddenHeaders
         },
         timeout: Configuration.HTTP_TIMEOUT_MS
@@ -67,10 +67,10 @@ class HttpService {
       request.setRequestHeader(
         "Authorization",
         typeof sendToken === "undefined"
-          ? "JWT " + getCookie(TOKEN_COOKIE)
+          ? "TOKEN " + getCookie(TOKEN_COOKIE)
           : sendToken === false
           ? null
-          : "JWT " + getCookie(TOKEN_COOKIE)
+          : "TOKEN " + getCookie(TOKEN_COOKIE)
       );
       request.send(requestOptions.body);
     });

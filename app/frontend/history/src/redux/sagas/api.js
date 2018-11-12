@@ -1,4 +1,5 @@
 import httpService from "services/HttpService";
+import { getCookie, TOKEN_COOKIE } from "utils/cookies.js";
 
 class api {
   doSignIn = (identity, password) => {
@@ -35,6 +36,46 @@ class api {
         last_name
       },
       sendToken: false
+    });
+  };
+
+  createPost = (title, time, location, stories) => {
+    console.log("​-------------------------------------");
+    console.log("​api -> createPost -> stories", stories);
+    console.log("​-------------------------------------");
+    console.log("​---------------------------------------");
+    console.log("​api -> createPost -> location", location);
+    console.log("​---------------------------------------");
+    console.log("​-------------------------------");
+    console.log("​api -> createPost -> time", time);
+    console.log("​-------------------------------");
+    console.log("​---------------------------------");
+    console.log("​api -> createPost -> title", title);
+    console.log("​---------------------------------");
+
+    var formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("time", time);
+    formData.append("location", location);
+
+    Object.keys(stories).forEach(el => formData.append(el, stories[el]));
+
+    // stories.forEach((el, index) => {
+    //   let storytxt = "story[" + index + "]";
+    //   formData.append(storytxt, el, el.name);
+    // });
+
+    return new Promise((resolve, reject) => {
+      var request = new XMLHttpRequest();
+      request.onload = oEvent => {
+        if (oEvent) resolve(oEvent.target);
+        else reject("NO RESPONSE");
+      };
+
+      request.open("POST", "https://history-backend.herokuapp.com/api/v1/memory_posts/");
+      request.setRequestHeader("Authorization", "TOKEN " + getCookie(TOKEN_COOKIE));
+      request.send(formData);
     });
   };
 }

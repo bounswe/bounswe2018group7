@@ -7,15 +7,26 @@ import Parallax from "components/Parallax/Parallax.jsx";
 import componentsStyle from "assets/jss/material-kit-react/views/components.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { connect } from "react-redux";
+import { createPost, createPostReset } from "redux/post/Actions";
 
-import { Grid, TextField, Button, IconButton, Typography } from "@material-ui/core";
+import {
+  Grid,
+  TextField,
+  Button,
+  IconButton,
+  Typography,
+  Dialog,
+  DialogTitle,
+  CircularProgress
+} from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import classNames from "classnames";
 import DatePicker from "../../../components/DatePicker";
 import DateTime from "../../../components/DateTime";
 import PMaps from "components/PMaps";
-
 import PTag from "../../../components/PTag";
+import { withSnackbar } from "notistack";
 
 class CreatePost extends Component {
   componentDidMount() {
@@ -33,6 +44,26 @@ class CreatePost extends Component {
     this.delayedShowMarker();
   };
 
+  handleCreatePost = () => {
+    this.setState({ isloaderOpen: true });
+    this.props.createPost("title", '{"general":"1900s"}', '[{"type": "region", "name": "Istanbul"}]', [
+      { "story[0]": "My Story Text 1" }
+    ]);
+  };
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   const { createPostInProgress, createPostHasError, createPostCompleted, createPostError } = this.props.post;
+
+  //   if (!createPostInProgress && !createPostHasError && createPostCompleted) {
+  //     this.props.createPostReset();
+  //     setTimeout(() => this.setState({ isloaderOpen: false }), 1000);
+  //   } else if (!createPostInProgress && createPostHasError && createPostCompleted) {
+  //     this.props.enqueueSnackbar(createPostError, { variant: "warning" });
+  //     this.props.createPostReset();
+  //     setTimeout(() => this.setState({ isloaderOpen: false }), 1000);
+  //   }
+  // }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -44,7 +75,9 @@ class CreatePost extends Component {
       //map
       mapType: "",
       certainLoc: "",
-      isMarkerShown: false
+      isMarkerShown: false,
+
+      isloaderOpen: false
     };
   }
 
@@ -78,7 +111,6 @@ class CreatePost extends Component {
           }}
           {...rest}
         />
-
         <Parallax image={require("assets/img/bg7.jpg")}>
           <div className={classes.container}>
             <GridContainer>
@@ -90,7 +122,6 @@ class CreatePost extends Component {
             </GridContainer>
           </div>
         </Parallax>
-
         <div className={classNames(classes.main, classes.mainRaised)}>
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
@@ -238,18 +269,43 @@ class CreatePost extends Component {
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
-              <Button variant="contained" color="secondary">
+              {/* <Button onClick={() => this.handleCreatePost()} variant="contained" color="secondary">
                 Send the Post
-              </Button>
+              </Button> */}
             </Grid>
 
             <Grid item xs={6} sm={3} />
           </Grid>
         </div>
+        {/* <Dialog
+          maxWidth={"xs"}
+          fullWidth
+          aria-labelledby="simple-dialog-title"
+          open={this.state.isloaderOpen}
+          onClose={() => this.setState({ isloaderOpen: false })}
+        >
+          <DialogTitle id="loading-add-estate-dialog-title">Yükleniyor</DialogTitle>
+          <div style={{ justifyContent: "center", alignItems: "center" }}>
+            <CircularProgress />
+          </div>
+        </Dialog> */}
+
         <Footer />
       </div>
     );
   }
 }
 
-export default withStyles(componentsStyle)(CreatePost);
+const mapStateToProps = state => ({
+  post: state.post
+});
+
+const bindAction = dispatch => ({
+  createPost: (title, time, location, stories) => dispatch(createPost(title, time, location, stories)),
+  createPostReset: () => dispatch(createPostReset())
+});
+
+export default connect(
+  mapStateToProps,
+  bindAction
+)(withStyles(withSnackbar(CreatePost)));

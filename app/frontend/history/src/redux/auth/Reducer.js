@@ -18,7 +18,6 @@ import {
 const initialState = {
   user: {},
   token: "",
-  username: "",
 
   loggedIn: false,
 
@@ -50,8 +49,7 @@ export default function(state = initialState, action) {
   } else if (action.type === SIGNIN_SUCCESS) {
     return {
       ...state,
-      // user: payload.user,
-      username: payload.username,
+      user: payload,
 
       token: payload.auth_token,
       loggedIn: true,
@@ -65,7 +63,7 @@ export default function(state = initialState, action) {
       signinInProgress: false,
       signinHasError: true,
       signinCompleted: true,
-      signinError: payload.detail[0]
+      signinError: payload.errors
     };
   } else if (action.type === SIGNIN_RESET) {
     return {
@@ -96,7 +94,7 @@ export default function(state = initialState, action) {
       verifyEmailInProgress: false,
       verifyEmailHasError: true,
       verifyEmailCompleted: true,
-      verifyEmailError: payload.detail[0]
+      verifyEmailError: payload.errors
     };
   } else if (action.type === EMAIL_RESET) {
     return {
@@ -117,8 +115,7 @@ export default function(state = initialState, action) {
   } else if (action.type === SIGNUP_SUCCESS) {
     return {
       ...state,
-      //user: payload.username,
-      username: payload.username,
+      user: payload,
       token: payload.auth_token,
       loggedIn: true,
       signupInProgress: false,
@@ -131,7 +128,7 @@ export default function(state = initialState, action) {
       signupInProgress: false,
       signupHasError: true,
       signupCompleted: true,
-      signupError: payload.detail[0]
+      signupError: payload.errors
     };
   } else if (action.type === SIGNUP_RESET) {
     return {
@@ -141,11 +138,10 @@ export default function(state = initialState, action) {
       signupCompleted: false
     };
   } else if (action.type === AUTO_LOGIN) {
-    const { user, token, username } = payload;
+    const { user, token } = payload;
     return {
       ...state,
       user,
-      username,
       token,
       loggedIn: true
     };
@@ -153,7 +149,6 @@ export default function(state = initialState, action) {
     return {
       ...state,
       user: {},
-      username: "",
       token: "",
 
       loggedIn: false,
