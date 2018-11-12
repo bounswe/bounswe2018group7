@@ -9,80 +9,98 @@
     tools:context=".CreatePostActivity">
 
 
-    <EditText
-        android:id="@+id/titleEditText"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:gravity="left"
-        android:hint="Title" />
+    <!--<EditText-->
+        <!--android:id="@+id/titleEditText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:gravity="left"-->
+        <!--android:hint="Title" />-->
 
-    <EditText
-        android:id="@+id/storyEditText"
-        android:layout_alignLeft="@+id/titleEditText"
-        android:layout_alignRight="@+id/titleEditText"
-        android:layout_below="@id/titleEditText"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="5dp"
-        android:gravity="left"
-        android:hint="You can write your memories here." />
+    <!--<EditText-->
+        <!--android:id="@+id/storyEditText"-->
+        <!--android:layout_alignLeft="@+id/titleEditText"-->
+        <!--android:layout_alignRight="@+id/titleEditText"-->
+        <!--android:layout_below="@id/titleEditText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:gravity="left"-->
+        <!--android:hint="You can write your memories here." />-->
 
-    <EditText
-        android:id="@+id/timeEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/storyEditText"
-        android:hint="Time"/>
+    <!--<EditText-->
+        <!--android:id="@+id/timeEditText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/storyEditText"-->
+        <!--android:hint="Time"/>-->
+    <!--<Button-->
+        <!--android:id="@+id/button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="24dp"-->
+        <!--android:text="Pick Date"-->
+        <!--android:layout_below="@+id/storyEditText"-->
+        <!--android:onClick="showDatePicker" />-->
 
-    <EditText
-        android:id="@+id/locationEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/storyEditText"
-        android:layout_toRightOf="@id/timeEditText"
-        android:layout_alignParentRight="true"
-        android:hint="Location"/>
+    <!--<EditText-->
+        <!--android:id="@+id/locationEditText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/storyEditText"-->
+        <!--android:layout_toRightOf="@id/timeEditText"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:hint="Location"/>-->
 
-
-    <Button
-        android:id="@+id/addImageButton"
-        android:layout_alignLeft="@+id/titleEditText"
-        android:layout_alignRight="@+id/titleEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/timeEditText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="Add Media"
-        android:onClick="addImage"/>
-
-    <Button
-        android:id="@+id/createButton"
-        android:layout_alignLeft="@+id/titleEditText"
-        android:layout_alignRight="@+id/titleEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/addImageButton"
-        android:layout_centerHorizontal="true"
-        android:text="CREATE POST"
-        android:onClick="createPost"/>
+    <!--<DatePicker-->
+        <!--android:id="@+id/datePicker"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--style="@style/MyDatePickerSpinnerStyle"-->
+        <!--/>-->
 
 
+    <!--<Button-->
+        <!--android:id="@+id/addImageButton"-->
+        <!--android:layout_alignLeft="@+id/titleEditText"-->
+        <!--android:layout_alignRight="@+id/titleEditText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/timeEditText"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="Add Media"-->
+        <!--android:onClick="addImage"/>-->
 
+    <!--<Button-->
+        <!--android:id="@+id/createButton"-->
+        <!--android:layout_alignLeft="@+id/titleEditText"-->
+        <!--android:layout_alignRight="@+id/titleEditText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/addImageButton"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:text="CREATE POST"-->
+        <!--android:onClick="create"/>-->
 
-
-    <Button
-        android:id="@+id/goBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:text="Back"
-        android:onClick="backToHomePage"/>
+    <!--<Button-->
+        <!--android:id="@+id/goBackButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="Back"-->
+        <!--android:onClick="backToHomePage"/>-->
 
 
 </android.widget.RelativeLayout>

@@ -39,6 +39,8 @@ public interface ApiEndpoints {
     Call<ResponseBody> uploadMultipleFiles(
             @Header("Authorization") String token,
             @Part("title") RequestBody title,
+            @Part("time") RequestBody time,
+            @Part("location") RequestBody location,
             @Part List<MultipartBody.Part> story);
 
 

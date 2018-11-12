@@ -1,27 +1,22 @@
 package com.history;
 
+
+import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.FormBody;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
-
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -31,11 +26,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
-
 public class CreatePostActivity extends AppCompatActivity {
 
-    String SERVER_URL = "http://192.168.6.61:8000";
+    String SERVER_URL = "https://history-backend.herokuapp.com";
+    String day;
+    String month;
+    String year;
 
     boolean waitingResponse = false;
 
@@ -43,9 +39,41 @@ public class CreatePostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getSupportActionBar().hide();
-        setContentView(R.layout.activity_create_post);
-        createPost(null);
+        setContentView(R.layout.activity_create_post2);
+
+        final DatePicker dp = (DatePicker) findViewById(R.id.datePicker);
+        final Button btn = (Button) findViewById(R.id.button);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(CreatePostActivity.this, "" + dp.getMonth() + " " + dp.getYear(), Toast.LENGTH_SHORT).show();
+                day = ""+ dp.getDayOfMonth();
+                month = "" + dp.getMonth()+1;
+                year = "" + dp.getYear();
+            }
+        });
+
+
+
     }
+    public void showDatePicker(View v) {
+        //DialogFragment newFragment = new MyDatePickerFragment();
+        // newFragment.show(getSupportFragmentManager(), "date picker");
+
+
+    }
+
+//    DatePickerDialog.OnDateSetListener dateSetListener =
+//            new DatePickerDialog.OnDateSetListener() {
+//                public void onDateSet(DatePicker view, int year, int month, int day) {
+//                    Toast.makeText(CreatePostActivity.this, "selected date is " + view.getYear() +
+//                            " / " + (view.getMonth()+1) +
+//                            " / " + view.getDayOfMonth(), Toast.LENGTH_SHORT).show();
+//                }
+//            };
+
+
 
     public void createPost(View view){
 
@@ -73,47 +101,43 @@ public class CreatePostActivity extends AppCompatActivity {
 
             ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
 
+            String newTitle = ((EditText)findViewById(R.id.titleEditText)).getText().toString();
+            //String newTime = ((EditText)findViewById(R.id.timeEditText)).getText().toString();
+            String newLocation = ((EditText)findViewById(R.id.locationEditText)).getText().toString();
+            String newStoryBody = ((EditText)findViewById(R.id.storyEditText)).getText().toString();
 
 
-//            String title = ((EditText)findViewById(R.id.titleEditText)).getText().toString();
-//            MemoryPostTime time = ((EditText)findViewById(R.id.timeEditText)).getText().toString();
-//            String location = ((EditText)findViewById(R.id.locationEditText)).getText().toString();
-//            String story = ((EditText)findViewById(R.id.storyEditText)).getText().toString();
-//
-//            MemoryPost memoryPost = new MemoryPost(title,time,location,story);
+            String exampleTitle = newTitle;
+            String exampleTime = "{\"type\": \"duration\", \"data\": [\"1980\", \"1990\"]}";
+            String exampleTime2 = "{\"type\": \"certainTime\", \"data\": [\""+ day +"\", \""+month+"\", \""+year+"\"]}";
+            String exampleLocation = "[{\"type\": \"region\", \"name\": \" "+ newLocation +"\"}]";
 
-            MemoryPost memoryPost = new MemoryPost();
-            memoryPost.title = "The Maiden's tower";
-            memoryPost.time = new MemoryPostTime[1];
-            memoryPost.time[0] = new MemoryPostTime();
-            memoryPost.time[0].type = "year";
-            memoryPost.time[0].data = "2018";
-            memoryPost.location = new MemoryPostLocation[1];
-            memoryPost.location[0] = new MemoryPostLocation();
-            memoryPost.location[0].type = "region";
-            memoryPost.location[0].name = "Istanbul";
-            memoryPost.story = new MemoryPostStory[1];
-            memoryPost.story[0] = new MemoryPostStory();
-            memoryPost.story[0].type = "text";
-            memoryPost.story[0].payload = "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. The name comes from a legend: the Byzantine emperor heard a prophecy telling him that his beloved daughter would die at the age of 18 by a snake. So he decided to put her in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city bit the princess and killed her.";
+            String exampleStoryBody= "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, " +
+                    "at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. " +
+                    "The name comes from a legend: the Byzantine emperor heard a prophecy telling him " +
+                    "that his beloved daughter would die at the age of 18 by a snake. So he decided to put her " +
+                    "in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. " +
+                    "But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city " +
+                    "bit the princess and killed her.";
 
 
-            RequestBody myBody = RequestBody.create(
-                    okhttp3.MultipartBody.FORM, "my title");
+            RequestBody title = RequestBody.create(
+                    okhttp3.MultipartBody.FORM, exampleTitle);
+
+            RequestBody time = RequestBody.create(
+                    okhttp3.MultipartBody.FORM, exampleTime2);
+
+            RequestBody location = RequestBody.create(
+                    okhttp3.MultipartBody.FORM, exampleLocation);
 
             List<MultipartBody.Part> story = new ArrayList<>();
 
-            MultipartBody.Part storyBody = MultipartBody.Part.createFormData( "story[0]",  "my story text");
+            MultipartBody.Part storyBody = MultipartBody.Part.createFormData( "story[0]",  newStoryBody);
 
             story.add(storyBody);
 
-//            Uri imageUri = null;
-//
-//            File file = new File(imageUri.getPath());
 
-            // create upload service client
-
-            final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token 124fa23f3eee0c34a78b2c9030412f55f885d986", null, story );
+            final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token a5f6fda9c2ef6afc4b55f6000ecdd8475b230c24", title,time,location,story);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -143,9 +167,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
     }
 
-//    public void createPost(MemoryPost memoryPost){
-//        backToHomePage(null);
-//    }
+    public void create(View view){
+        createPost(null);
+    }
 
     public void addImage(View view){
 
