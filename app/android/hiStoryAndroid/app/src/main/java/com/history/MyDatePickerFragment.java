@@ -27,7 +27,12 @@ public class MyDatePickerFragment extends DialogFragment {
                     Toast.makeText(getActivity(), "selected date is " + view.getYear() +
                             " / " + (view.getMonth()+1) +
                             " / " + view.getDayOfMonth(), Toast.LENGTH_SHORT).show();
-                   // Bundle bnl =
+                    // Bundle bnl =
+                    CreatePostActivity c = (CreatePostActivity) getActivity();
+                    c.day_ = ""+ view.getDayOfMonth();
+                    c.month_ = ""+ view.getMonth()+1;
+                    c.year_ = ""+ view.getYear();
+
                 }
             };
 }

@@ -1,106 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
     tools:context=".CreatePostActivity">
 
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <!--<EditText-->
-        <!--android:id="@+id/titleEditText"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:gravity="left"-->
-        <!--android:hint="Title" />-->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:text=" Title:"
+            android:textSize="8pt"
+            android:textStyle="bold"/>
 
-    <!--<EditText-->
-        <!--android:id="@+id/storyEditText"-->
-        <!--android:layout_alignLeft="@+id/titleEditText"-->
-        <!--android:layout_alignRight="@+id/titleEditText"-->
-        <!--android:layout_below="@id/titleEditText"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:gravity="left"-->
-        <!--android:hint="You can write your memories here." />-->
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/titleText"
+            android:layout_alignRight="@+id/titleText"
+            android:layout_below="@id/titleText"
+            android:layout_marginBottom="10dp"
+            android:gravity="left"
+            android:hint="Title" />
 
-    <!--<EditText-->
-        <!--android:id="@+id/timeEditText"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/storyEditText"-->
-        <!--android:hint="Time"/>-->
-    <!--<Button-->
-        <!--android:id="@+id/button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="24dp"-->
-        <!--android:text="Pick Date"-->
-        <!--android:layout_below="@+id/storyEditText"-->
-        <!--android:onClick="showDatePicker" />-->
+        <TextView
+            android:id="@+id/storyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleEditText"
+            android:layout_marginLeft="10dp"
+            android:text="Story:"
+            android:textSize="8pt"
+            android:textStyle="bold"/>
 
-    <!--<EditText-->
-        <!--android:id="@+id/locationEditText"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/storyEditText"-->
-        <!--android:layout_toRightOf="@id/timeEditText"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:hint="Location"/>-->
-
-    <!--<DatePicker-->
-        <!--android:id="@+id/datePicker"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--style="@style/MyDatePickerSpinnerStyle"-->
-        <!--/>-->
+        <EditText
+            android:id="@+id/storyEditText"
+            android:layout_alignLeft="@+id/titleEditText"
+            android:layout_alignRight="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/storyText"
+            android:gravity="left"
+            android:hint="You can write your memories here." />
 
 
-    <!--<Button-->
-        <!--android:id="@+id/addImageButton"-->
-        <!--android:layout_alignLeft="@+id/titleEditText"-->
-        <!--android:layout_alignRight="@+id/titleEditText"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/timeEditText"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:text="Add Media"-->
-        <!--android:onClick="addImage"/>-->
+        <RelativeLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/storyEditText">
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick Date"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:onClick="showDatePicker" />
 
-    <!--<Button-->
-        <!--android:id="@+id/createButton"-->
-        <!--android:layout_alignLeft="@+id/titleEditText"-->
-        <!--android:layout_alignRight="@+id/titleEditText"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/addImageButton"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:text="CREATE POST"-->
-        <!--android:onClick="create"/>-->
+            <EditText
+                android:id="@+id/locationEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/button"
+                android:layout_marginRight="10dp"
+                android:hint="Location" />
 
-    <!--<Button-->
-        <!--android:id="@+id/goBackButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:text="Back"-->
-        <!--android:onClick="backToHomePage"/>-->
+        </RelativeLayout>
 
+        <Button
+            android:id="@+id/addImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Add Media"
+            android:onClick="addImage"/>
 
-</android.widget.RelativeLayout>
+        <Button
+            android:id="@+id/createButton"
+            android:layout_alignLeft="@+id/titleEditText"
+            android:layout_alignRight="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addImageButton"
+            android:layout_centerHorizontal="true"
+            android:text="CREATE POST"
+            android:onClick="create"/>
+
+        <Button
+            android:id="@+id/goBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/createButton"
+            android:layout_alignLeft="@+id/titleEditText"
+            android:layout_marginBottom="10dp"
+            android:text="Back"
+            android:onClick="backToHomePage"/>
+
+    </RelativeLayout>
+
+</ScrollView>

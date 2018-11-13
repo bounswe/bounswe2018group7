@@ -29,9 +29,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CreatePostActivity extends AppCompatActivity {
 
     String SERVER_URL = "https://history-backend.herokuapp.com";
-    String day;
-    String month;
-    String year;
+
+    String day_;
+    String month_;
+    String year_;
 
     boolean waitingResponse = false;
 
@@ -39,40 +40,31 @@ public class CreatePostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getSupportActionBar().hide();
-        setContentView(R.layout.activity_create_post2);
+        setContentView(R.layout.activity_create_post);
 
-        final DatePicker dp = (DatePicker) findViewById(R.id.datePicker);
-        final Button btn = (Button) findViewById(R.id.button);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(CreatePostActivity.this, "" + dp.getMonth() + " " + dp.getYear(), Toast.LENGTH_SHORT).show();
-                day = ""+ dp.getDayOfMonth();
-                month = "" + dp.getMonth()+1;
-                year = "" + dp.getYear();
-            }
-        });
+//        final DatePicker dp = (DatePicker) findViewById(R.id.datePicker);
+//        final Button btn = (Button) findViewById(R.id.button);
+//
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(CreatePostActivity.this, "" + dp.getMonth() + " " + dp.getYear(), Toast.LENGTH_SHORT).show();
+//                day_ = ""+ dp.getDayOfMonth();
+//                month_ = "" + dp.getMonth()+1;
+//                year_ = "" + dp.getYear();
+//            }
+//        });
 
 
 
     }
+
     public void showDatePicker(View v) {
-        //DialogFragment newFragment = new MyDatePickerFragment();
-        // newFragment.show(getSupportFragmentManager(), "date picker");
+        DialogFragment newFragment = new MyDatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "date picker");
 
 
     }
-
-//    DatePickerDialog.OnDateSetListener dateSetListener =
-//            new DatePickerDialog.OnDateSetListener() {
-//                public void onDateSet(DatePicker view, int year, int month, int day) {
-//                    Toast.makeText(CreatePostActivity.this, "selected date is " + view.getYear() +
-//                            " / " + (view.getMonth()+1) +
-//                            " / " + view.getDayOfMonth(), Toast.LENGTH_SHORT).show();
-//                }
-//            };
-
 
 
     public void createPost(View view){
@@ -108,8 +100,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
             String exampleTitle = newTitle;
-            String exampleTime = "{\"type\": \"duration\", \"data\": [\"1980\", \"1990\"]}";
-            String exampleTime2 = "{\"type\": \"certainTime\", \"data\": [\""+ day +"\", \""+month+"\", \""+year+"\"]}";
+            //String exampleTime = "{\"type\": \"duration\", \"data\": [\"1980\", \"1990\"]}";
+            String exampleTime2 = "{\"type\": \"certainTime\", \"data\": [\""+ day_ +"\", \""+ month_ +"\", \""+year_+"\"]}";
+
             String exampleLocation = "[{\"type\": \"region\", \"name\": \" "+ newLocation +"\"}]";
 
             String exampleStoryBody= "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, " +
@@ -141,9 +134,11 @@ public class CreatePostActivity extends AppCompatActivity {
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Toast.makeText(CreatePostActivity.this, "Response???", Toast.LENGTH_SHORT).show();
                     if (response.isSuccessful()) {
                         //Log.d("Success" , String.valueOf(response.body().title));
                         Toast.makeText(CreatePostActivity.this, "Post Created", Toast.LENGTH_SHORT).show();
+                        waitingResponse = false;
 
                     } else {
                         //Log.d("Failure", response.toString());
@@ -154,10 +149,11 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                    //Log.d("Error", t.getMessage());
-//                    Toast.makeText(CreatePostActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
-//                    waitingResponse = false;
+                    //Log.d("Error", t.getMessage());
+                    Toast.makeText(CreatePostActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
+                    waitingResponse = false;
                 }
+
             });
         }
         else {
