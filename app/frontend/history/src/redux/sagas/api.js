@@ -59,12 +59,12 @@ class api {
     formData.append("time", time);
     formData.append("location", location);
 
-    Object.keys(stories).forEach(el => formData.append(el, stories[el]));
+    // Object.keys(stories).forEach(el => formData.append(el, stories[el]));
 
-    // stories.forEach((el, index) => {
-    //   let storytxt = "story[" + index + "]";
-    //   formData.append(storytxt, el, el.name);
-    // });
+    stories.forEach((el, index) => {
+      let storytxt = "story[" + index + "]";
+      formData.append(storytxt, el, el.name);
+    });
 
     return new Promise((resolve, reject) => {
       var request = new XMLHttpRequest();

@@ -109,9 +109,6 @@ const trySignUpSaga = function*(action) {
 
 const tryCreatePostSaga = function*(action) {
   const { title, time, location, stories } = action.payload;
-  console.log("​------------------------------");
-  console.log("​action.payload", action.payload);
-  console.log("​------------------------------");
 
   try {
     const createPostResponse = yield call(api.createPost, title, time, location, stories);

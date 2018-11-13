@@ -1,10 +1,12 @@
 import { CREATE_POST_REQUEST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE, CREATE_POST_RESET } from "./actionTypes";
 
-export const createPost = (details, photos) => ({
+export const createPost = (title, time, location, stories) => ({
   type: CREATE_POST_REQUEST,
   payload: {
-    details,
-    photos
+    title,
+    time,
+    location,
+    stories
   }
 });
 export const createPostSuccess = res => ({

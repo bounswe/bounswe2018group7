@@ -10,16 +10,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { connect } from "react-redux";
 import { createPost, createPostReset } from "redux/post/Actions";
 
-import {
-  Grid,
-  TextField,
-  Button,
-  IconButton,
-  Typography,
-  Dialog,
-  DialogTitle,
-  CircularProgress
-} from "@material-ui/core";
+import { Grid, TextField, Button, IconButton, Dialog, DialogTitle, CircularProgress } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import classNames from "classnames";
 import DatePicker from "../../../components/DatePicker";
@@ -29,6 +20,23 @@ import PTag from "../../../components/PTag";
 import { withSnackbar } from "notistack";
 
 class CreatePost extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      //time
+      timeType: "",
+      generalTime: "",
+      certainTime: "",
+      //map
+      mapType: "",
+      certainLoc: "",
+      isMarkerShown: false,
+      isloaderOpen: false,
+      storyText: ""
+    };
+  }
+
   componentDidMount() {
     this.delayedShowMarker();
   }
@@ -45,40 +53,27 @@ class CreatePost extends Component {
   };
 
   handleCreatePost = () => {
-    this.setState({ isloaderOpen: true });
-    this.props.createPost("title", '{"general":"1900s"}', '[{"type": "region", "name": "Istanbul"}]', [
-      { "story[0]": "My Story Text 1" }
-    ]);
+    if (this.state.title && this.state.storyText) {
+      this.setState({ isloaderOpen: true });
+      this.props.createPost(this.state.title, '{"general":"1900s"}', '[{"type": "region", "name": "Istanbul"}]', [
+        { "story[0]": this.state.storyText }
+      ]);
+    } else {
+      this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
+    }
   };
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   const { createPostInProgress, createPostHasError, createPostCompleted, createPostError } = this.props.post;
+  componentDidUpdate(prevProps, prevState) {
+    const { createPostInProgress, createPostHasError, createPostCompleted, createPostError } = this.props.post;
 
-  //   if (!createPostInProgress && !createPostHasError && createPostCompleted) {
-  //     this.props.createPostReset();
-  //     setTimeout(() => this.setState({ isloaderOpen: false }), 1000);
-  //   } else if (!createPostInProgress && createPostHasError && createPostCompleted) {
-  //     this.props.enqueueSnackbar(createPostError, { variant: "warning" });
-  //     this.props.createPostReset();
-  //     setTimeout(() => this.setState({ isloaderOpen: false }), 1000);
-  //   }
-  // }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: "",
-      //time
-      timeType: "",
-      generalTime: "",
-      certainTime: "",
-      //map
-      mapType: "",
-      certainLoc: "",
-      isMarkerShown: false,
-
-      isloaderOpen: false
-    };
+    if (!createPostInProgress && !createPostHasError && createPostCompleted) {
+      this.props.createPostReset();
+      setTimeout(() => this.setState({ isloaderOpen: false }), 1000);
+    } else if (!createPostInProgress && createPostHasError && createPostCompleted) {
+      this.props.enqueueSnackbar(createPostError, { variant: "warning" });
+      this.props.createPostReset();
+      setTimeout(() => this.setState({ isloaderOpen: false }), 1000);
+    }
   }
 
   handleChange = name => event => {
@@ -147,7 +142,7 @@ class CreatePost extends Component {
               <Button variant="outlined" color="secondary" onClick={() => this.setState({ timeType: "interval" })}>
                 Interval Time
               </Button>
-              <Button variant="outlined" color="warn" onClick={() => this.setState({ timeType: "general" })}>
+              <Button variant="outlined" color="inherit" onClick={() => this.setState({ timeType: "general" })}>
                 General Time
               </Button>
 
@@ -219,7 +214,7 @@ class CreatePost extends Component {
               <Button variant="outlined" color="secondary" onClick={() => this.setState({ mapType: "path" })}>
                 Add Path Location
               </Button>
-              <Button variant="outlined" color="warn" onClick={() => this.setState({ mapType: "area" })}>
+              <Button variant="outlined" color="inherit" onClick={() => this.setState({ mapType: "area" })}>
                 Add Area Location
               </Button>
               <IconButton aria-label="Delete" className={classes.button} onClick={() => this.setState({ mapType: "" })}>
@@ -252,6 +247,8 @@ class CreatePost extends Component {
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                value={this.state.storyText}
+                onChange={this.handleChange("storyText")}
               />
             </Grid>
 
@@ -269,15 +266,15 @@ class CreatePost extends Component {
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
-              {/* <Button onClick={() => this.handleCreatePost()} variant="contained" color="secondary">
+              <Button onClick={() => this.handleCreatePost()} variant="contained" color="secondary">
                 Send the Post
-              </Button> */}
+              </Button>
             </Grid>
 
             <Grid item xs={6} sm={3} />
           </Grid>
         </div>
-        {/* <Dialog
+        <Dialog
           maxWidth={"xs"}
           fullWidth
           aria-labelledby="simple-dialog-title"
@@ -288,7 +285,7 @@ class CreatePost extends Component {
           <div style={{ justifyContent: "center", alignItems: "center" }}>
             <CircularProgress />
           </div>
-        </Dialog> */}
+        </Dialog>
 
         <Footer />
       </div>
@@ -308,4 +305,4 @@ const bindAction = dispatch => ({
 export default connect(
   mapStateToProps,
   bindAction
-)(withStyles(withSnackbar(CreatePost)));
+)(withStyles(componentsStyle)(withSnackbar(CreatePost)));
