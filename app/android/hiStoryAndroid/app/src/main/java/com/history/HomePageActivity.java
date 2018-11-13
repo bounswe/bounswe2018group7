@@ -1,8 +1,10 @@
 package com.history;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -19,6 +22,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 
 import java.util.ArrayList;
 
@@ -117,31 +123,69 @@ public class HomePageActivity extends AppCompatActivity {
             lastViewId = memoryPostView.getId();
             memoryPostsLayout.addView(memoryPostView, paramsMemoryPostView);
 
+            GradientDrawable memoryPostBorder =  new GradientDrawable();
+            memoryPostBorder.setStroke(screenWidth/360, Color.GRAY);
             RelativeLayout memoryPostLayout = new RelativeLayout(this);
+            memoryPostLayout.setBackground(memoryPostBorder);
             RelativeLayout.LayoutParams paramsMemoryPostLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             memoryPostView.addView(memoryPostLayout, paramsMemoryPostLayout);
+
+            RelativeLayout memoryPostInfoLayout = new RelativeLayout(this);
+            RelativeLayout.LayoutParams paramsMemoryPostInfoLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            memoryPostInfoLayout.setId(View.generateViewId());
+            memoryPostInfoLayout.setBackground(memoryPostBorder);
+            memoryPostInfoLayout.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+            memoryPostLayout.addView(memoryPostInfoLayout, paramsMemoryPostInfoLayout);
+
+            ImageView profilPicture = new ImageView(this);
+            profilPicture.setBackgroundResource(R.drawable.default_pp);
+            profilPicture.setId(View.generateViewId());
+            memoryPostInfoLayout.addView(profilPicture);
+
+            TextView authorTextView = new TextView(this);
+            RelativeLayout.LayoutParams paramsAuthorTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            authorTextView.setText(memoryPost.username);
+            authorTextView.setTextSize(25);
+            authorTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+            paramsAuthorTextView.addRule(RelativeLayout.RIGHT_OF , profilPicture.getId());
+            memoryPostInfoLayout.addView(authorTextView, paramsAuthorTextView);
+
+            TextView createdTimeTextView = new TextView(this);
+            RelativeLayout.LayoutParams paramsCreatedTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            createdTimeTextView.setText(memoryPost.created);
+            createdTimeTextView.setTextSize(25);
+            createdTimeTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+            paramsCreatedTimeTextView.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            memoryPostInfoLayout.addView(createdTimeTextView, paramsCreatedTimeTextView);
 
             TextView titleTextView = new TextView(this);
             RelativeLayout.LayoutParams paramsTitleTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             titleTextView.setText(memoryPost.title);
             titleTextView.setTextSize(30);
-            titleTextView.setGravity(Gravity.CENTER);
+            titleTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+            titleTextView.setBackground(memoryPostBorder);
+            paramsTitleTextView.addRule(RelativeLayout.BELOW, memoryPostInfoLayout.getId());
             titleTextView.setId(View.generateViewId());
             memoryPostLayout.addView(titleTextView, paramsTitleTextView);
 
-            TextView authorTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsAuthorTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            authorTextView.setText("Created by: @" + memoryPost.username + " at: " + memoryPost.created);
-            authorTextView.setTextSize(10);
-            paramsAuthorTextView.addRule(RelativeLayout.BELOW, titleTextView.getId());
-            authorTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(authorTextView, paramsAuthorTextView);
+
+            int id = titleTextView.getId();
+            for (int j=0; j<memoryPost.story.length; j++){
+                TextView storyTextView = new TextView(this);
+                RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                storyTextView.setText(memoryPost.story[j].payload.toString());
+                storyTextView.setTextSize(20);
+                paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
+                storyTextView.setId(View.generateViewId());
+                id = storyTextView.getId();
+                memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+            }
 
             TextView tagTextView = new TextView(this);
             RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             tagTextView.setText("Tags: " + memoryPost.tags);
             tagTextView.setTextSize(15);
-            paramsTagTextView.addRule(RelativeLayout.BELOW, authorTextView.getId());
+            paramsTagTextView.addRule(RelativeLayout.BELOW, id);
             tagTextView.setId(View.generateViewId());
             memoryPostLayout.addView(tagTextView, paramsTagTextView);
 
@@ -161,17 +205,19 @@ public class HomePageActivity extends AppCompatActivity {
             locationTextView.setId(View.generateViewId());
             memoryPostLayout.addView(locationTextView, paramsLocationTextView);
 
-            int id = locationTextView.getId();
-            for (int j=0; j<memoryPost.story.length; j++){
-                TextView storyTextView = new TextView(this);
-                RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                storyTextView.setText(memoryPost.story[j].payload.toString());
-                storyTextView.setTextSize(20);
-                paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
-                storyTextView.setId(View.generateViewId());
-                id = storyTextView.getId();
-                memoryPostLayout.addView(storyTextView, paramsStoryTextView);
-            }
+            RelativeLayout map = new RelativeLayout(this);
+            RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
+            paramsLocationTextView.addRule(RelativeLayout.BELOW, timeTextView.getId());
+            paramsMap.addRule(RelativeLayout.BELOW, timeTextView.getId());
+            map.setId(View.generateViewId());
+            memoryPostLayout.addView(map);
+
+            MapFragment mMapFragment = MapFragment.newInstance();
+            FragmentTransaction fragmentTransaction =
+                    getFragmentManager().beginTransaction();
+            fragmentTransaction.add(map.getId(), mMapFragment);
+            fragmentTransaction.commit();
+
         }
     }
     public void signout(View view){
