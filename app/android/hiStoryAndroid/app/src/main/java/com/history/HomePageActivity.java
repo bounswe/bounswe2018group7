@@ -207,16 +207,16 @@ public class HomePageActivity extends AppCompatActivity {
 
             RelativeLayout map = new RelativeLayout(this);
             RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
-            paramsLocationTextView.addRule(RelativeLayout.BELOW, timeTextView.getId());
-            paramsMap.addRule(RelativeLayout.BELOW, timeTextView.getId());
+            paramsMap.addRule(RelativeLayout.BELOW, locationTextView.getId());
             map.setId(View.generateViewId());
-            memoryPostLayout.addView(map);
+            memoryPostLayout.addView(map , paramsMap);
 
             MapFragment mMapFragment = MapFragment.newInstance();
             FragmentTransaction fragmentTransaction =
                     getFragmentManager().beginTransaction();
             fragmentTransaction.add(map.getId(), mMapFragment);
             fragmentTransaction.commit();
+
 
         }
     }
