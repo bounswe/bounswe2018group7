@@ -27,6 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".HomePageActivity" />
+        <activity android:name=".CreatePostActivity"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM"/>
     </application>
 
 </manifest>
