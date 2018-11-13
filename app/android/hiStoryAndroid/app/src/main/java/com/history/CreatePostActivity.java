@@ -40,32 +40,8 @@ public class CreatePostActivity extends AppCompatActivity {
             String location = ((EditText)findViewById(R.id.locationEditText)).getText().toString();
             String story = ((EditText)findViewById(R.id.storyEditText)).getText().toString();
 
-            MemoryPost memoryPost = new MemoryPost(title,time,location,story);
 
 
-            final Call<MemoryPost> call = apiEndpoints.createPost(memoryPost);
-            call.enqueue(new Callback<MemoryPost>() {
-                @Override
-                public void onResponse(Call<MemoryPost> call, Response<MemoryPost> response) {
-                    if (response.isSuccessful()) {
-                        Log.d("Success" , String.valueOf(response.body().title));
-                        Toast.makeText(CreatePostActivity.this, "Post Created", Toast.LENGTH_SHORT).show();
-                        createPost(response.body());
-
-                    } else {
-                        Log.d("Failure", response.toString());
-                        Toast.makeText(CreatePostActivity.this, "Could not create post.", Toast.LENGTH_SHORT).show();
-                        waitingResponse = false;
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<MemoryPost> call, Throwable t) {
-                    Log.d("Error", t.getMessage());
-                    Toast.makeText(CreatePostActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
-                    waitingResponse = false;
-                }
-            });
         }
         else {
             Toast.makeText(CreatePostActivity.this, "Waiting Response to Previous Request", Toast.LENGTH_SHORT).show();

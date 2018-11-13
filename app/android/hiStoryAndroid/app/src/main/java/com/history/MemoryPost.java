@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 public class MemoryPost {
     String title;
-    MemoryPostTime time[];
-    MemoryPostLocation location[];
+    //MemoryPostTime time[];
+    Object time;
+    Object location;
     MemoryPostStory story[];
     int id;
+    Object tags;
     String username;
     String created;
     String updated;
