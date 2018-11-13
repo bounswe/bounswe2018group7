@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         skipToHomepage(null);
     }
     public void saveUser(User user){
-        SharedPreferences.Editor editor = getSharedPreferences("sharedPreferences", MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("userInfo", MODE_PRIVATE).edit();
         editor.putString("username", user.username);
         editor.putString("email", user.email);
         editor.putString("first_name", user.first_name);
