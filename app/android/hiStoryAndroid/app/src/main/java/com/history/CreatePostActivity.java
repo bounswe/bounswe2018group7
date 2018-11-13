@@ -3,9 +3,11 @@ package com.history;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -33,7 +35,7 @@ public class CreatePostActivity extends AppCompatActivity {
     String day_;
     String month_;
     String year_;
-
+    String auth_token;
     boolean waitingResponse = false;
 
     @Override
@@ -41,23 +43,14 @@ public class CreatePostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //getSupportActionBar().hide();
         setContentView(R.layout.activity_create_post);
-
-//        final DatePicker dp = (DatePicker) findViewById(R.id.datePicker);
-//        final Button btn = (Button) findViewById(R.id.button);
-//
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(CreatePostActivity.this, "" + dp.getMonth() + " " + dp.getYear(), Toast.LENGTH_SHORT).show();
-//                day_ = ""+ dp.getDayOfMonth();
-//                month_ = "" + dp.getMonth()+1;
-//                year_ = "" + dp.getYear();
-//            }
-//        });
-
-
-
+        checkUserData();
     }
+
+    public void checkUserData(){
+        SharedPreferences prefs = getSharedPreferences("userInfo", MODE_PRIVATE);
+        auth_token = prefs.getString("auth_token", "");
+    }
+
 
     public void showDatePicker(View v) {
         DialogFragment newFragment = new MyDatePickerFragment();
@@ -129,7 +122,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
             story.add(storyBody);
 
-
+            //if (auth_token.equals("")) auth_token = "a5f6fda9c2ef6afc4b55f6000ecdd8475b230c24";
             final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token a5f6fda9c2ef6afc4b55f6000ecdd8475b230c24", title,time,location,story);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -139,9 +132,10 @@ public class CreatePostActivity extends AppCompatActivity {
                         //Log.d("Success" , String.valueOf(response.body().title));
                         Toast.makeText(CreatePostActivity.this, "Post Created", Toast.LENGTH_SHORT).show();
                         waitingResponse = false;
+                        backToHomePage(null);
 
                     } else {
-                        //Log.d("Failure", response.toString());
+                        Log.d("Failure", response.toString());
                         Toast.makeText(CreatePostActivity.this, "Could not create post.", Toast.LENGTH_SHORT).show();
                         waitingResponse = false;
                     }
