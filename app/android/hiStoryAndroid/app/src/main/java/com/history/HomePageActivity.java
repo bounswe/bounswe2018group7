@@ -163,7 +163,6 @@ public class HomePageActivity extends AppCompatActivity {
             titleTextView.setText(memoryPost.title);
             titleTextView.setTextSize(30);
             titleTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-            titleTextView.setBackground(memoryPostBorder);
             paramsTitleTextView.addRule(RelativeLayout.BELOW, memoryPostInfoLayout.getId());
             titleTextView.setId(View.generateViewId());
             memoryPostLayout.addView(titleTextView, paramsTitleTextView);
@@ -174,40 +173,41 @@ public class HomePageActivity extends AppCompatActivity {
                 TextView storyTextView = new TextView(this);
                 RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 storyTextView.setText(memoryPost.story[j].payload.toString());
-                storyTextView.setTextSize(20);
+                storyTextView.setTextSize(25);
                 paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
                 storyTextView.setId(View.generateViewId());
                 id = storyTextView.getId();
                 memoryPostLayout.addView(storyTextView, paramsStoryTextView);
             }
 
-            TextView tagTextView = new TextView(this);
+            /*TextView tagTextView = new TextView(this);
             RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             tagTextView.setText("Tags: " + memoryPost.tags);
             tagTextView.setTextSize(15);
             paramsTagTextView.addRule(RelativeLayout.BELOW, id);
             tagTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(tagTextView, paramsTagTextView);
+            memoryPostLayout.addView(tagTextView, paramsTagTextView);*/
 
             TextView timeTextView = new TextView(this);
             RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            timeTextView.setText("Time: " + memoryPost.time);
-            timeTextView.setTextSize(15);
-            paramsTimeTextView.addRule(RelativeLayout.BELOW, tagTextView.getId());
+            timeTextView.setText(memoryPost.time.toString());
+            timeTextView.setTextSize(25);
+            paramsTimeTextView.addRule(RelativeLayout.BELOW, id);
             timeTextView.setId(View.generateViewId());
             memoryPostLayout.addView(timeTextView, paramsTimeTextView);
 
-            TextView locationTextView = new TextView(this);
+           /* TextView locationTextView = new TextView(this);
             RelativeLayout.LayoutParams paramsLocationTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             locationTextView.setText("Locations: " + memoryPost.location);
             locationTextView.setTextSize(15);
             paramsLocationTextView.addRule(RelativeLayout.BELOW, timeTextView.getId());
             locationTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(locationTextView, paramsLocationTextView);
+            memoryPostLayout.addView(locationTextView, paramsLocationTextView);*/
 
             RelativeLayout map = new RelativeLayout(this);
             RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
-            paramsMap.addRule(RelativeLayout.BELOW, locationTextView.getId());
+            paramsMap.addRule(RelativeLayout.BELOW, timeTextView.getId());
+            map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
             map.setId(View.generateViewId());
             memoryPostLayout.addView(map , paramsMap);
 
