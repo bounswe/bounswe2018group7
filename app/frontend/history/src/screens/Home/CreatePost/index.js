@@ -18,6 +18,7 @@ import DateTime from "../../../components/DateTime";
 import PMaps from "components/PMaps";
 import PTag from "../../../components/PTag";
 import { withSnackbar } from "notistack";
+import Tags from "../../../components/Tag";
 
 class CreatePost extends Component {
   constructor(props) {
@@ -84,7 +85,7 @@ class CreatePost extends Component {
       this.setState({ isloaderOpen: true });
       this.props.createPost(this.state.title, '{"general":"1900s"}', '[{"type": "region", "name": "Istanbul"}]', [
         { "story[0]": this.state.storyText },
-        ["England", "Turkey"]
+        tags
       ]);
     } else {
       this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
@@ -92,10 +93,6 @@ class CreatePost extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("​--------------------------------------------------------------------------");
-    console.log("​CreatePost -> componentDidUpdate -> componentDidUpdate");
-    console.log("​--------------------------------------------------------------------------");
-
     const { createPostInProgress, createPostHasError, createPostCompleted, createPostError } = this.props.post;
 
     if (!createPostInProgress && !createPostHasError && createPostCompleted) {
@@ -123,9 +120,6 @@ class CreatePost extends Component {
   };
 
   render() {
-    console.log("​--------------------------------------");
-    console.log("​CreatePost -> render -> render");
-    console.log("​--------------------------------------");
     const { classes, history, ...rest } = this.props;
     return (
       <div>
@@ -151,6 +145,7 @@ class CreatePost extends Component {
             </GridContainer>
           </div>
         </Parallax>
+        {/* <Tags /> */}
         <div className={classNames(classes.main, classes.mainRaised)}>
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />

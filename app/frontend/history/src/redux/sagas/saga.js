@@ -109,11 +109,9 @@ const trySignUpSaga = function*(action) {
 
 const tryCreatePostSaga = function*(action) {
   const { title, time, location, stories, tags } = action.payload;
-  console.log("​----------");
-  console.log("​SAGA- tags", tags);
-  console.log("​----------");
+
   try {
-    const createPostResponse = yield call(api.createPost, title, time, location, stories, ["kamil"]);
+    const createPostResponse = yield call(api.createPost, title, time, location, stories, tags);
 
     if (createPostResponse) {
       console.log("createPostResponse", createPostResponse);
@@ -123,8 +121,8 @@ const tryCreatePostSaga = function*(action) {
       } else if (createPostResponse.status === 201) {
         yield put(createPostSuccess());
       } else if (createPostResponse.status === 400) {
-        clError("Something wrong! Got a status 400", createPostResponse.responseBody);
-        yield put(createPostFailure(createPostResponse.responseBody));
+        clError("Something wrong! Got a status 400", createPostResponse);
+        yield put(createPostFailure(createPostResponse));
       } else if (createPostResponse.status === 401) {
         clError("Unauthorized request!");
         yield put(createPostFailure({ errors: ["Unauthorized request!"] }));

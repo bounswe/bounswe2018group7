@@ -40,22 +40,6 @@ class api {
   };
 
   createPost = (title, time, location, stories, tags) => {
-    console.log("​-------------------------------");
-    console.log("​api -> createPost -> tags", tags);
-    console.log("​-------------------------------");
-    console.log("​-------------------------------------");
-    console.log("​api -> createPost -> stories", stories);
-    console.log("​-------------------------------------");
-    console.log("​---------------------------------------");
-    console.log("​api -> createPost -> location", location);
-    console.log("​---------------------------------------");
-    console.log("​-------------------------------");
-    console.log("​api -> createPost -> time", time);
-    console.log("​-------------------------------");
-    console.log("​---------------------------------");
-    console.log("​api -> createPost -> title", title);
-    console.log("​---------------------------------");
-
     var formData = new FormData();
 
     formData.append("title", title);
@@ -63,13 +47,13 @@ class api {
     formData.append("location", location);
 
     // Object.keys(stories).forEach(el => formData.append(el, stories[el]));
+    console.log(String(tags));
+    formData.append("STRINGtags", String(tags));
 
     stories.forEach((el, index) => {
       let storytxt = "story[" + index + "]";
       formData.append(storytxt, el, el.name);
     });
-
-    formData.append("tags", tags);
 
     return new Promise((resolve, reject) => {
       var request = new XMLHttpRequest();

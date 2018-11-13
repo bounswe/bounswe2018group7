@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
-import "react-tagsinput/react-tagsinput.css"; // If using WebPack and style-loader.
+// import "../../../node_modules/react-tagsinput/react-tagsinput.css"; // If using WebPack and style-loader.
+// import "react-tag-input/example/reactTags.css";
 
 const KeyCodes = {
   comma: 188,
@@ -63,6 +64,14 @@ class PTag extends Component {
           handleAddition={this.handleAddition}
           handleDrag={this.handleDrag}
           delimiters={delimiters}
+          classNames={{
+            tags: "tagsClass",
+            tagInput: "form-control",
+            selected: "selectedClass",
+            tag: "tagClass",
+            remove: "removeClass",
+            suggestions: "suggestionsClass"
+          }}
         />
       </div>
     );
