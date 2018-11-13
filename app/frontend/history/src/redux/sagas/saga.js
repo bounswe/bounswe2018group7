@@ -108,10 +108,12 @@ const trySignUpSaga = function*(action) {
 };
 
 const tryCreatePostSaga = function*(action) {
-  const { title, time, location, stories } = action.payload;
-
+  const { title, time, location, stories, tags } = action.payload;
+  console.log("​----------");
+  console.log("​SAGA- tags", tags);
+  console.log("​----------");
   try {
-    const createPostResponse = yield call(api.createPost, title, time, location, stories);
+    const createPostResponse = yield call(api.createPost, title, time, location, stories, tags);
 
     if (createPostResponse) {
       console.log("createPostResponse", createPostResponse);

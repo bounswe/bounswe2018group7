@@ -39,7 +39,10 @@ class api {
     });
   };
 
-  createPost = (title, time, location, stories) => {
+  createPost = (title, time, location, stories, tags) => {
+    console.log("​-------------------------------");
+    console.log("​api -> createPost -> tags", tags);
+    console.log("​-------------------------------");
     console.log("​-------------------------------------");
     console.log("​api -> createPost -> stories", stories);
     console.log("​-------------------------------------");
@@ -65,6 +68,8 @@ class api {
       let storytxt = "story[" + index + "]";
       formData.append(storytxt, el, el.name);
     });
+
+    formData.append("tags", tags);
 
     return new Promise((resolve, reject) => {
       var request = new XMLHttpRequest();

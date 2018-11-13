@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
+import "react-tagsinput/react-tagsinput.css"; // If using WebPack and style-loader.
+
 const KeyCodes = {
   comma: 188,
   enter: 13,
@@ -36,6 +38,7 @@ class PTag extends Component {
 
   handleAddition(tag) {
     this.setState(state => ({ tags: [...state.tags, tag] }));
+    this.props.handleAddition(tag);
   }
 
   handleDrag(tag, currPos, newPos) {
@@ -49,7 +52,8 @@ class PTag extends Component {
     this.setState({ tags: newTags });
   }
   render() {
-    const { tags, suggestions } = this.state;
+    const { suggestions } = this.state;
+    const { tags } = this.props;
     return (
       <div style={{ width: "100%" }}>
         <ReactTags

@@ -33,9 +33,34 @@ class CreatePost extends Component {
       certainLoc: "",
       isMarkerShown: false,
       isloaderOpen: false,
-      storyText: ""
+      storyText: "",
+
+      //tags
+      tags: []
     };
   }
+
+  handleDelete(i) {
+    const { tags } = this.state;
+    this.setState({
+      tags: tags.filter((tag, index) => index !== i)
+    });
+  }
+
+  handleAddition = tag => {
+    this.setState(state => ({ tags: [...state.tags, tag] }));
+  };
+
+  handleDrag = (tag, currPos, newPos) => {
+    const tags = [...this.state.tags];
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    this.setState({ tags: newTags });
+  };
 
   componentDidMount() {
     this.delayedShowMarker();
@@ -53,10 +78,13 @@ class CreatePost extends Component {
   };
 
   handleCreatePost = () => {
+    let tags = Object.values(this.state.tags);
+
     if (this.state.title && this.state.storyText) {
       this.setState({ isloaderOpen: true });
       this.props.createPost(this.state.title, '{"general":"1900s"}', '[{"type": "region", "name": "Istanbul"}]', [
-        { "story[0]": this.state.storyText }
+        { "story[0]": this.state.storyText },
+        ["England", "Turkey"]
       ]);
     } else {
       this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
@@ -92,7 +120,6 @@ class CreatePost extends Component {
 
   render() {
     const { classes, history, ...rest } = this.props;
-
     return (
       <div>
         <Header
@@ -257,7 +284,12 @@ class CreatePost extends Component {
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
-              <PTag />
+              <PTag
+                tags={this.state.tags}
+                handleDelete={this.handleDelete}
+                handleAddition={this.handleAddition}
+                handleDrag={this.handleDrag}
+              />
             </Grid>
 
             <Grid item xs={6} sm={3} />
@@ -298,7 +330,7 @@ const mapStateToProps = state => ({
 });
 
 const bindAction = dispatch => ({
-  createPost: (title, time, location, stories) => dispatch(createPost(title, time, location, stories)),
+  createPost: (title, time, location, stories, tags) => dispatch(createPost(title, time, location, stories, tags)),
   createPostReset: () => dispatch(createPostReset())
 });
 
