@@ -12,15 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".HomePageActivity" />
-        <activity android:name=".CreatePostActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +20,9 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".HomePageActivity" />
-        <activity android:name=".CreatePostActivity"/>
+        <activity android:name=".CreatePostActivity">
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
