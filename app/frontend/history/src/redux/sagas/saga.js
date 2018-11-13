@@ -113,7 +113,7 @@ const tryCreatePostSaga = function*(action) {
   console.log("​SAGA- tags", tags);
   console.log("​----------");
   try {
-    const createPostResponse = yield call(api.createPost, title, time, location, stories, tags);
+    const createPostResponse = yield call(api.createPost, title, time, location, stories, ["kamil"]);
 
     if (createPostResponse) {
       console.log("createPostResponse", createPostResponse);
@@ -127,18 +127,18 @@ const tryCreatePostSaga = function*(action) {
         yield put(createPostFailure(createPostResponse.responseBody));
       } else if (createPostResponse.status === 401) {
         clError("Unauthorized request!");
-        yield put(createPostFailure({ detail: ["Unauthorized request!"] }));
+        yield put(createPostFailure({ errors: ["Unauthorized request!"] }));
       } else {
         clError("Something wrong! Got an unknown status. API BOZUK!!!", createPostResponse);
-        yield put(createPostFailure({ detail: ["Unknown status. Check console!"] }));
+        yield put(createPostFailure({ errors: ["Unknown status. Check console!"] }));
       }
     } else {
       clError("Creating Post failed by api. No response !");
-      yield put(createPostFailure({ detail: ["No response fetched. Please contact the API team"] }));
+      yield put(createPostFailure({ errors: ["No response fetched. Please contact the API team"] }));
     }
   } catch (err) {
     clWarning("Creating Post failed by api. Error => ", err);
-    yield put(createPostFailure({ detail: [err.detail] }));
+    yield put(createPostFailure({ errors: [err.detail] }));
   }
 };
 

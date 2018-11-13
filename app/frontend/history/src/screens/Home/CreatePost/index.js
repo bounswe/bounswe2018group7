@@ -92,6 +92,10 @@ class CreatePost extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    console.log("​--------------------------------------------------------------------------");
+    console.log("​CreatePost -> componentDidUpdate -> componentDidUpdate");
+    console.log("​--------------------------------------------------------------------------");
+
     const { createPostInProgress, createPostHasError, createPostCompleted, createPostError } = this.props.post;
 
     if (!createPostInProgress && !createPostHasError && createPostCompleted) {
@@ -119,6 +123,9 @@ class CreatePost extends Component {
   };
 
   render() {
+    console.log("​--------------------------------------");
+    console.log("​CreatePost -> render -> render");
+    console.log("​--------------------------------------");
     const { classes, history, ...rest } = this.props;
     return (
       <div>

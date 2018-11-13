@@ -66,7 +66,7 @@ class HeaderLinks extends Component {
           </ListItem>
 
           <ListItem className={classes.listItem}>
-            <CustomButton href="auth/signin" color="transparent" className={classes.navLink}>
+            <CustomButton color="transparent" className={classes.navLink}>
               <Person className={classes.icons} /> {this.props.auth.user.username}
             </CustomButton>
           </ListItem>
@@ -81,12 +81,12 @@ class HeaderLinks extends Component {
       return (
         <List className={classes.list}>
           <ListItem className={classes.listItem}>
-            <CustomButton href="auth/signin" color="transparent" className={classes.navLink}>
+            <CustomButton href="../auth/signin" color="transparent" className={classes.navLink}>
               <Https className={classes.icons} /> Login
             </CustomButton>
           </ListItem>
           <ListItem className={classes.listItem}>
-            <CustomButton href="auth/signup" color="transparent" className={classes.navLink}>
+            <CustomButton href="../auth/signup" color="transparent" className={classes.navLink}>
               <PersonAdd className={classes.icons} /> Sign Up
             </CustomButton>
           </ListItem>
@@ -97,7 +97,7 @@ class HeaderLinks extends Component {
   onCookieChanged = cookie => {
     console.log("clicked II");
     if (cookie.name === LOGGEDIN_COOKIE && !cookie.value) {
-      this.props.history.replace("/auth/signin");
+      this.props.history.replace("../auth/signin");
     }
   };
 }

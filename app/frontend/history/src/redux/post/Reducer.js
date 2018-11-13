@@ -4,7 +4,8 @@ const initialState = {
   createPostInProgress: false,
   createPostHasError: false,
   createPostCompleted: false,
-  createPostError: ""
+  createPostError: "",
+  postList: []
 };
 
 export default function(state = initialState, action) {
@@ -22,7 +23,7 @@ export default function(state = initialState, action) {
       createPostInProgress: false,
       createPostHasError: false,
       createPostCompleted: true,
-      estateList: payload
+      postList: payload
     };
   } else if (action.type === CREATE_POST_FAILURE) {
     return {
@@ -30,7 +31,7 @@ export default function(state = initialState, action) {
       createPostInProgress: false,
       createPostHasError: true,
       createPostCompleted: true,
-      createPostError: payload.detail || "There is an error"
+      createPostError: payload.errors || "There is an error"
     };
   } else if (action.type === CREATE_POST_RESET) {
     return {
