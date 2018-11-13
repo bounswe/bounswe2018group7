@@ -42,8 +42,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        checkUserData();
     }
 
+    public void checkUserData(){
+        SharedPreferences prefs = getSharedPreferences("userInfo", MODE_PRIVATE);
+        String auth_token = prefs.getString("auth_token", "");
+        if (!auth_token.equals("")) {
+            skipToHomepage(null);
+        }
+    }
     public void login(View view){
 
         if (!waitingResponse){

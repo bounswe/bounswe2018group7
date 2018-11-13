@@ -155,6 +155,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 }
 
             });
+
         }
         else {
             Toast.makeText(CreatePostActivity.this, "Waiting Response to Previous Request", Toast.LENGTH_SHORT).show();
