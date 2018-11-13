@@ -143,10 +143,10 @@ class BaseModel(models.Model):
 class MemoryPost(BaseModel):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=255)
-	story = JSONField(blank=True, null=True)
+	story = JSONField(blank=True, default=[])
 	time = JSONField(blank=True, null=True)
-	tags = JSONField(blank=True, null=True)
-	location = JSONField(blank=True, null=True)
+	tags = JSONField(blank=True, default=[])
+	location = JSONField(blank=True, default=[])
 
 
 def upload_memory_media_to(instance, filename):
