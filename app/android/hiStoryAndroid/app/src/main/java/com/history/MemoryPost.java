@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class MemoryPost {
     String title;
+
     //MemoryPostTime time[];
     Object time;
     Object location;
