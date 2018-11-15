@@ -18,7 +18,7 @@ import DateTime from "../../../components/DateTime";
 import PMaps from "components/PMaps";
 import PTag from "../../../components/PTag";
 import { withSnackbar } from "notistack";
-import Tags from "../../../components/Tag";
+// import Tags from "../../../components/Tag";
 
 class CreatePost extends Component {
   constructor(props) {
