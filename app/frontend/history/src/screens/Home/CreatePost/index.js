@@ -80,14 +80,14 @@ class CreatePost extends Component {
 
   handleCreatePost = () => {
     const location = this.myCreateMapRef.getLocation();
+    const date = this.myCreateDateRef.getDate();
     let loc = [{ type: "region", points: [{ lat1: location.lat, lng1: location.lng }] }];
+    let dateObj = { type: "certain", data: date.date };
     let tags = Object.values(this.state.tags);
-
+    //{"type": "duration", "data": ["1990", "2000"]},
     if (this.state.title && this.state.storyText) {
       this.setState({ isloaderOpen: true });
-      //[{"type": "path", "points": [["lat1", "lng1"], ["lat2", "lng2"]]}, {"type": "region", "name": "Istanbul"}],
-
-      this.props.createPost(this.state.title, '{"general":"1900s"}', JSON.stringify(loc), [
+      this.props.createPost(this.state.title, JSON.stringify(dateObj), JSON.stringify(loc), [
         { "story[0]": this.state.storyText },
         tags
       ]);
@@ -200,7 +200,7 @@ class CreatePost extends Component {
               <Grid item xs={6} sm={3} />
 
               <Grid item xs={12} sm={6}>
-                <DateTime />
+                <DateTime dateRef={el => (this.myCreateDateRef = el)} />
               </Grid>
               <Grid item xs={6} sm={3} />
             </Grid>
