@@ -79,11 +79,15 @@ class CreatePost extends Component {
   };
 
   handleCreatePost = () => {
+    const location = this.myCreateMapRef.getLocation();
+    let loc = [{ type: "region", points: [{ lat1: location.lat, lng1: location.lng }] }];
     let tags = Object.values(this.state.tags);
 
     if (this.state.title && this.state.storyText) {
       this.setState({ isloaderOpen: true });
-      this.props.createPost(this.state.title, '{"general":"1900s"}', '[{"type": "region", "name": "Istanbul"}]', [
+      //[{"type": "path", "points": [["lat1", "lng1"], ["lat2", "lng2"]]}, {"type": "region", "name": "Istanbul"}],
+
+      this.props.createPost(this.state.title, '{"general":"1900s"}', JSON.stringify(loc), [
         { "story[0]": this.state.storyText },
         tags
       ]);
@@ -258,7 +262,11 @@ class CreatePost extends Component {
               <Grid item xs={6} sm={3} />
 
               <Grid item xs={12} sm={6}>
-                <PMaps isMarkerShown={this.state.isMarkerShown} onMarkerClick={this.handleMarkerClick} />
+                <PMaps
+                  isMarkerShown={this.state.isMarkerShown}
+                  onMarkerClick={this.handleMarkerClick}
+                  mapRef={el => (this.myCreateMapRef = el)}
+                />
               </Grid>
               <Grid item xs={6} sm={3} />
             </Grid>

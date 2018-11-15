@@ -21,10 +21,12 @@ const MyMaps = compose(
 class PMaps extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       lat: -34.397,
       lng: 150.644
     };
+    if (props.mapRef) props.mapRef(this);
   }
 
   render() {
@@ -39,6 +41,10 @@ class PMaps extends React.Component {
   }
   onMapClick(ev) {
     this.setState({ lat: ev.latLng.lat(), lng: ev.latLng.lng() });
+  }
+
+  getLocation() {
+    return { lat: this.state.lat, lng: this.state.lng };
   }
 }
 
