@@ -1,8 +1,6 @@
 import json
 from json import JSONDecodeError
-from api.models import User
-from api.models import MemoryPost
-from api.models import MemoryMedia
+from api.models import *
 from django.core.files.base import File
 from rest_framework import serializers
 from api.helpers.custom_helpers import errors_from_dict_to_arr
@@ -12,6 +10,13 @@ class CustomBaseModelSerializer(serializers.ModelSerializer):
 	@property
 	def errors_arr(self):
 		return errors_from_dict_to_arr(self.errors)
+
+
+class ReadOnlyUsernameFieldMixin(serializers.Serializer):
+	username = serializers.SerializerMethodField()
+
+	def get_username(self, obj):
+		return obj.user.username
 
 
 class UserSerializer(CustomBaseModelSerializer):
@@ -61,21 +66,27 @@ class UserSerializer(CustomBaseModelSerializer):
 		return instance
 
 
-class MemoryPostSerializer(CustomBaseModelSerializer):
+class CommentSerializer(ReadOnlyUsernameFieldMixin,
+						CustomBaseModelSerializer):
+
+	class Meta:
+		model = Comment
+		fields = ('id', 'memory_post', 'username', 'content', 'created')
+
+
+class MemoryPostSerializer(ReadOnlyUsernameFieldMixin,
+						   CustomBaseModelSerializer):
 	story_arr = serializers.ListField(write_only=True)
 
 	story = serializers.JSONField(read_only=True, required=False)
 	time = serializers.JSONField(required=False)
 	tags = serializers.JSONField(required=False, default=[])
 	location = serializers.JSONField(required=False, default=[])
-	username = serializers.SerializerMethodField()
+	comments = CommentSerializer(many=True, read_only=True)
 
 	class Meta:
 		model = MemoryPost
-		exclude = ('user',)
-
-	def get_username(self, obj):
-		return obj.user.username
+		fields = '__all__'
 
 	def validate_json_array(self, field_value):
 		if isinstance(field_value, str):
