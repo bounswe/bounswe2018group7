@@ -25,6 +25,7 @@ import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -84,7 +85,6 @@ public class HomePageActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().count > 0){
                         listPosts(response.body());
-                        Log.d("Memory Posts", response.body().results.get(0).story[0].payload.toString());
                     }
                     Toast.makeText(HomePageActivity.this, "Successfully got memory posts", Toast.LENGTH_SHORT).show();
                 }
@@ -171,14 +171,25 @@ public class HomePageActivity extends AppCompatActivity {
 
             int id = titleTextView.getId();
             for (int j=0; j<memoryPost.story.length; j++){
-                TextView storyTextView = new TextView(this);
-                RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                storyTextView.setText(memoryPost.story[j].payload.toString());
-                storyTextView.setTextSize(20);
-                paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
-                storyTextView.setId(View.generateViewId());
-                id = storyTextView.getId();
-                memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+                if (memoryPost.story[j].type.equals("text")){
+                    TextView storyTextView = new TextView(this);
+                    RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    storyTextView.setText(memoryPost.story[j].payload.toString());
+                    storyTextView.setTextSize(20);
+                    paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
+                    storyTextView.setId(View.generateViewId());
+                    id = storyTextView.getId();
+                    memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+                }
+                else{
+                    ImageView storyImageView = new ImageView(this);
+                    Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
+                    RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
+                    storyImageView.setId(View.generateViewId());
+                    id = storyImageView.getId();
+                    memoryPostLayout.addView(storyImageView, paramsStoryImageView);
+                }
             }
 
             TextView tagTextView = new TextView(this);
