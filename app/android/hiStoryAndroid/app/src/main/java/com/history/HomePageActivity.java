@@ -8,40 +8,28 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.POST;
 
 public class HomePageActivity extends AppCompatActivity {
     String SERVER_URL = "https://history-backend.herokuapp.com";
     Button signoutButton;
     boolean signedIn = false;
-    String auth_token = "";
+    String authToken = "";
     RelativeLayout mainLayout;
     int screenWidth, screenHeight;
     int lastViewId;
@@ -59,8 +47,8 @@ public class HomePageActivity extends AppCompatActivity {
     public void checkUserData(){
         signoutButton = findViewById(R.id.signoutButton);
         SharedPreferences prefs = getSharedPreferences("userInfo", MODE_PRIVATE);
-        auth_token = prefs.getString("auth_token", "");
-        if (auth_token.equals("")){
+        authToken = prefs.getString("authToken", "");
+        if (authToken.equals("")){
             signoutButton.setText("Log In");
         }
         else {
@@ -74,8 +62,9 @@ public class HomePageActivity extends AppCompatActivity {
 
         ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
 
-
-        final Call<MemoryPostPage> call = apiEndpoints.getMemoryPosts();
+        final Call<MemoryPostPage> call;
+        if (signedIn) call  = apiEndpoints.getMemoryPostsUser(authToken);
+        else call = apiEndpoints.getMemoryPostsGuest();
 
 
         call.enqueue(new Callback<MemoryPostPage>() {
@@ -122,6 +111,9 @@ public class HomePageActivity extends AppCompatActivity {
             if (i>0) paramsMemoryPostView.addRule(RelativeLayout.BELOW, lastViewId);
             lastViewId = memoryPostView.getId();
             memoryPostsLayout.addView(memoryPostView, paramsMemoryPostView);
+            memoryPostsView.setId(memoryPost.id);
+
+
 
             GradientDrawable memoryPostBorder =  new GradientDrawable();
             memoryPostBorder.setStroke(screenWidth/360, Color.GRAY);
@@ -129,6 +121,19 @@ public class HomePageActivity extends AppCompatActivity {
             memoryPostLayout.setBackground(memoryPostBorder);
             RelativeLayout.LayoutParams paramsMemoryPostLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             memoryPostView.addView(memoryPostLayout, paramsMemoryPostLayout);
+            if (signedIn){
+                memoryPostLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(HomePageActivity.this, MemoryPostDetailActivity.class);
+                        intent.putExtra("memoryPostId", (int)v.getTag());
+                        intent.putExtra("authToken", authToken);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+
 
             RelativeLayout memoryPostInfoLayout = new RelativeLayout(this);
             RelativeLayout.LayoutParams paramsMemoryPostInfoLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -169,15 +174,23 @@ public class HomePageActivity extends AppCompatActivity {
 
 
             int id = titleTextView.getId();
+
             for (int j=0; j<memoryPost.story.length; j++){
-                TextView storyTextView = new TextView(this);
-                RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                storyTextView.setText(memoryPost.story[j].payload.toString());
-                storyTextView.setTextSize(25);
-                paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
-                storyTextView.setId(View.generateViewId());
-                id = storyTextView.getId();
-                memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+                if (j==0){
+                    if (memoryPost.story[j].payload.getClass() == String.class){
+                        TextView storyTextView = new TextView(this);
+                        RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        storyTextView.setText(memoryPost.story[j].payload.toString());
+                        storyTextView.setTextSize(25);
+                        paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
+                        storyTextView.setId(View.generateViewId());
+                        id = storyTextView.getId();
+                        memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+                    }
+                    else {
+                        Toast.makeText(HomePageActivity.this, "Story element type is: " + memoryPost.story[j].payload.getClass().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             /*TextView tagTextView = new TextView(this);
@@ -230,11 +243,11 @@ public class HomePageActivity extends AppCompatActivity {
                 Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
                 ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
-                auth_token = "Token " + auth_token;
+                authToken = "Token " + authToken;
                 SharedPreferences.Editor editor = getSharedPreferences("userInfo", MODE_PRIVATE).edit();
-                editor.putString("auth_token", "");
+                editor.putString("authToken", "");
                 editor.apply();
-                final Call<User> call = apiEndpoints.signOut(auth_token);
+                final Call<User> call = apiEndpoints.signOut(authToken);
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
@@ -247,7 +260,7 @@ public class HomePageActivity extends AppCompatActivity {
                         Toast.makeText(HomePageActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
                     }
                 });
-                auth_token = "";
+                authToken = "";
         }
     }
 

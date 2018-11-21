@@ -48,7 +48,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
     public void checkUserData(){
         SharedPreferences prefs = getSharedPreferences("userInfo", MODE_PRIVATE);
-        auth_token = prefs.getString("auth_token", "");
+        auth_token = prefs.getString("authToken", "");
     }
 
 
@@ -122,8 +122,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
             story.add(storyBody);
 
-            //if (auth_token.equals("")) auth_token = "a5f6fda9c2ef6afc4b55f6000ecdd8475b230c24";
-            final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token a5f6fda9c2ef6afc4b55f6000ecdd8475b230c24", title,time,location,story);
+            if (auth_token.equals("")) auth_token = "a5f6fda9c2ef6afc4b55f6000ecdd8475b230c24";
+            final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token " + auth_token, title,time,location,story);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

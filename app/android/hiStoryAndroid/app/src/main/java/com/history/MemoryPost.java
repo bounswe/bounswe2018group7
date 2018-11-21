@@ -8,9 +8,12 @@ public class MemoryPost {
     //MemoryPostTime time[];
     Object time;
     Object location;
+    Object tags;
+
+
+
     MemoryPostStory story[];
     int id;
-    Object tags;
     String username;
     String created;
     String updated;

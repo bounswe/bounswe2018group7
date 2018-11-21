@@ -1,5 +1,7 @@
 package com.history;
 
+import org.w3c.dom.Comment;
+
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -28,10 +30,22 @@ public interface ApiEndpoints {
     public Call<User> passwordReset(@Body User user);
 
     @GET("/api/v1/memory_posts/")
-    public Call<MemoryPostPage> getMemoryPosts();
+    public Call<MemoryPostPage> getMemoryPostsGuest();
+
+    @GET("/api/v1/memory_posts/")
+    public Call<MemoryPostPage> getMemoryPostsUser(@Header("Authorization") String token);
+
+    @GET("/api/v1/memory_posts/")
+    public Call<MemoryPost> getMemoryPost(@Header("Authorization") String token);
+
+
+    //@GET("/api/v1/comments/")
+    //public Call<Comment> getCommentsMemoryPost(@Header("Authorization"))
+
 
     @POST("/api/v1/memory_posts/")
     public Call<MemoryPost> createMemoryPost(@Header("Authorization") String token, @Body MemoryPost memoryPost);
+
 
     // previous code for multiple files
     @Multipart
