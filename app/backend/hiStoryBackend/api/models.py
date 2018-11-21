@@ -177,3 +177,9 @@ def submission_delete(sender, instance, **kwargs):
 	This method makes sure to delete the actual file when the related MemoryMedia object is deleted.
 	"""
 	instance.file.delete(False)
+
+
+class Comment(BaseModel):
+	user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+	memory_post = models.ForeignKey(MemoryPost, related_name='comments', on_delete=models.CASCADE)
+	content = models.TextField()

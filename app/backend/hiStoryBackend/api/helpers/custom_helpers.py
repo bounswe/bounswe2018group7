@@ -48,7 +48,7 @@ class IsOwnerOrAdmin(BasePermission):
 	def has_object_permission(self, request, view, obj):
 		if request.method == 'GET':
 			if isinstance(request.user, AnonymousUser):
-				return False  # Guests cannot see a specific MemoryPost
+				return False  # Guests cannot get specific resources
 			return True
 
 		elif request.method in ('PUT', 'PATCH'):
