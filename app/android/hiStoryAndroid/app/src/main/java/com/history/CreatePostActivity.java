@@ -4,7 +4,10 @@ package com.history;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,11 +15,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -37,6 +45,9 @@ public class CreatePostActivity extends AppCompatActivity {
     String year_;
     String auth_token;
     boolean waitingResponse = false;
+    private static final int SELECT_PICTURE = 1;
+    private String selectedImagePath;
+    Uri imageUri_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +102,8 @@ public class CreatePostActivity extends AppCompatActivity {
             String newLocation = ((EditText)findViewById(R.id.locationEditText)).getText().toString();
             String newStoryBody = ((EditText)findViewById(R.id.storyEditText)).getText().toString();
 
+            ImageView imageView = findViewById(R.id.imageView);
+            imageView.setImageURI(imageUri_);
 
             String exampleTitle = newTitle;
             //String exampleTime = "{\"type\": \"duration\", \"data\": [\"1980\", \"1990\"]}";
@@ -120,10 +133,19 @@ public class CreatePostActivity extends AppCompatActivity {
 
             MultipartBody.Part storyBody = MultipartBody.Part.createFormData( "story[0]",  newStoryBody);
 
+            File file = new File(getPath(imageUri_));
+
+
+             RequestBody requestFile = RequestBody.create(
+                            MediaType.parse(getContentResolver().getType(imageUri_)), file);
+
+             MultipartBody.Part image = MultipartBody.Part.createFormData("story[1]", "", requestFile);
+
             story.add(storyBody);
+            story.add(image);
 
             //if (auth_token.equals("")) auth_token = "a5f6fda9c2ef6afc4b55f6000ecdd8475b230c24";
-            final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token a5f6fda9c2ef6afc4b55f6000ecdd8475b230c24", title,time,location,story);
+            final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token 3854e02a6d22933948bfe597e2625124fc66fe0a", title,time,location,story);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -143,7 +165,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    //Log.d("Error", t.getMessage());
+                    Log.d("Error", t.getMessage());
                     Toast.makeText(CreatePostActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
                     waitingResponse = false;
                 }
@@ -170,6 +192,48 @@ public class CreatePostActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HomePageActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void selectImage(View view){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), SELECT_PICTURE);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                imageUri_ = selectedImageUri;
+                selectedImagePath = getPath(selectedImageUri);
+            }
+        }
+    }
+
+    /**
+     * helper to retrieve the path of an image URI
+     */
+    public String getPath(Uri uri) {
+        if( uri == null ) {
+            // TODO perform some logging or show user feedback
+            return null;
+        }
+        // try to retrieve the image from the media store first
+        // this will only work for images selected from gallery
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if( cursor != null ){
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
+        }
+        // this is our fallback here
+        return uri.getPath();
     }
 
 }
