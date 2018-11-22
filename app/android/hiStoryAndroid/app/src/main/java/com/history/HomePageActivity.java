@@ -111,7 +111,6 @@ public class HomePageActivity extends AppCompatActivity {
             if (i>0) paramsMemoryPostView.addRule(RelativeLayout.BELOW, lastViewId);
             lastViewId = memoryPostView.getId();
             memoryPostsLayout.addView(memoryPostView, paramsMemoryPostView);
-            memoryPostsView.setId(memoryPost.id);
 
 
 
@@ -121,6 +120,7 @@ public class HomePageActivity extends AppCompatActivity {
             memoryPostLayout.setBackground(memoryPostBorder);
             RelativeLayout.LayoutParams paramsMemoryPostLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             memoryPostView.addView(memoryPostLayout, paramsMemoryPostLayout);
+            memoryPostLayout.setTag(memoryPost.id);
             if (signedIn){
                 memoryPostLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -176,64 +176,43 @@ public class HomePageActivity extends AppCompatActivity {
             int id = titleTextView.getId();
 
             for (int j=0; j<memoryPost.story.length; j++){
-                if (memoryPost.story[j].type.equals("text")){
-                    TextView storyTextView = new TextView(this);
-                    RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    storyTextView.setText(memoryPost.story[j].payload.toString());
-                    storyTextView.setTextSize(20);
-                    paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
-                    storyTextView.setId(View.generateViewId());
-                    id = storyTextView.getId();
-                    memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+                if (j==0){
+                    if (memoryPost.story[j].type.equals("text")){
+                        TextView storyTextView = new TextView(this);
+                        RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        storyTextView.setText(memoryPost.story[j].payload.toString());
+                        storyTextView.setTextSize(20);
+                        paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
+                        storyTextView.setId(View.generateViewId());
+                        id = storyTextView.getId();
+                        memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+                    }
+                    else{
+                        ImageView storyImageView = new ImageView(this);
+                        Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
+                        RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
+                        storyImageView.setId(View.generateViewId());
+                        id = storyImageView.getId();
+                        memoryPostLayout.addView(storyImageView, paramsStoryImageView);
+                    }
                 }
-                else{
-                    ImageView storyImageView = new ImageView(this);
-                    Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
-                    RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
-                    storyImageView.setId(View.generateViewId());
-                    id = storyImageView.getId();
-                    memoryPostLayout.addView(storyImageView, paramsStoryImageView);
 
-                }
             }
 
-            /*TextView tagTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            tagTextView.setText("Tags: " + memoryPost.tags);
-            tagTextView.setTextSize(15);
-            paramsTagTextView.addRule(RelativeLayout.BELOW, id);
-            tagTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(tagTextView, paramsTagTextView);*/
 
-            TextView timeTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            timeTextView.setText(memoryPost.time.toString());
-            timeTextView.setTextSize(25);
-            paramsTimeTextView.addRule(RelativeLayout.BELOW, id);
-            timeTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(timeTextView, paramsTimeTextView);
+            if (memoryPost.time != null){
+                TextView timeTextView = new TextView(this);
+                RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                timeTextView.setText(memoryPost.time.toString());
+                timeTextView.setTextSize(25);
+                paramsTimeTextView.addRule(RelativeLayout.BELOW, id);
+                timeTextView.setId(View.generateViewId());
+                id = timeTextView.getId();
+                memoryPostLayout.addView(timeTextView, paramsTimeTextView);
+            }
 
-           /* TextView locationTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsLocationTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            locationTextView.setText("Locations: " + memoryPost.location);
-            locationTextView.setTextSize(15);
-            paramsLocationTextView.addRule(RelativeLayout.BELOW, timeTextView.getId());
-            locationTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(locationTextView, paramsLocationTextView);*/
 
-            RelativeLayout map = new RelativeLayout(this);
-            RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
-            paramsMap.addRule(RelativeLayout.BELOW, timeTextView.getId());
-            map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-            map.setId(View.generateViewId());
-            memoryPostLayout.addView(map , paramsMap);
-
-            MapFragment mMapFragment = MapFragment.newInstance();
-            FragmentTransaction fragmentTransaction =
-                    getFragmentManager().beginTransaction();
-            fragmentTransaction.add(map.getId(), mMapFragment);
-            fragmentTransaction.commit();
 
 
         }

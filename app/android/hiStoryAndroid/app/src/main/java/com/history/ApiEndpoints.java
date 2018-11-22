@@ -15,6 +15,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface ApiEndpoints {
     @POST("/api/v1/signup/")
@@ -35,8 +36,8 @@ public interface ApiEndpoints {
     @GET("/api/v1/memory_posts/")
     public Call<MemoryPostPage> getMemoryPostsUser(@Header("Authorization") String token);
 
-    @GET("/api/v1/memory_posts/")
-    public Call<MemoryPost> getMemoryPost(@Header("Authorization") String token);
+    @GET("/api/v1/memory_posts/{memoryPostId}/")
+    public Call<MemoryPost> getMemoryPost(@Header("Authorization") String token, @Path("memoryPostId") String memoryPostId);
 
 
     //@GET("/api/v1/comments/")
