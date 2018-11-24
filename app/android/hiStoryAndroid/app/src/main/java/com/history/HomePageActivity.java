@@ -8,40 +8,29 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-
-import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.POST;
 
 public class HomePageActivity extends AppCompatActivity {
     String SERVER_URL = "https://history-backend.herokuapp.com";
     Button signoutButton;
     boolean signedIn = false;
-    String auth_token = "";
+    String authToken = "";
     RelativeLayout mainLayout;
     int screenWidth, screenHeight;
     int lastViewId;
@@ -59,8 +48,8 @@ public class HomePageActivity extends AppCompatActivity {
     public void checkUserData(){
         signoutButton = findViewById(R.id.signoutButton);
         SharedPreferences prefs = getSharedPreferences("userInfo", MODE_PRIVATE);
-        auth_token = prefs.getString("auth_token", "");
-        if (auth_token.equals("")){
+        authToken = prefs.getString("authToken", "");
+        if (authToken.equals("")){
             signoutButton.setText("Log In");
         }
         else {
@@ -74,8 +63,9 @@ public class HomePageActivity extends AppCompatActivity {
 
         ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
 
-
-        final Call<MemoryPostPage> call = apiEndpoints.getMemoryPosts();
+        final Call<MemoryPostPage> call;
+        if (signedIn) call  = apiEndpoints.getMemoryPostsUser(authToken);
+        else call = apiEndpoints.getMemoryPostsGuest();
 
 
         call.enqueue(new Callback<MemoryPostPage>() {
@@ -84,7 +74,6 @@ public class HomePageActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().count > 0){
                         listPosts(response.body());
-                        Log.d("Memory Posts", response.body().results.get(0).story[0].payload.toString());
                     }
                     Toast.makeText(HomePageActivity.this, "Successfully got memory posts", Toast.LENGTH_SHORT).show();
                 }
@@ -123,12 +112,28 @@ public class HomePageActivity extends AppCompatActivity {
             lastViewId = memoryPostView.getId();
             memoryPostsLayout.addView(memoryPostView, paramsMemoryPostView);
 
+
+
             GradientDrawable memoryPostBorder =  new GradientDrawable();
             memoryPostBorder.setStroke(screenWidth/360, Color.GRAY);
             RelativeLayout memoryPostLayout = new RelativeLayout(this);
             memoryPostLayout.setBackground(memoryPostBorder);
             RelativeLayout.LayoutParams paramsMemoryPostLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             memoryPostView.addView(memoryPostLayout, paramsMemoryPostLayout);
+            memoryPostLayout.setTag(memoryPost.id);
+            if (signedIn){
+                memoryPostLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(HomePageActivity.this, MemoryPostDetailActivity.class);
+                        intent.putExtra("memoryPostId", (int)v.getTag());
+                        intent.putExtra("authToken", authToken);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+
 
             RelativeLayout memoryPostInfoLayout = new RelativeLayout(this);
             RelativeLayout.LayoutParams paramsMemoryPostInfoLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -163,59 +168,51 @@ public class HomePageActivity extends AppCompatActivity {
             titleTextView.setText(memoryPost.title);
             titleTextView.setTextSize(30);
             titleTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-            titleTextView.setBackground(memoryPostBorder);
             paramsTitleTextView.addRule(RelativeLayout.BELOW, memoryPostInfoLayout.getId());
             titleTextView.setId(View.generateViewId());
             memoryPostLayout.addView(titleTextView, paramsTitleTextView);
 
 
             int id = titleTextView.getId();
+
             for (int j=0; j<memoryPost.story.length; j++){
-                TextView storyTextView = new TextView(this);
-                RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                storyTextView.setText(memoryPost.story[j].payload.toString());
-                storyTextView.setTextSize(20);
-                paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
-                storyTextView.setId(View.generateViewId());
-                id = storyTextView.getId();
-                memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+                if (j==0){
+                    if (memoryPost.story[j].type.equals("text")){
+                        TextView storyTextView = new TextView(this);
+                        RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        storyTextView.setText(memoryPost.story[j].payload.toString());
+                        storyTextView.setTextSize(20);
+                        paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
+                        storyTextView.setId(View.generateViewId());
+                        id = storyTextView.getId();
+                        memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+                    }
+                    else{
+                        ImageView storyImageView = new ImageView(this);
+                        Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
+                        RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
+                        storyImageView.setId(View.generateViewId());
+                        id = storyImageView.getId();
+                        memoryPostLayout.addView(storyImageView, paramsStoryImageView);
+                    }
+                }
+
             }
 
-            TextView tagTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            tagTextView.setText("Tags: " + memoryPost.tags);
-            tagTextView.setTextSize(15);
-            paramsTagTextView.addRule(RelativeLayout.BELOW, id);
-            tagTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(tagTextView, paramsTagTextView);
 
-            TextView timeTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            timeTextView.setText("Time: " + memoryPost.time);
-            timeTextView.setTextSize(15);
-            paramsTimeTextView.addRule(RelativeLayout.BELOW, tagTextView.getId());
-            timeTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(timeTextView, paramsTimeTextView);
+            if (memoryPost.time != null){
+                TextView timeTextView = new TextView(this);
+                RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                timeTextView.setText(memoryPost.time.toString());
+                timeTextView.setTextSize(25);
+                paramsTimeTextView.addRule(RelativeLayout.BELOW, id);
+                timeTextView.setId(View.generateViewId());
+                id = timeTextView.getId();
+                memoryPostLayout.addView(timeTextView, paramsTimeTextView);
+            }
 
-            TextView locationTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsLocationTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            locationTextView.setText("Locations: " + memoryPost.location);
-            locationTextView.setTextSize(15);
-            paramsLocationTextView.addRule(RelativeLayout.BELOW, timeTextView.getId());
-            locationTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(locationTextView, paramsLocationTextView);
 
-            RelativeLayout map = new RelativeLayout(this);
-            RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
-            paramsMap.addRule(RelativeLayout.BELOW, locationTextView.getId());
-            map.setId(View.generateViewId());
-            memoryPostLayout.addView(map , paramsMap);
-
-            MapFragment mMapFragment = MapFragment.newInstance();
-            FragmentTransaction fragmentTransaction =
-                    getFragmentManager().beginTransaction();
-            fragmentTransaction.add(map.getId(), mMapFragment);
-            fragmentTransaction.commit();
 
 
         }
@@ -230,11 +227,11 @@ public class HomePageActivity extends AppCompatActivity {
                 Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
                 ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
-                auth_token = "Token " + auth_token;
+                authToken = "Token " + authToken;
                 SharedPreferences.Editor editor = getSharedPreferences("userInfo", MODE_PRIVATE).edit();
-                editor.putString("auth_token", "");
+                editor.putString("authToken", "");
                 editor.apply();
-                final Call<User> call = apiEndpoints.signOut(auth_token);
+                final Call<User> call = apiEndpoints.signOut(authToken);
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
@@ -247,7 +244,7 @@ public class HomePageActivity extends AppCompatActivity {
                         Toast.makeText(HomePageActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
                     }
                 });
-                auth_token = "";
+                authToken = "";
         }
     }
 

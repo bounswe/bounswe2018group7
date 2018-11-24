@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void checkUserData(){
         SharedPreferences prefs = getSharedPreferences("userInfo", MODE_PRIVATE);
-        String auth_token = prefs.getString("auth_token", "");
+        String auth_token = prefs.getString("authToken", "");
         if (!auth_token.equals("")) {
             skipToHomepage(null);
         }
@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.putBoolean("admin", user.admin);
         editor.putBoolean("confirmed", user.confirmed);
         editor.putBoolean("banned", user.banned);
-        editor.putString("auth_token", user.auth_token);
+        editor.putString("authToken", user.auth_token);
         editor.apply();
         System.out.println(user.username + " " + user.email + " " + user.first_name + " " + user.last_name + " " + user.admin + " " + user.confirmed + " " + user.banned + " " + user.auth_token);
     }

@@ -3,6 +3,7 @@
     package="com.history">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -20,13 +21,13 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".HomePageActivity" />
-        <activity android:name=".CreatePostActivity">
-
-        </activity>
+        <activity android:name=".CreatePostActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM"/>
+            android:value="AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM" />
+
+        <activity android:name=".MemoryPostDetailActivity"></activity>
     </application>
 
 </manifest>
