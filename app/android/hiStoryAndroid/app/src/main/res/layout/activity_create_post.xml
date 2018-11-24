@@ -1,4 +1,5 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,128 +8,237 @@
     tools:context=".CreatePostActivity">
 
     <RelativeLayout
-        android:id="@+id/layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:text=" Title:"
-            android:textSize="8pt"
-            android:textStyle="bold"/>
-
-        <EditText
-            android:id="@+id/titleEditText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignLeft="@+id/titleText"
-            android:layout_alignRight="@+id/titleText"
-            android:layout_below="@id/titleText"
-            android:layout_marginBottom="10dp"
-            android:gravity="left"
-            android:hint="Title" />
-
-        <TextView
-            android:id="@+id/storyText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleEditText"
-            android:layout_marginLeft="10dp"
-            android:text="Story:"
-            android:textSize="8pt"
-            android:textStyle="bold"/>
-
-        <EditText
-            android:id="@+id/storyEditText"
-            android:layout_alignLeft="@+id/titleEditText"
-            android:layout_alignRight="@+id/titleEditText"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/storyText"
-            android:gravity="left"
-            android:hint="You can write your memories here." />
-
-
-        <RelativeLayout
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/storyEditText">
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pick Date"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:onClick="showDatePicker" />
-
-            <EditText
-                android:id="@+id/locationEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/button"
-                android:layout_marginRight="10dp"
-                android:hint="Location" />
-
-        </RelativeLayout>
-
-        <!--<Button-->
-            <!--android:id="@+id/addImageButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/line"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginBottom="10dp"-->
-            <!--android:text="Add Media"-->
-            <!--android:onClick="addImage"/>-->
-
-        <Button
-            android:id="@+id/addImageButton"
-            android:layout_alignLeft="@+id/titleEditText"
-            android:layout_alignRight="@+id/titleEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line"
-            android:layout_centerHorizontal="true"
-            android:text="ADD MEDIA"
-            android:onClick="selectImage"/>
-
-        <Button
-            android:id="@+id/createButton"
-            android:layout_alignLeft="@+id/titleEditText"
-            android:layout_alignRight="@+id/titleEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/addImageButton"
-            android:layout_centerHorizontal="true"
-            android:text="CREATE POST"
-            android:onClick="create"/>
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/createButton"/>
+        android:id="@+id/navigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        >
 
         <Button
             android:id="@+id/goBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/createButton"
-            android:layout_alignLeft="@+id/titleEditText"
-            android:layout_marginBottom="10dp"
-            android:text="Back"
-            android:onClick="backToHomePage"/>
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorPrimaryDark"
+            android:text="Go Back"
+            />
+
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorWhite"
+            android:text="CREATE POST PAGE"/>
+
+        <Button
+            android:id="@+id/createPostButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorPrimaryDark"
+            android:text="Create"/>
 
     </RelativeLayout>
 
-</ScrollView>
+    <ScrollView
+        android:id="@+id/createPostScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/navigationBar">
+
+        <RelativeLayout
+            android:id="@+id/all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <!--POST BODY HERE-->
+
+            <RelativeLayout
+                android:id="@+id/postBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back">
+
+                <RelativeLayout
+                    android:id="@+id/components"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <EditText
+                        android:id="@+id/addTitleEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:hint="TITLE"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/addTitleEditText"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:text="@string/default_post_story"/>
+
+                </RelativeLayout>
+
+                <!--ADD LINE HERE-->
+
+                <RelativeLayout
+                    android:id="@+id/addLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/components">
+
+                    <Button
+                        android:id="@+id/addTextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Text"/>
+                    <Button
+                        android:id="@+id/addImageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/addTextButton"
+                        android:text="IMAGE"/>
+                    <Button
+                        android:id="@+id/addVideoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/addImageButton"
+                        android:text="VIDEO"/>
+                    <Button
+                        android:id="@+id/addAudioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/addVideoButton"
+                        android:text="AUDIO"/>
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <!--TAG COMPONENT HERE-->
+
+            <RelativeLayout
+                android:id="@+id/tagLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/postBody"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/back">
+
+                <TextView
+                    android:id="@+id/addTagTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="example: #istanbul, #train, #haydarpaşa"/>
+
+                <EditText
+                    android:id="@+id/addTagEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addTagTextView"
+                    android:layout_toLeftOf="@+id/addTagButton"
+                    android:hint="add tags here"/>
+
+                <Button
+                    android:id="@+id/addTagButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/addTagTextView"
+                    android:text="Add TAG"/>
+
+            </RelativeLayout>
+
+            <!--TIME COMPONENT HERE-->
+
+            <RelativeLayout
+                android:id="@+id/timeLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tagLine"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/back">
+
+                <TextView
+                    android:id="@+id/addTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="28/06/1996"/>
+
+                <Button
+                    android:id="@+id/addTimePreciseButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addTimeTextView"
+                    android:text="Precise time"/>
+
+                <Button
+                    android:id="@+id/addTimeDurationButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addTimeTextView"
+                    android:layout_toRightOf="@+id/addTimePreciseButton"
+                    android:text="duration"/>
+
+                <Button
+                    android:id="@+id/addTimeGeneralButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addTimeTextView"
+                    android:layout_toRightOf="@+id/addTimeDurationButton"
+                    android:layout_alignParentEnd="true"
+                    android:text="General (XX's)"/>
+
+            </RelativeLayout>
+
+            <!--LOCATION COMPONENT HERE-->
+
+            <RelativeLayout
+                android:id="@+id/locationLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/timeLine"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/back">
+
+                <com.google.android.gms.maps.MapView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    map:uiCompass="true"
+                    map:zOrderOnTop="true"
+                    map:uiZoomControls="true"
+                    android:background="#00000000" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Location"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

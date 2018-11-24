@@ -55,70 +55,52 @@
             android:gravity="left"
             android:hint="You can write your memories here." />
 
-        <TextView
-            android:id="@+id/timeText"
+
+        <RelativeLayout
+            android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/storyEditText"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:text="Pick a Certain Time:"
-            android:textSize="8pt"
-            android:textStyle="bold"/>
+            android:layout_below="@id/storyEditText">
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick Date"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:onClick="showDatePicker" />
 
-        <DatePicker
-            android:id="@+id/datePicker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_below="@id/timeText"
-            style="@style/MyDatePickerSpinnerStyle"
-            />
+            <EditText
+                android:id="@+id/locationEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/button"
+                android:layout_marginRight="10dp"
+                android:hint="Location" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pick Date"
-            android:layout_below="@+id/datePicker"
-            android:layout_alignRight="@id/datePicker"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:onClick="showDatePicker" />
+        </RelativeLayout>
 
-
-        <TextView
-            android:id="@+id/locationText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/button"
-            android:layout_marginLeft="10dp"
-            android:text="Select a Location:"
-            android:textSize="8pt"
-            android:textStyle="bold"/>
-
-
-        <EditText
-            android:id="@+id/locationEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/locationText"
-            android:layout_margin="10dp"
-            android:hint="Location"/>
-
+        <!--<Button-->
+        <!--android:id="@+id/addImageButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/line"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:text="Add Media"-->
+        <!--android:onClick="addImage"/>-->
 
         <Button
             android:id="@+id/addImageButton"
-            android:layout_width="wrap_content"
+            android:layout_alignLeft="@+id/titleEditText"
+            android:layout_alignRight="@+id/titleEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/locationEditText"
+            android:layout_below="@id/line"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="Add Media"
-            android:onClick="addImage"/>
+            android:text="ADD MEDIA"
+            android:onClick="selectImage"/>
 
         <Button
             android:id="@+id/createButton"
@@ -130,6 +112,12 @@
             android:layout_centerHorizontal="true"
             android:text="CREATE POST"
             android:onClick="create"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/createButton"/>
 
         <Button
             android:id="@+id/goBackButton"
