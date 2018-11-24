@@ -16,6 +16,8 @@ import classNames from "classnames";
 import DatePicker from "../../../components/DatePicker";
 import DateTime from "../../../components/DateTime";
 import PMaps from "components/PMaps";
+import PMapsDest from "components/PMaps/DestinationMaps";
+import PMapsArea from "components/PMaps/Area";
 import PTag from "../../../components/PTag";
 import { withSnackbar } from "notistack";
 // import Tags from "../../../components/Tag";
@@ -79,21 +81,21 @@ class CreatePost extends Component {
   };
 
   handleCreatePost = () => {
-    const location = this.myCreateMapRef.getLocation();
-    const date = this.myCreateDateRef.getDate();
-    let loc = [{ type: "region", points: [{ lat1: location.lat, lng1: location.lng }] }];
-    let dateObj = { type: "certain", data: date.date };
-    let tags = Object.values(this.state.tags);
-    //{"type": "duration", "data": ["1990", "2000"]},
-    if (this.state.title && this.state.storyText) {
-      this.setState({ isloaderOpen: true });
-      this.props.createPost(this.state.title, JSON.stringify(dateObj), JSON.stringify(loc), [
-        { "story[0]": this.state.storyText },
-        tags
-      ]);
-    } else {
-      this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
-    }
+    //const {timeType}
+    // const location = this.myCreateMapRef.getLocation();
+    // const date = this.myCreateDateRef.getDate();
+    // let loc = [{ type: "region", points: [{ lat1: location.lat, lng1: location.lng }] }];
+    //let dateObj = { type: {this.state.timeType}, data: date.date };
+    // let tags = Object.values(this.state.tags);
+    // if (this.state.title && this.state.storyText) {
+    //   this.setState({ isloaderOpen: true });
+    //   this.props.createPost(this.state.title, JSON.stringify(dateObj), JSON.stringify(loc), [
+    //     { "story[0]": this.state.storyText },
+    //     tags
+    //   ]);
+    // } else {
+    //   this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
+    // }
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -205,6 +207,7 @@ class CreatePost extends Component {
               <Grid item xs={6} sm={3} />
             </Grid>
           ) : null}
+
           {this.state.timeType == "interval" ? (
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
@@ -218,6 +221,7 @@ class CreatePost extends Component {
               <Grid item xs={6} sm={3} />
             </Grid>
           ) : null}
+
           {this.state.timeType == "general" ? (
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
@@ -272,25 +276,26 @@ class CreatePost extends Component {
             </Grid>
           ) : null}
 
-          <Grid container spacing={24}>
-            <Grid item xs={6} sm={3} />
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                id="outlined-multiline-static"
-                label="Your story text"
-                multiline
-                rows="10"
-                className={classes.textField}
-                margin="normal"
-                variant="outlined"
-                value={this.state.storyText}
-                onChange={this.handleChange("storyText")}
-              />
+          {this.state.mapType == "path" ? (
+            <Grid container spacing={24}>
+              <Grid item xs={6} sm={3} />
+              <Grid item xs={12} sm={6}>
+                <PMapsDest />
+              </Grid>
+              <Grid item xs={6} sm={3} />
             </Grid>
+          ) : null}
 
-            <Grid item xs={6} sm={3} />
-          </Grid>
+          {this.state.mapType == "area" ? (
+            <Grid container spacing={24}>
+              <Grid item xs={6} sm={3} />
+              <Grid item xs={12} sm={6}>
+                <PMapsArea />
+              </Grid>
+              <Grid item xs={6} sm={3} />
+            </Grid>
+          ) : null}
+
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
