@@ -56,5 +56,14 @@ const Area = compose(
     />
   </GoogleMap>
 ));
+class PMapsArea extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  render() {
+    return <Area />;
+  }
+}
 
-export default Area;
+export default PMapsArea;
