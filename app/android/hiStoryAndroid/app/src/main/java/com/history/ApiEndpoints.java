@@ -2,6 +2,7 @@ package com.history;
 
 import org.w3c.dom.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -9,6 +10,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -40,12 +42,14 @@ public interface ApiEndpoints {
     public Call<MemoryPost> getMemoryPost(@Header("Authorization") String token, @Path("memoryPostId") String memoryPostId);
 
 
-    //@GET("/api/v1/comments/")
-    //public Call<Comment> getCommentsMemoryPost(@Header("Authorization"))
+    @GET("/api/v1/comments/{memoryPostId}/")
+    public Call<ArrayList<com.history.Comment>> getCommentsForMemoryPost(@Header("Authorization") String token, @Path("memoryPostId") String memoryPostId);
 
+    @POST("/api/v1/comments")
+    public Call<com.history.Comment> createComment(@Header("Authorization") String token, @Body com.history.Comment comment);
 
-    @POST("/api/v1/memory_posts/")
-    public Call<MemoryPost> createMemoryPost(@Header("Authorization") String token, @Body MemoryPost memoryPost);
+    @DELETE("/api/v1/comments/{id}/")
+    public Call<Object> deleteComment(@Header("Authorization") String token, @Path("id") int id);
 
 
     // previous code for multiple files

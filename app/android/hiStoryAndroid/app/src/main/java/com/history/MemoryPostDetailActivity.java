@@ -4,19 +4,37 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,11 +42,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MemoryPostDetailActivity extends AppCompatActivity {
+public class MemoryPostDetailActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 	String SERVER_URL = "https://history-backend.herokuapp.com";
 	int memoryPostId;
 	String authToken;
 	int screenWidth = 720, screenHeight = 1440;
+	GoogleMap googleMap;
+	Retrofit retrofit;
+	ApiEndpoints apiEndpoints;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,21 +63,21 @@ public class MemoryPostDetailActivity extends AppCompatActivity {
 		getScreenSize();
 		getMemoryPost();
 
+		getComments();
+
+
 	}
 	public void getMemoryPost(){
-		Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+		retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
-		ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
+		apiEndpoints = retrofit.create(ApiEndpoints.class);
 
 		final Call<MemoryPost> call = apiEndpoints.getMemoryPost("Token " + authToken , Integer.toString(memoryPostId));
-		System.out.println("auth token: " + authToken);
 
 
 		call.enqueue(new Callback<MemoryPost>() {
 			@Override
 			public void onResponse(Call<MemoryPost> call, Response<MemoryPost> response) {
-				Toast.makeText(MemoryPostDetailActivity.this, "Successfully got memory post", Toast.LENGTH_SHORT).show();
-				System.out.println(response.toString());
 				if (response.isSuccessful()) {
 
 					listPost(response.body());
@@ -68,6 +89,80 @@ public class MemoryPostDetailActivity extends AppCompatActivity {
 			public void onFailure(Call<MemoryPost> call, Throwable t) {
 				Log.d("Error", t.getMessage());
 				Toast.makeText(MemoryPostDetailActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
+			}
+		});
+
+
+	}
+	public void getComments(){
+
+		final Call<ArrayList<Comment>> commentsCall = apiEndpoints.getCommentsForMemoryPost("Token " + authToken, Integer.toString(memoryPostId));
+		commentsCall.enqueue(new Callback<ArrayList<Comment>>(){
+			@Override
+			public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
+				System.out.println(response.toString());
+				if (response.isSuccessful()) {
+
+					addComments(response.body());
+					Toast.makeText(MemoryPostDetailActivity.this, "Successfully got comments", Toast.LENGTH_SHORT).show();
+				}
+			}
+
+			@Override
+			public void onFailure(Call<ArrayList<Comment>> call, Throwable t) {
+				Log.d("Error", t.getMessage());
+				Toast.makeText(MemoryPostDetailActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
+	public void addComments(ArrayList<Comment> commentList){
+		System.out.println(commentList.size());
+		for (int i=0; i<commentList.size(); i++){
+			Comment comment = commentList.get(i);
+			System.out.println("Content: " + comment.content + " Username: " + comment.username + " MemoryPost: " + comment.memoryPost + " Id: " + comment.id + " Created: " + comment.created);
+		}
+	}
+
+	public void deleteComment(int commentId){
+
+
+		final Call<Object> call = apiEndpoints.deleteComment("Token " + authToken, commentId);
+		call.enqueue(new Callback<Object>() {
+			@Override
+			public void onResponse(Call<Object> call, Response<Object> response) {
+				if (response.isSuccessful()) {
+					System.out.println("Success" + response.toString());
+				} else {
+					System.out.println("Failure " + response.toString());
+				}
+			}
+			@Override
+			public void onFailure(Call<Object> call, Throwable t) {
+				System.out.println("Error");
+			}
+		});
+	}
+	public void createComment(String comment){
+
+		Comment c = new Comment();
+		c.content = comment;
+		c.memoryPost = memoryPostId;
+
+		final Call<Comment> call = apiEndpoints.createComment("Token " + authToken, c);
+		call.enqueue(new Callback<Comment>() {
+			@Override
+			public void onResponse(Call<Comment> call, Response<Comment> response) {
+				if (response.isSuccessful()) {
+					System.out.println("Success");
+				} else {
+					System.out.println("Failure " + response.toString());
+				}
+			}
+
+			@Override
+			public void onFailure(Call<Comment> call, Throwable t) {
+				System.out.println("Error");
 			}
 		});
 	}
@@ -174,29 +269,57 @@ public class MemoryPostDetailActivity extends AppCompatActivity {
 		}
 
 
-           /* TextView locationTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsLocationTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            locationTextView.setText("Locations: " + memoryPost.location);
-            locationTextView.setTextSize(15);
-            paramsLocationTextView.addRule(RelativeLayout.BELOW, timeTextView.getId());
-            locationTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(locationTextView, paramsLocationTextView);*/
-
 		MapView map = new MapView(this);
 		RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
 		paramsMap.addRule(RelativeLayout.BELOW, id);
 		map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
 		map.setId(View.generateViewId());
+		id = map.getId();
 		memoryPostLayout.addView(map , paramsMap);
+
 
 		MapFragment mMapFragment = MapFragment.newInstance();
 		FragmentTransaction fragmentTransaction =
 				getFragmentManager().beginTransaction();
 		fragmentTransaction.add(map.getId(), mMapFragment);
 		fragmentTransaction.commit();
+		mMapFragment.getMapAsync(this);
 
+/*		EditText editText = new EditText(this);
+		RelativeLayout.LayoutParams paramsEditText = new RelativeLayout.LayoutParams(screenWidth/2, ViewGroup.LayoutParams.WRAP_CONTENT);
+		editText.setHint("Search");
+		editText.setTextSize(25);
+		paramsEditText.leftMargin = screenWidth/10;
+		paramsEditText.addRule(RelativeLayout.BELOW, id);
+		memoryPostLayout.addView(editText, paramsEditText);
+
+		Button search = new Button(this);
+		search.setText("Search");
+		RelativeLayout.LayoutParams paramsSearch = new RelativeLayout.LayoutParams(screenWidth/4, screenWidth/9);
+		paramsSearch.addRule(RelativeLayout.BELOW, id);
+		paramsSearch.leftMargin = screenWidth/2;
+		memoryPostLayout.addView(search, paramsSearch);
+		search.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (googleMap != null){
+
+				}
+			}
+		});
+*/
 	}
 
+	@Override
+	public void onMapReady(GoogleMap googleMap) {
+		this.googleMap = googleMap;
+		googleMap.addMarker(new MarkerOptions().position(new LatLng(41.0082, 28.9784)).title("Istanbul"));
+		googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(41.0082, 28.9784) , 12.0f) );
+		googleMap.setOnMarkerClickListener(this);
+	}
+	public boolean onMarkerClick(final Marker marker) {
+		return false;
+	}
 	void getScreenSize() {
 		android.view.Display display = getWindowManager().getDefaultDisplay();
 		android.graphics.Point size = new android.graphics.Point();
