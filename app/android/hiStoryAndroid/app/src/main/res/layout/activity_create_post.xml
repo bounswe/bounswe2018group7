@@ -63,7 +63,8 @@
                 android:id="@+id/postBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/back">
+                android:background="@drawable/back"
+                android:layout_margin="5dp">
 
                 <RelativeLayout
                     android:id="@+id/components"

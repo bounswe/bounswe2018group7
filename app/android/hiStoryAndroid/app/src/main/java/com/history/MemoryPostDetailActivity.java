@@ -167,66 +167,35 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		});
 	}
 	public void listPost(MemoryPost memoryPost){
-		System.out.println("aaaaaaaa");
-		RelativeLayout mainLayout = findViewById(R.id.memoryPostDetailActivityLayout);
+		RelativeLayout showPost = findViewById(R.id.showPost);
 
-		ScrollView memoryPostView = new ScrollView(this);
-		memoryPostView.setId(View.generateViewId());
-		RelativeLayout.LayoutParams paramsMemoryPostView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		memoryPostView.setPadding(screenWidth/30, screenWidth/30, screenWidth/30, screenWidth/30);
-		mainLayout.addView(memoryPostView, paramsMemoryPostView);
+		RelativeLayout memoryPostLayout = findViewById(R.id.showPostBody);
 
+		ImageView profilePicture = findViewById(R.id.iconImageView);
 
-
-		GradientDrawable memoryPostBorder =  new GradientDrawable();
-		memoryPostBorder.setStroke(screenWidth/360, Color.GRAY);
-		RelativeLayout memoryPostLayout = new RelativeLayout(this);
-		memoryPostLayout.setBackground(memoryPostBorder);
-		RelativeLayout.LayoutParams paramsMemoryPostLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		memoryPostView.addView(memoryPostLayout, paramsMemoryPostLayout);
-
-
-
-		RelativeLayout memoryPostInfoLayout = new RelativeLayout(this);
-		RelativeLayout.LayoutParams paramsMemoryPostInfoLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		memoryPostInfoLayout.setId(View.generateViewId());
-		memoryPostInfoLayout.setBackground(memoryPostBorder);
-		memoryPostInfoLayout.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-		memoryPostLayout.addView(memoryPostInfoLayout, paramsMemoryPostInfoLayout);
-
-		ImageView profilPicture = new ImageView(this);
-		profilPicture.setBackgroundResource(R.drawable.default_pp);
-		profilPicture.setId(View.generateViewId());
-		memoryPostInfoLayout.addView(profilPicture);
-
-		TextView authorTextView = new TextView(this);
-		RelativeLayout.LayoutParams paramsAuthorTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		TextView authorTextView = findViewById(R.id.showUsernameTextView);
 		authorTextView.setText(memoryPost.username);
-		authorTextView.setTextSize(25);
-		authorTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-		paramsAuthorTextView.addRule(RelativeLayout.RIGHT_OF , profilPicture.getId());
-		memoryPostInfoLayout.addView(authorTextView, paramsAuthorTextView);
 
-		TextView createdTimeTextView = new TextView(this);
-		RelativeLayout.LayoutParams paramsCreatedTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		TextView createdTimeTextView = findViewById(R.id.showCreatedDateTextView);
 		createdTimeTextView.setText(memoryPost.created);
-		createdTimeTextView.setTextSize(25);
-		createdTimeTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-		paramsCreatedTimeTextView.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		memoryPostInfoLayout.addView(createdTimeTextView, paramsCreatedTimeTextView);
 
-		TextView titleTextView = new TextView(this);
-		RelativeLayout.LayoutParams paramsTitleTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		TextView titleTextView = findViewById(R.id.showTitleTextView);
 		titleTextView.setText(memoryPost.title);
-		titleTextView.setTextSize(30);
-		titleTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-		paramsTitleTextView.addRule(RelativeLayout.BELOW, memoryPostInfoLayout.getId());
-		titleTextView.setId(View.generateViewId());
-		memoryPostLayout.addView(titleTextView, paramsTitleTextView);
 
+		TextView timeTextView = findViewById(R.id.showTimeTextView);
 
 		int id = titleTextView.getId();
 
+		if (memoryPost.time != null){
+			timeTextView.setText(memoryPost.time.toString());
+			timeTextView.setId(View.generateViewId());
+			id = timeTextView.getId();
+		}
+		else{
+			showPost.removeView(timeTextView);
+		}
+
+		
 		for (int j=0; j<memoryPost.story.length; j++){
 				if (memoryPost.story[j].type.equals("text")){
 					TextView storyTextView = new TextView(this);
@@ -257,16 +226,16 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
             tagTextView.setId(View.generateViewId());
             memoryPostLayout.addView(tagTextView, paramsTagTextView);*/
 
-		if (memoryPost.time != null){
-			TextView timeTextView = new TextView(this);
-			RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			timeTextView.setText(memoryPost.time.toString());
-			timeTextView.setTextSize(25);
-			paramsTimeTextView.addRule(RelativeLayout.BELOW, id);
-			timeTextView.setId(View.generateViewId());
-			id = timeTextView.getId();
-			memoryPostLayout.addView(timeTextView, paramsTimeTextView);
-		}
+//		if (memoryPost.time != null){
+//			TextView timeTextView = new TextView(this);
+//			RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//			timeTextView.setText(memoryPost.time.toString());
+//			timeTextView.setTextSize(25);
+//			paramsTimeTextView.addRule(RelativeLayout.BELOW, id);
+//			timeTextView.setId(View.generateViewId());
+//			id = timeTextView.getId();
+//			memoryPostLayout.addView(timeTextView, paramsTimeTextView);
+//		}
 
 
 		MapView map = new MapView(this);
