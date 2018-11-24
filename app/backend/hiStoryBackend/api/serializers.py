@@ -86,7 +86,7 @@ class MemoryPostSerializer(ReadOnlyUsernameFieldMixin,
 
 	class Meta:
 		model = MemoryPost
-		fields = '__all__'
+		exclude = ('user',)
 
 	def validate_json_array(self, field_value):
 		if isinstance(field_value, str):
