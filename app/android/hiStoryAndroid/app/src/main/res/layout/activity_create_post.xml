@@ -40,7 +40,8 @@
             android:layout_alignParentEnd="true"
             android:textColor="@color/colorWhite"
             android:background="@color/colorPrimaryDark"
-            android:text="Create"/>
+            android:text="Create"
+            android:onClick="createPost"/>
 
     </RelativeLayout>
 
@@ -79,6 +80,7 @@
                         android:hint="TITLE"/>
 
                     <TextView
+                        android:id="@+id/defaultPostStory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/addTitleEditText"
@@ -100,19 +102,22 @@
                         android:id="@+id/addTextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Text"/>
+                        android:text="Text"
+                        android:onClick="addEditText"/>
                     <Button
                         android:id="@+id/addImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/addTextButton"
-                        android:text="IMAGE"/>
+                        android:text="IMAGE"
+                        android:onClick="selectImage"/>
                     <Button
                         android:id="@+id/addVideoButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/addImageButton"
-                        android:text="VIDEO"/>
+                        android:text="VIDEO"
+                        android:onClick="selectVideo"/>
                     <Button
                         android:id="@+id/addAudioButton"
                         android:layout_width="match_parent"
