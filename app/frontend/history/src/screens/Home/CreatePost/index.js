@@ -94,20 +94,17 @@ class CreatePost extends Component {
   };
 
   handleCreatePost = () => {
-    var storyArray = PARSE(this.state.storyText);
-    // const {timeType}
-    const location = this.myCreateMapRef.getLocation();
-    const date = this.myCreateDateRef.getDate();
+    var storyArray = PARSE(this.state.storyText, this.state.fileList);
+
+    // const location = this.myCreateMapRef.getLocation();
+    // const date = this.myCreateDateRef.getDate();
     let loc = [{ type: "region", points: [{ lat1: "location.lat", lng1: "location.lng" }] }];
     let dateObj = { type: "this.state.timeType", data: "date.date" };
     let tags = Object.values(this.state.tags);
 
     if (this.state.title && this.state.storyText) {
       this.setState({ isloaderOpen: true });
-      this.props.createPost(this.state.title, JSON.stringify(dateObj), JSON.stringify(loc), [
-        { "story[0]": this.state.storyText, "story[1]": this.state.fileList[0] },
-        tags
-      ]);
+      this.props.createPost(this.state.title, JSON.stringify(dateObj), JSON.stringify(loc), storyArray, tags);
     } else {
       this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
     }
@@ -191,11 +188,6 @@ class CreatePost extends Component {
         {/* <Tags /> */}
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div style={{ width: 500 }}>
-            <Upload {...props}>
-              <ButtonX>
-                <IconX type="upload" /> Select File
-              </ButtonX>
-            </Upload>
             <br />
           </div>
 
@@ -336,11 +328,12 @@ class CreatePost extends Component {
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
               <Grid item xs={12} sm={6}>
-                <PMapsArea 
-                googleMapURL= {"https://maps.googleapis.com/maps/api/js?key=AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q"},
-                loadingElement= <div style={{ height: `100%` }} />,
-                 containerElement= <div style={{ height: `400px` }} />,
-                   mapElement=<div style={{ height: `100%` }} />/>
+                <PMapsArea
+                  googleMapURL={"https://maps.googleapis.com/maps/api/js?key=AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q"}
+                  loadingElement={<div style={{ height: `100%` }} />}
+                  containerElement={<div style={{ height: `400px` }} />}
+                  mapElement={<div style={{ height: `100%` }} />}
+                />
               </Grid>
               <Grid item xs={6} sm={3} />
             </Grid>
@@ -349,34 +342,15 @@ class CreatePost extends Component {
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() =>
-                  this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[image]***") }))
-                }
-              >
-                Add Image
-              </Button>
-
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={() =>
-                  this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[video]***") }))
-                }
-              >
-                Add Video
-              </Button>
-              <Button
-                variant="outlined"
-                color="inherit"
-                onClick={() =>
-                  this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[sound]***") }))
-                }
-              >
-                Add Sound
-              </Button>
+              <Upload {...props}>
+                <ButtonX
+                  onClick={() =>
+                    this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[media]***") }))
+                  }
+                >
+                  <IconX type="upload" /> Add Media
+                </ButtonX>
+              </Upload>
             </Grid>
             <Grid item xs={6} sm={3} />
           </Grid>

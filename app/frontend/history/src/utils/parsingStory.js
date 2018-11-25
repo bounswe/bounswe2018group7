@@ -1,8 +1,20 @@
-export function PARSE(text) {
-  var res = text.replace(/\n/g, "").split("***");
-  var filtered = res.filter(function(el) {
-    return el != "";
+export function PARSE(texts, files) {
+  var story = [];
+  var filtered = texts
+    .replace(/\n/g, "")
+    .split("***")
+    .filter(function(el) {
+      return el != "";
+    });
+
+  filtered.forEach(element => {
+    if (element == "[media]") {
+      story.push(files[0]);
+      files.pop();
+    } else {
+      story.push(element);
+    }
   });
 
-  return filtered;
+  return story;
 }

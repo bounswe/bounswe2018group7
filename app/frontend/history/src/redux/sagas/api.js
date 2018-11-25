@@ -52,7 +52,7 @@ class api {
 
     stories.forEach((el, index) => {
       let storytxt = "story[" + index + "]";
-      formData.append(storytxt, el, el.name);
+      formData.append(storytxt, el);
     });
 
     return new Promise((resolve, reject) => {
