@@ -16,21 +16,15 @@ class DateTime extends Component {
     if (props.dateRef) props.dateRef(this);
   }
   render() {
+    console.log("this.state. :", this.state.selectedDate);
     return (
       <div>
-        <InfiniteCalendar
-          width={400}
-          height={600}
-          selected={today}
-          disabledDays={[0, 6]}
-          minDate={lastWeek}
-          onSelect={ev => this.onDateClick(ev)}
-        />
+        <InfiniteCalendar width={400} height={600} selected={today} onSelect={ev => this.onDateClick(ev)} />
       </div>
     );
   }
   onDateClick(ev) {
-    this.setState({ selected: ev });
+    this.setState({ selectedDate: ev });
   }
   getDate() {
     return { date: this.state.selectedDate };

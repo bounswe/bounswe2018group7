@@ -13,7 +13,7 @@ const MyMaps = compose(
   withScriptjs,
   withGoogleMap
 )(props => (
-  <GoogleMap onClick={props.onClick} defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+  <GoogleMap onClick={props.onClick} defaultZoom={8} defaultCenter={{ lat: 38.9637, lng: 35.2433 }}>
     {props.isMarkerShown && <Marker position={{ lat: props.lat, lng: props.lng }} onClick={props.onMarkerClick} />}
   </GoogleMap>
 ));
@@ -23,8 +23,8 @@ class PMaps extends React.Component {
     super(props);
 
     this.state = {
-      lat: -34.397,
-      lng: 150.644
+      lat: 38.9637,
+      lng: 35.2433
     };
     if (props.mapRef) props.mapRef(this);
   }
