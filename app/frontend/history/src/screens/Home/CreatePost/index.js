@@ -20,8 +20,12 @@ import PMapsDest from "components/PMaps/DestinationMaps";
 import PMapsArea from "components/PMaps/Area";
 import PTag from "../../../components/PTag";
 import { withSnackbar } from "notistack";
-// import Tags from "../../../components/Tag";
+import { PARSE } from "../../../utils/parsingStory";
 
+import { Upload, Button as ButtonX, Icon as IconX, Row, Col } from "antd";
+
+import "./index.css";
+// import Tags from "../../../components/Tag";
 class CreatePost extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +43,10 @@ class CreatePost extends Component {
       storyText: "",
 
       //tags
-      tags: []
+      tags: [],
+
+      fileList: [],
+      uploading: false
     };
   }
 
@@ -67,6 +74,12 @@ class CreatePost extends Component {
 
   componentDidMount() {
     this.delayedShowMarker();
+    const script = document.createElement("script");
+
+    script.src = "./image.js";
+    script.async = true;
+
+    document.body.appendChild(script);
   }
 
   delayedShowMarker = () => {
@@ -81,21 +94,23 @@ class CreatePost extends Component {
   };
 
   handleCreatePost = () => {
-    //const {timeType}
-    // const location = this.myCreateMapRef.getLocation();
-    // const date = this.myCreateDateRef.getDate();
-    // let loc = [{ type: "region", points: [{ lat1: location.lat, lng1: location.lng }] }];
-    //let dateObj = { type: {this.state.timeType}, data: date.date };
-    // let tags = Object.values(this.state.tags);
-    // if (this.state.title && this.state.storyText) {
-    //   this.setState({ isloaderOpen: true });
-    //   this.props.createPost(this.state.title, JSON.stringify(dateObj), JSON.stringify(loc), [
-    //     { "story[0]": this.state.storyText },
-    //     tags
-    //   ]);
-    // } else {
-    //   this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
-    // }
+    var storyArray = PARSE(this.state.storyText);
+    // const {timeType}
+    const location = this.myCreateMapRef.getLocation();
+    const date = this.myCreateDateRef.getDate();
+    let loc = [{ type: "region", points: [{ lat1: "location.lat", lng1: "location.lng" }] }];
+    let dateObj = { type: "this.state.timeType", data: "date.date" };
+    let tags = Object.values(this.state.tags);
+
+    if (this.state.title && this.state.storyText) {
+      this.setState({ isloaderOpen: true });
+      this.props.createPost(this.state.title, JSON.stringify(dateObj), JSON.stringify(loc), [
+        { "story[0]": this.state.storyText, "story[1]": this.state.fileList[0] },
+        tags
+      ]);
+    } else {
+      this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -127,6 +142,28 @@ class CreatePost extends Component {
 
   render() {
     const { classes, history, ...rest } = this.props;
+    const { uploading } = this.state;
+    const props = {
+      action: file => Promise.resolve(),
+      onRemove: file => {
+        this.setState(({ fileList }) => {
+          const index = fileList.indexOf(file);
+          const newFileList = fileList.slice();
+          newFileList.splice(index, 1);
+          return {
+            fileList: newFileList
+          };
+        });
+      },
+      beforeUpload: file => {
+        this.setState(({ fileList }) => ({
+          fileList: [...fileList, file]
+        }));
+        return false;
+      },
+      fileList: this.state.fileList
+    };
+
     return (
       <div>
         <Header
@@ -153,6 +190,15 @@ class CreatePost extends Component {
         </Parallax>
         {/* <Tags /> */}
         <div className={classNames(classes.main, classes.mainRaised)}>
+          <div style={{ width: 500 }}>
+            <Upload {...props}>
+              <ButtonX>
+                <IconX type="upload" /> Select File
+              </ButtonX>
+            </Upload>
+            <br />
+          </div>
+
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
@@ -295,6 +341,61 @@ class CreatePost extends Component {
               <Grid item xs={6} sm={3} />
             </Grid>
           ) : null}
+
+          <Grid container spacing={24}>
+            <Grid item xs={6} sm={3} />
+            <Grid item xs={12} sm={6}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() =>
+                  this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[image]***") }))
+                }
+              >
+                Add Image
+              </Button>
+
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() =>
+                  this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[video]***") }))
+                }
+              >
+                Add Video
+              </Button>
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={() =>
+                  this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[sound]***") }))
+                }
+              >
+                Add Sound
+              </Button>
+            </Grid>
+            <Grid item xs={6} sm={3} />
+          </Grid>
+
+          <Grid container spacing={24}>
+            <Grid item xs={6} sm={3} />
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                id="outlined-multiline-static"
+                label="Your story text"
+                multiline
+                rows="10"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+                value={this.state.storyText}
+                onChange={this.handleChange("storyText")}
+              />
+            </Grid>
+
+            <Grid item xs={6} sm={3} />
+          </Grid>
 
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />

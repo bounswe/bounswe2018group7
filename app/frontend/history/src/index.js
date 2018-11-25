@@ -35,6 +35,7 @@ import { ConnectedRouter } from "connected-react-router";
 import Auth from "./screens/FullScreen/Auth";
 import Home from "./screens/Home";
 // import NotFound from "./components/NotFound/index";
+import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
 class App extends React.Component {
   render() {
