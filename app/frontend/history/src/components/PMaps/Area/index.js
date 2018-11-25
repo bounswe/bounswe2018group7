@@ -59,7 +59,7 @@ const Area = compose(
 class PMapsArea extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { coords: [{}] };
   }
   render() {
     return <Area />;
