@@ -336,7 +336,11 @@ class CreatePost extends Component {
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
               <Grid item xs={12} sm={6}>
-                <PMapsArea />
+                <PMapsArea 
+                googleMapURL= {"https://maps.googleapis.com/maps/api/js?key=AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q"},
+                loadingElement= <div style={{ height: `100%` }} />,
+                 containerElement= <div style={{ height: `400px` }} />,
+                   mapElement=<div style={{ height: `100%` }} />/>
               </Grid>
               <Grid item xs={6} sm={3} />
             </Grid>
