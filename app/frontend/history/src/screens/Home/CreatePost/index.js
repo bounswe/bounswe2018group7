@@ -22,7 +22,7 @@ import PTag from "../../../components/PTag";
 import { withSnackbar } from "notistack";
 import { PARSE } from "../../../utils/parsingStory";
 
-import { Upload, Button as ButtonX, Icon as IconX, Row, Col } from "antd";
+import { Upload, Button as ButtonX, Modal, Icon as IconX, Row, Col } from "antd";
 
 import "./index.css";
 // import Tags from "../../../components/Tag";
@@ -46,9 +46,21 @@ class CreatePost extends Component {
       tags: [],
 
       fileList: [],
-      uploading: false
+      uploading: false,
+      previewVisible: false,
+      previewImage: ""
     };
   }
+
+  handlePreview = file => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true
+    });
+  };
+  handleUploadChange = ({ fileList }) => {
+    this.setState({ fileList });
+  };
 
   handleDelete(i) {
     const { tags } = this.state;
@@ -139,9 +151,17 @@ class CreatePost extends Component {
 
   render() {
     const { classes, history, ...rest } = this.props;
-    const { uploading } = this.state;
+    const { previewVisible, previewImage } = this.state;
+    const uploadButton = (
+      <div>
+        <IconX type="plus" />
+        <div className="ant-upload-text">Upload Media</div>
+      </div>
+    );
     const props = {
-      action: file => Promise.resolve(),
+      action: file => {
+        Promise.resolve();
+      },
       onRemove: file => {
         this.setState(({ fileList }) => {
           const index = fileList.indexOf(file);
@@ -156,6 +176,7 @@ class CreatePost extends Component {
         this.setState(({ fileList }) => ({
           fileList: [...fileList, file]
         }));
+
         return false;
       },
       fileList: this.state.fileList
@@ -342,15 +363,18 @@ class CreatePost extends Component {
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
-              <Upload {...props}>
-                <ButtonX
+              <Upload listType="picture-card" onPreview={this.handlePreview} onChange={this.handleUploadChange}>
+                <div
                   onClick={() =>
                     this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[media]***") }))
                   }
                 >
-                  <IconX type="upload" /> Add Media
-                </ButtonX>
+                  {this.state.fileList.length >= 3 ? null : uploadButton}
+                </div>
               </Upload>
+              <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                <img alt="example" style={{ width: "100%" }} src={previewImage} />
+              </Modal>
             </Grid>
             <Grid item xs={6} sm={3} />
           </Grid>
