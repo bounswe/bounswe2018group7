@@ -13,6 +13,7 @@ class PMapsDest extends React.Component {
       lng2: -87.65141,
       routeDirection: {}
     };
+    if (props.mapDestRef) props.mapDestRef(this);
   }
 
   handleRouteChange() {
@@ -89,6 +90,9 @@ class PMapsDest extends React.Component {
       [name]: event.target.value
     });
   };
+  getLocation() {
+    return { lat1: this.state.lat1, lng1: this.state.lng1, lat2: this.state.lat2, lng2: this.state.lng2 };
+  }
 }
 
 export default PMapsDest;

@@ -41,7 +41,7 @@ class CreatePost extends Component {
       isMarkerShown: false,
       isloaderOpen: false,
       storyText: "",
-
+      locGlobal: [],
       //tags
       tags: [],
 
@@ -104,19 +104,40 @@ class CreatePost extends Component {
     this.setState({ isMarkerShown: true });
     this.delayedShowMarker();
   };
-
   handleCreatePost = () => {
     var storyArray = PARSE(this.state.storyText, this.state.fileList);
 
-    // const location = this.myCreateMapRef.getLocation();
-    // const date = this.myCreateDateRef.getDate();
-    let loc = [{ type: "region", points: [{ lat1: "location.lat", lng1: "location.lng" }] }];
+    if (this.state.mapType == "certain") {
+      const location = this.myCreateMapRef.getLocation();
+      this.state.locGlobal = [{ type: this.state.mapType, points: [{ lat1: location.lat, lng1: location.lng }] }];
+    } else if (this.state.mapType == "path") {
+      const locationDest = this.myCreateMapDestRef.getLocation();
+      this.state.locGlobal = [
+        {
+          type: this.state.mapType,
+          points: [
+            { lat1: locationDest.lat1, lng1: locationDest.lng1 },
+            { lat2: locationDest.lat2, lng2: locationDest.lng2 }
+          ]
+        }
+      ];
+    } else if (this.state.mapType == "area") {
+      const locationArea = this.myCreateMapAreaRef.getLocation();
+      this.state.locGlobal = [{ type: this.state.mapType, points: locationArea.coords }];
+    }
+    const date = this.myCreateDateRef.getDate();
     let dateObj = { type: "this.state.timeType", data: "date.date" };
     let tags = Object.values(this.state.tags);
 
     if (this.state.title && this.state.storyText) {
       this.setState({ isloaderOpen: true });
-      this.props.createPost(this.state.title, JSON.stringify(dateObj), JSON.stringify(loc), storyArray, tags);
+      this.props.createPost(
+        this.state.title,
+        JSON.stringify(dateObj),
+        JSON.stringify(this.state.locGlobal),
+        storyArray,
+        tags
+      );
     } else {
       this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
     }
@@ -339,7 +360,7 @@ class CreatePost extends Component {
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
               <Grid item xs={12} sm={6}>
-                <PMapsDest />
+                <PMapsDest mapDestRef={el => (this.myCreateMapDestRef = el)} />
               </Grid>
               <Grid item xs={6} sm={3} />
             </Grid>
@@ -354,6 +375,7 @@ class CreatePost extends Component {
                   loadingElement={<div style={{ height: `100%` }} />}
                   containerElement={<div style={{ height: `400px` }} />}
                   mapElement={<div style={{ height: `100%` }} />}
+                  mapAreaRef={el => (this.myCreateMapAreaRef = el)}
                 />
               </Grid>
               <Grid item xs={6} sm={3} />

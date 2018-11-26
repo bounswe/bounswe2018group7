@@ -9,6 +9,7 @@ class PMapsArea extends React.Component {
       coords: [],
       updated: 0
     };
+    if (props.mapAreaRef) props.mapAreaRef(this);
   }
 
   render() {
@@ -46,6 +47,9 @@ class PMapsArea extends React.Component {
     const newArray = this.state.coords;
     newArray.push({ lat: e.latLng.lat(), lng: e.latLng.lng() });
     this.setState(prevState => ({ coords: newArray, updated: prevState.updated + 1 }));
+  }
+  getLocation() {
+    return { coords: this.state.coords };
   }
 }
 
