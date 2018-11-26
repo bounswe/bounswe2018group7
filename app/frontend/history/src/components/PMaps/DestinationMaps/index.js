@@ -2,11 +2,14 @@
 import React from "react";
 import { TextField, Button } from "@material-ui/core";
 import GoogleMapWithDirections from "./dest";
+
 class PMapsDest extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      city1: "bursa",
+      city2: "istanbul",
       lat1: 41.85073,
       lng1: -87.65126,
       lat2: 41.85258,
@@ -17,6 +20,33 @@ class PMapsDest extends React.Component {
   }
 
   handleRouteChange() {
+    var arr = [];
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: this.state.city1 }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK) {
+        this.setState({ lng1: results[0].geometry.location.lng(), lat1: results[0].geometry.location.lat() }, () =>
+          this.changeRoute()
+        );
+      } else {
+        console.log("Something got wrong " + status);
+      }
+    });
+
+    geocoder.geocode({ address: this.state.city2 }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK) {
+        this.setState({ lng2: results[0].geometry.location.lng(), lat2: results[0].geometry.location.lat() }, () =>
+          this.changeRoute()
+        );
+      } else {
+        console.log("Something got wrong " + status);
+      }
+      return arr;
+    });
+
+    this.changeRoute();
+  }
+
+  changeRoute() {
     const DirectionsService = new google.maps.DirectionsService();
 
     DirectionsService.route(
@@ -36,40 +66,26 @@ class PMapsDest extends React.Component {
       }
     );
   }
+
   render() {
     return (
       <div>
         <TextField
           margin="normal"
           variant="outlined"
-          label="LAT1"
-          value={this.state.lat1}
-          onChange={this.handleChange("lat1")}
+          label="City1"
+          value={this.state.city1}
+          onChange={this.handleChange("city1")}
         />
 
         <TextField
           margin="normal"
           variant="outlined"
-          label="LNG1"
-          value={this.state.lng1}
-          onChange={this.handleChange("lng1")}
+          label="City2"
+          value={this.state.city2}
+          onChange={this.handleChange("city2")}
         />
 
-        <TextField
-          margin="normal"
-          variant="outlined"
-          label="LAT2"
-          value={this.state.lat2}
-          onChange={this.handleChange("lat2")}
-        />
-
-        <TextField
-          margin="normal"
-          variant="outlined"
-          label="LNG2"
-          value={this.state.lng2}
-          onChange={this.handleChange("lng2")}
-        />
         <Button color="primary" onClick={() => this.handleRouteChange()}>
           Set New Route
         </Button>

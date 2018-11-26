@@ -44,7 +44,6 @@ class CreatePost extends Component {
       locGlobal: [],
       //tags
       tags: [],
-
       fileList: [],
       uploading: false,
       previewVisible: false,
@@ -107,46 +106,22 @@ class CreatePost extends Component {
   handleCreatePost = () => {
     var storyArray = PARSE(this.state.storyText, this.state.fileList);
 
-    if (this.state.mapType === "certain") {
-      const location = this.myCreateMapRef.getLocation();
-      this.setState({
-        locGlobal: [{ type: this.state.mapType, points: [{ lat1: location.lat, lng1: location.lng }] }]
-      });
-    } else if (this.state.mapType === "path") {
-      const locationDest = this.myCreateMapDestRef.getLocation();
-      this.setState({
-        locGlobal: [
-          {
-            type: this.state.mapType,
-            points: [
-              { lat1: locationDest.lat1, lng1: locationDest.lng1 },
-              { lat2: locationDest.lat2, lng2: locationDest.lng2 }
-            ]
-          }
-        ]
-      });
-    } else if (this.state.mapType === "area") {
-      const locationArea = this.myCreateMapAreaRef.getLocation();
-      this.setState({
-        locGlobal: [{ type: this.state.mapType, points: locationArea.coords }]
-      });
-    }
-    //const date = this.myCreateDateRef.getDate();
-    let dateObj = { type: "this.state.timeType", data: "date.date" };
-    let tags = Object.values(this.state.tags);
+    // //const date = this.myCreateDateRef.getDate();
+    // let dateObj = { type: "this.state.timeType", data: "date.date" };
+    // let tags = Object.values(this.state.tags);
 
-    if (this.state.title && this.state.storyText) {
-      this.setState({ isloaderOpen: true });
-      this.props.createPost(
-        this.state.title,
-        JSON.stringify(dateObj),
-        JSON.stringify(this.state.locGlobal),
-        storyArray,
-        tags
-      );
-    } else {
-      this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
-    }
+    // if (this.state.title && this.state.storyText) {
+    //   this.setState({ isloaderOpen: true });
+    //   this.props.createPost(
+    //     this.state.title,
+    //     JSON.stringify(dateObj),
+    //     JSON.stringify(this.state.locGlobal),
+    //     storyArray,
+    //     tags
+    //   );
+    // } else {
+    //   this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
+    // }
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -175,10 +150,38 @@ class CreatePost extends Component {
   handleSaveCertainTime = () => {
     console.log("saved", this.state.m.format("llll"));
   };
+  handleMap() {
+    if (this.state.mapType === "certain") {
+      const location = this.myCreateMapRef.getLocation();
+      this.setState({
+        locGlobal: [{ type: this.state.mapType, points: [{ lat1: location.lat, lng1: location.lng }] }]
+      });
+    } else if (this.state.mapType === "path") {
+      const locationDest = this.myCreateMapDestRef.getLocation();
+      this.setState({
+        locGlobal: [
+          {
+            type: this.state.mapType,
+            points: [
+              { lat1: locationDest.lat1, lng1: locationDest.lng1 },
+              { lat2: locationDest.lat2, lng2: locationDest.lng2 }
+            ]
+          }
+        ]
+      });
+    } else if (this.state.mapType === "area") {
+      const locationArea = this.myCreateMapAreaRef.getLocation();
+      console.log("​handleCreatePost -> locationArea", locationArea);
+      this.setState({
+        locGlobal: [{ type: this.state.mapType, points: locationArea.coords }]
+      });
+    }
+  }
 
   render() {
     const { classes, history, ...rest } = this.props;
-    const { previewVisible, previewImage } = this.state;
+    const { previewVisible, previewImage, locGlobal } = this.state;
+    console.log("​render -> locGlobal", locGlobal);
     const uploadButton = (
       <div>
         <IconX type="plus" />
@@ -343,6 +346,9 @@ class CreatePost extends Component {
               <IconButton aria-label="Delete" className={classes.button} onClick={() => this.setState({ mapType: "" })}>
                 <DeleteIcon fontSize="small" />
               </IconButton>
+              <Button aria-label="ok" className={classes.button} onClick={() => this.handleMap()}>
+                Save Map
+              </Button>
             </Grid>
             <Grid item xs={6} sm={3} />
           </Grid>
