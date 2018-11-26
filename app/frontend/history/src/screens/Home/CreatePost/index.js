@@ -22,7 +22,7 @@ import PTag from "../../../components/PTag";
 import { withSnackbar } from "notistack";
 import { PARSE } from "../../../utils/parsingStory";
 
-import { Upload, Button as ButtonX, Modal, Icon as IconX, Row, Col } from "antd";
+import { Upload, Modal, Icon as IconX } from "antd";
 
 import "./index.css";
 // import Tags from "../../../components/Tag";
@@ -107,25 +107,31 @@ class CreatePost extends Component {
   handleCreatePost = () => {
     var storyArray = PARSE(this.state.storyText, this.state.fileList);
 
-    if (this.state.mapType == "certain") {
+    if (this.state.mapType === "certain") {
       const location = this.myCreateMapRef.getLocation();
-      this.state.locGlobal = [{ type: this.state.mapType, points: [{ lat1: location.lat, lng1: location.lng }] }];
-    } else if (this.state.mapType == "path") {
+      this.setState({
+        locGlobal: [{ type: this.state.mapType, points: [{ lat1: location.lat, lng1: location.lng }] }]
+      });
+    } else if (this.state.mapType === "path") {
       const locationDest = this.myCreateMapDestRef.getLocation();
-      this.state.locGlobal = [
-        {
-          type: this.state.mapType,
-          points: [
-            { lat1: locationDest.lat1, lng1: locationDest.lng1 },
-            { lat2: locationDest.lat2, lng2: locationDest.lng2 }
-          ]
-        }
-      ];
-    } else if (this.state.mapType == "area") {
+      this.setState({
+        locGlobal: [
+          {
+            type: this.state.mapType,
+            points: [
+              { lat1: locationDest.lat1, lng1: locationDest.lng1 },
+              { lat2: locationDest.lat2, lng2: locationDest.lng2 }
+            ]
+          }
+        ]
+      });
+    } else if (this.state.mapType === "area") {
       const locationArea = this.myCreateMapAreaRef.getLocation();
-      this.state.locGlobal = [{ type: this.state.mapType, points: locationArea.coords }];
+      this.setState({
+        locGlobal: [{ type: this.state.mapType, points: locationArea.coords }]
+      });
     }
-    const date = this.myCreateDateRef.getDate();
+    //const date = this.myCreateDateRef.getDate();
     let dateObj = { type: "this.state.timeType", data: "date.date" };
     let tags = Object.values(this.state.tags);
 
@@ -179,29 +185,29 @@ class CreatePost extends Component {
         <div className="ant-upload-text">Upload Media</div>
       </div>
     );
-    const props = {
-      action: file => {
-        Promise.resolve();
-      },
-      onRemove: file => {
-        this.setState(({ fileList }) => {
-          const index = fileList.indexOf(file);
-          const newFileList = fileList.slice();
-          newFileList.splice(index, 1);
-          return {
-            fileList: newFileList
-          };
-        });
-      },
-      beforeUpload: file => {
-        this.setState(({ fileList }) => ({
-          fileList: [...fileList, file]
-        }));
+    // const props = {
+    //   action: file => {
+    //     Promise.resolve();
+    //   },
+    //   onRemove: file => {
+    //     this.setState(({ fileList }) => {
+    //       const index = fileList.indexOf(file);
+    //       const newFileList = fileList.slice();
+    //       newFileList.splice(index, 1);
+    //       return {
+    //         fileList: newFileList
+    //       };
+    //     });
+    //   },
+    //   beforeUpload: file => {
+    //     this.setState(({ fileList }) => ({
+    //       fileList: [...fileList, file]
+    //     }));
 
-        return false;
-      },
-      fileList: this.state.fileList
-    };
+    //     return false;
+    //   },
+    //   fileList: this.state.fileList
+    // };
 
     return (
       <div>
@@ -277,7 +283,7 @@ class CreatePost extends Component {
             <Grid item xs={6} sm={3} />
           </Grid>
 
-          {this.state.timeType == "certain" ? (
+          {this.state.timeType === "certain" ? (
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
 
@@ -288,7 +294,7 @@ class CreatePost extends Component {
             </Grid>
           ) : null}
 
-          {this.state.timeType == "interval" ? (
+          {this.state.timeType === "interval" ? (
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
 
@@ -302,7 +308,7 @@ class CreatePost extends Component {
             </Grid>
           ) : null}
 
-          {this.state.timeType == "general" ? (
+          {this.state.timeType === "general" ? (
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
 
@@ -341,7 +347,7 @@ class CreatePost extends Component {
             <Grid item xs={6} sm={3} />
           </Grid>
 
-          {this.state.mapType == "certain" ? (
+          {this.state.mapType === "certain" ? (
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
 
@@ -356,7 +362,7 @@ class CreatePost extends Component {
             </Grid>
           ) : null}
 
-          {this.state.mapType == "path" ? (
+          {this.state.mapType === "path" ? (
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
               <Grid item xs={12} sm={6}>
@@ -366,7 +372,7 @@ class CreatePost extends Component {
             </Grid>
           ) : null}
 
-          {this.state.mapType == "area" ? (
+          {this.state.mapType === "area" ? (
             <Grid container spacing={24}>
               <Grid item xs={6} sm={3} />
               <Grid item xs={12} sm={6}>

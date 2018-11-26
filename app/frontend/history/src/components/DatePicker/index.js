@@ -11,7 +11,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import DateIcon from "@material-ui/icons/DateRange";
 
-import { Calendar, CalendarControls } from "react-yearly-calendar";
+import { Calendar } from "react-yearly-calendar";
 
 const styles = {
   appBar: {

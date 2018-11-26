@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Redirect } from "react-router";
+import { Switch, Route } from "react-router";
 
 import MainPage from "views/Components/Components";
 import CreatePost from "screens/Home/CreatePost";

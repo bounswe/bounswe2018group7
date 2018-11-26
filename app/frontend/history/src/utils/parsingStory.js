@@ -4,11 +4,11 @@ export function PARSE(texts, files) {
     .replace(/\n/g, "")
     .split("***")
     .filter(function(el) {
-      return el != "";
+      return el !== "";
     });
 
   filtered.forEach(element => {
-    if (element == "[media]") {
+    if (element === "[media]") {
       story.push(files[0]);
       files.pop();
     } else {

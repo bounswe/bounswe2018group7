@@ -12,7 +12,7 @@ import {
 
 import api from "./api";
 import { clError, clWarning } from "utils/consolelog.js";
-import { createPostFailure, createPostSuccess, createPost } from "../post/Actions";
+import { createPostFailure, createPostSuccess } from "../post/Actions";
 import { CREATE_POST_REQUEST } from "../post/actionTypes";
 
 const trySignInSaga = function*(action) {
