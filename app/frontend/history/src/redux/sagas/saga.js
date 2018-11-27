@@ -12,8 +12,8 @@ import {
 
 import api from "./api";
 import { clError, clWarning } from "utils/consolelog.js";
-import { createPostFailure, createPostSuccess } from "../post/Actions";
-import { CREATE_POST_REQUEST } from "../post/actionTypes";
+import { createPostFailure, createPostSuccess, fetchPostSuccess, fetchPostFailure } from "../post/Actions";
+import { CREATE_POST_REQUEST, FETCH_POST_REQUEST } from "../post/actionTypes";
 
 const trySignInSaga = function*(action) {
   const { identity, password } = action.payload;
@@ -107,6 +107,35 @@ const trySignUpSaga = function*(action) {
   }
 };
 
+const tryFetchPostSaga = function*() {
+  try {
+    const fetchPostResponse = yield call(api.fetchPost);
+
+    if (fetchPostResponse) {
+      console.log("fetchPostResponse", fetchPostResponse);
+
+      if (fetchPostResponse.status === 200) {
+        yield put(fetchPostSuccess(fetchPostResponse.responseBody));
+      } else if (fetchPostResponse.status === 400) {
+        clError("Something wrong! Got a status 400", fetchPostResponse.responseBody);
+        yield put(fetchPostFailure(fetchPostResponse.responseBody));
+      } else if (fetchPostResponse.status === 401) {
+        clError("Unauthorized request!");
+        yield put(fetchPostFailure({ errors: ["Unauthorized request!"] }));
+      } else {
+        clError("Something wrong! Got an unknown status. API BOZUK!!!", fetchPostResponse.responseBody);
+        yield put(fetchPostFailure({ errors: ["Unknown status. Check console!"] }));
+      }
+    } else {
+      clError("Deleting contact failed by api. No response !");
+      yield put(fetchPostFailure({ errors: ["No response fetched. Please contact the API team"] }));
+    }
+  } catch (err) {
+    clWarning("Deleting contact failed by api. Error => ", err);
+    yield put(fetchPostFailure({ errors: [err.detail] }));
+  }
+};
+
 const tryCreatePostSaga = function*(action) {
   const { title, time, location, stories, tags } = action.payload;
   console.log("​location", typeof time);
@@ -147,6 +176,7 @@ const saga = function*() {
   yield takeLatest(SIGNUP_REQUEST, trySignUpSaga);
   yield takeLatest(EMAIL_REQUEST, tryVerifyEmailSaga);
   yield takeLatest(CREATE_POST_REQUEST, tryCreatePostSaga);
+  yield takeLatest(FETCH_POST_REQUEST, tryFetchPostSaga);
 };
 
 export default saga;

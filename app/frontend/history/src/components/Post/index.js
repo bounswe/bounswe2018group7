@@ -14,24 +14,30 @@ import Divider from "@material-ui/core/Divider";
 import PMaps from "../PMaps/index";
 
 class Post extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
+  }
+  componentDidMount() {
+    // if (data) {
+    //   this.setState({ data: data });
+    // }
+  }
+
   render() {
     const { data } = this.props;
-
     return (
       <Card className={"postComponent"}>
-        <PTitle
-          username={data.username}
-          like={data.like}
-          creation_date={data.creation_date}
-          creation_time={data.creation_time}
-        />
+        <PTitle username={data.username} like={data.like ? data.like : 0} creation_date={data.created} />
         <Divider />
         <Typography style={{ textAlign: "center", marginTop: 10 }} variant="headline" gutterBottom>
-          {data.header}
+          {data.title}
         </Typography>
 
         <div className="postContentStyle">
-          {data.content.map((element, index) => {
+          {data.story.map((element, index) => {
             if (element.type === "text") {
               return (
                 <div key={index} className={"postTextStyle"}>
@@ -55,7 +61,7 @@ class Post extends Component {
             <Divider />
           </div>
           <Typography align={"center"} variant="headline" gutterBottom>
-            {data.history_time}
+            {data.time.data}
           </Typography>
           <div style={{ marginTop: 20, marginBottom: 20 }}>
             <Divider />

@@ -2,6 +2,14 @@ import httpService from "services/HttpService";
 import { getCookie, TOKEN_COOKIE } from "utils/cookies.js";
 
 class api {
+  fetchPost = () => {
+    return httpService.fetch({
+      path: "api/v1/memory_posts/",
+      method: "GET",
+      sendToken: false
+    });
+  };
+
   doSignIn = (identity, password) => {
     return httpService.fetch({
       path: "api/v1/signin/",
