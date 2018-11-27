@@ -55,8 +55,7 @@ class api {
     formData.append("location", location);
 
     // Object.keys(stories).forEach(el => formData.append(el, stories[el]));
-    console.log(String(tags));
-    formData.append("STRINGtags", String(tags));
+    formData.append("tags", tags);
 
     stories.forEach((el, index) => {
       let storytxt = "story[" + index + "]";

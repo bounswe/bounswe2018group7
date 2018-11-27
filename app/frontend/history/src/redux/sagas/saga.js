@@ -138,7 +138,9 @@ const tryFetchPostSaga = function*() {
 
 const tryCreatePostSaga = function*(action) {
   const { title, time, location, stories, tags } = action.payload;
-  console.log("​location", typeof time);
+  console.log("​----------");
+  console.log("​tags", tags);
+  console.log("​----------");
 
   try {
     const createPostResponse = yield call(api.createPost, title, time, location, stories, tags);
