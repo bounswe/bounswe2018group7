@@ -4,7 +4,8 @@ import {
   CREATE_COMMENT_REQUEST,
   CREATE_COMMENT_SUCCESS,
   CREATE_COMMENT_FAILURE,
-  CREATE_COMMENT_RESET
+  CREATE_COMMENT_RESET,
+  PUSH_LAST_COMMENT_REQUEST
 } from "./actionTypes";
 
 export const createComment = (memory_post, content) => ({
@@ -12,6 +13,17 @@ export const createComment = (memory_post, content) => ({
   payload: {
     memory_post,
     content
+  }
+});
+
+export const pushLastComment = (id, memory_post, username, content, created) => ({
+  type: PUSH_LAST_COMMENT_REQUEST,
+  payload: {
+    id,
+    memory_post,
+    username,
+    content,
+    created
   }
 });
 

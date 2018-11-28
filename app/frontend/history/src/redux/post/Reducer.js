@@ -1,4 +1,10 @@
-import { CREATE_POST_FAILURE, CREATE_POST_REQUEST, CREATE_POST_RESET, CREATE_POST_SUCCESS } from "./actionTypes";
+import {
+  CREATE_POST_FAILURE,
+  CREATE_POST_REQUEST,
+  CREATE_POST_RESET,
+  CREATE_POST_SUCCESS,
+  PUSH_LAST_COMMENT_REQUEST
+} from "./actionTypes";
 import { FETCH_POST_REQUEST, FETCH_POST_SUCCESS, FETCH_POST_FAILURE, FETCH_POST_RESET } from "./actionTypes";
 import {
   CREATE_COMMENT_REQUEST,
@@ -55,6 +61,12 @@ export default function(state = initialState, action) {
       createPostInProgress: false,
       createPostHasError: false,
       createPostCompleted: false
+    };
+  } else if (action.type === PUSH_LAST_COMMENT_REQUEST) {
+    state.postList.results[0].comments.push(payload);
+
+    return {
+      ...state
     };
   } else if (action.type === CREATE_COMMENT_REQUEST) {
     return {

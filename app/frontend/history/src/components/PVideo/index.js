@@ -5,7 +5,6 @@ import "./style.css";
 import "../../../node_modules/video-react/dist/video-react.css"; // import css
 class PVideo extends Component {
   render() {
-    console.log("VIDEO this.props :", this.props);
     const { poster, url } = this.props;
     return (
       <div>
