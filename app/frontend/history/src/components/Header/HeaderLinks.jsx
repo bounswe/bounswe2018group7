@@ -62,14 +62,14 @@ class HeaderLinks extends Component {
           {history.location.pathname === "/home/createpost" ? (
             <ListItem className={classes.listItem}>
               <CustomButton href="../home" color="transparent" className={classes.navLink}>
-                <Create className={classes.icons} /> Home
+                <Home className={classes.icons} /> Home
               </CustomButton>
             </ListItem>
           ) : null}
           {history.location.pathname === "/home" ? (
             <ListItem className={classes.listItem}>
               <CustomButton href="../home/createpost" color="transparent" className={classes.navLink}>
-                <Home className={classes.icons} /> Create Post
+                <Create className={classes.icons} /> Create Post
               </CustomButton>
             </ListItem>
           ) : null}

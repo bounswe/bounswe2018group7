@@ -4,12 +4,12 @@ import PCommentAdd from "./PCommentAdd/index";
 import PCommentList from "./PCommentList";
 class PComment extends Component {
   render() {
-    const { comments } = this.props;
+    const { comments, id } = this.props;
 
     return (
       <div>
         <PCommentList comments={comments} />
-        <PCommentAdd />
+        <PCommentAdd id={id} />
       </div>
     );
   }

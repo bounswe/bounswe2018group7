@@ -65,7 +65,7 @@ class Post extends Component {
             <Divider />
           </div>
 
-          <PComment comments={data.comments} />
+          <PComment id={data.id} comments={data.comments} />
         </div>
       </Card>
     );

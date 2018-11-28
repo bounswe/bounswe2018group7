@@ -26,9 +26,9 @@ class PCommentList extends React.Component {
     const { classes, comments } = this.props;
     return (
       <div>
-        {comments.map((comment, index) => {
+        {comments.map(comment => {
           return (
-            <div key={index} style={{ margin: 15 }}>
+            <div key={comment.id} style={{ margin: 15 }}>
               <Card>
                 <CardHeader
                   avatar={<Avatar className={classes.orangeAvatar}>{comment.username.charAt(0).toUpperCase()}</Avatar>}
@@ -38,10 +38,10 @@ class PCommentList extends React.Component {
                     </IconButton>
                   }
                   title={comment.username}
-                  subheader={comment.creation_time}
+                  subheader={comment.created}
                 />
                 <CardContent>
-                  <Typography component="p">{comment.text}</Typography>
+                  <Typography component="p">{comment.content}</Typography>
                 </CardContent>
               </Card>
             </div>

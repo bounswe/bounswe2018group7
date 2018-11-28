@@ -12,8 +12,15 @@ import {
 
 import api from "./api";
 import { clError, clWarning } from "utils/consolelog.js";
-import { createPostFailure, createPostSuccess, fetchPostSuccess, fetchPostFailure } from "../post/Actions";
-import { CREATE_POST_REQUEST, FETCH_POST_REQUEST } from "../post/actionTypes";
+import {
+  createPostFailure,
+  createPostSuccess,
+  fetchPostSuccess,
+  fetchPostFailure,
+  createCommentFailure,
+  createCommentSuccess
+} from "../post/Actions";
+import { CREATE_POST_REQUEST, FETCH_POST_REQUEST, CREATE_COMMENT_REQUEST } from "../post/actionTypes";
 
 const trySignInSaga = function*(action) {
   const { identity, password } = action.payload;
@@ -39,6 +46,37 @@ const trySignInSaga = function*(action) {
     } else {
       clError("SignIn failed by api. No response !");
       yield put(signinFailure({ errors: ["No response fetched. Please contact the API team!"] }));
+    }
+  } catch (err) {
+    clWarning("SignIn failed by api. Error => ", err);
+    yield put(signinFailure({ errors: [err.detail] }));
+  }
+};
+
+const tryCreateCommentSaga = function*(action) {
+  const { memory_post, content } = action.payload;
+  try {
+    const commentResponse = yield call(api.doComment, memory_post, content);
+
+    if (commentResponse) {
+      console.log("​--------------------------------");
+      console.log("​commentResponse", commentResponse);
+      console.log("​--------------------------------");
+      if (commentResponse.status === 200) {
+        yield put(createCommentSuccess(commentResponse.responseBody));
+      } else if (commentResponse.status === 400) {
+        clError("Something wrong! Got a status 400", commentResponse.responseBody);
+        yield put(createCommentFailure(commentResponse.responseBody));
+      } else if (commentResponse.status === 401) {
+        clError("Something wrong! Got a status 401", commentResponse.responseBody);
+        yield put(createCommentFailure(commentResponse.responseBody));
+      } else {
+        clError("Something wrong! Got an unknown status. API BOZUK!!!", commentResponse);
+        yield put(createCommentFailure({ errors: ["Unknown status. Check console!"] }));
+      }
+    } else {
+      clError("SignIn failed by api. No response !");
+      yield put(createCommentFailure({ errors: ["No response fetched. Please contact the API team!"] }));
     }
   } catch (err) {
     clWarning("SignIn failed by api. Error => ", err);
@@ -182,6 +220,7 @@ const saga = function*() {
   yield takeLatest(EMAIL_REQUEST, tryVerifyEmailSaga);
   yield takeLatest(CREATE_POST_REQUEST, tryCreatePostSaga);
   yield takeLatest(FETCH_POST_REQUEST, tryFetchPostSaga);
+  yield takeLatest(CREATE_COMMENT_REQUEST, tryCreateCommentSaga);
 };
 
 export default saga;

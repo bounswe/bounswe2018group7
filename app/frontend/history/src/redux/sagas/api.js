@@ -31,6 +31,18 @@ class api {
       sendToken: false
     });
   };
+
+  doComment = (memory_post, content) => {
+    return httpService.fetch({
+      path: "api/v1/comments/",
+      method: "POST",
+      body: {
+        memory_post,
+        content
+      },
+      sendToken: true
+    });
+  };
   doSignUp = (username, email, password, password_confirmation, first_name, last_name) => {
     return httpService.fetch({
       path: "api/v1/signup/",

@@ -1,6 +1,11 @@
 import { CREATE_POST_FAILURE, CREATE_POST_REQUEST, CREATE_POST_RESET, CREATE_POST_SUCCESS } from "./actionTypes";
 import { FETCH_POST_REQUEST, FETCH_POST_SUCCESS, FETCH_POST_FAILURE, FETCH_POST_RESET } from "./actionTypes";
-
+import {
+  CREATE_COMMENT_REQUEST,
+  CREATE_COMMENT_SUCCESS,
+  CREATE_COMMENT_FAILURE,
+  CREATE_COMMENT_RESET
+} from "./actionTypes";
 const initialState = {
   createPostInProgress: false,
   createPostHasError: false,
@@ -12,7 +17,12 @@ const initialState = {
   fetchPostCompleted: false,
   fetchPostError: "",
 
-  postList: []
+  postList: [],
+
+  createCommentInProgress: false,
+  createCommentHasError: false,
+  createCommentCompleted: false,
+  createCommentError: ""
 };
 
 export default function(state = initialState, action) {
@@ -45,6 +55,35 @@ export default function(state = initialState, action) {
       createPostInProgress: false,
       createPostHasError: false,
       createPostCompleted: false
+    };
+  } else if (action.type === CREATE_COMMENT_REQUEST) {
+    return {
+      ...state,
+      createCommentInProgress: true,
+      createCommentHasError: false,
+      createCommentCompleted: false
+    };
+  } else if (action.type === CREATE_COMMENT_SUCCESS) {
+    return {
+      ...state,
+      createCommentInProgress: false,
+      createCommentHasError: false,
+      createCommentCompleted: true
+    };
+  } else if (action.type === CREATE_COMMENT_FAILURE) {
+    return {
+      ...state,
+      createCommentInProgress: false,
+      createCommentHasError: true,
+      createCommentCompleted: true,
+      createCommentError: payload.errors || "There is an error"
+    };
+  } else if (action.type === CREATE_COMMENT_RESET) {
+    return {
+      ...state,
+      createCommentInProgress: false,
+      createCommentHasError: false,
+      createCommentCompleted: false
     };
   } else if (action.type === FETCH_POST_REQUEST) {
     return {
