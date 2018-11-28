@@ -29,17 +29,20 @@ const trySignInSaga = function*(action) {
       } else if (signinResponse.status === 400) {
         clError("Something wrong! Got a status 400", signinResponse.responseBody);
         yield put(signinFailure(signinResponse.responseBody));
+      } else if (signinResponse.status === 401) {
+        clError("Something wrong! Got a status 401", signinResponse.responseBody);
+        yield put(signinFailure(signinResponse.responseBody));
       } else {
         clError("Something wrong! Got an unknown status. API BOZUK!!!", signinResponse);
-        yield put(signinFailure({ detail: ["Unknown status. Check console!"] }));
+        yield put(signinFailure({ errors: ["Unknown status. Check console!"] }));
       }
     } else {
       clError("SignIn failed by api. No response !");
-      yield put(signinFailure({ detail: ["No response fetched. Please contact the API team!"] }));
+      yield put(signinFailure({ errors: ["No response fetched. Please contact the API team!"] }));
     }
   } catch (err) {
     clWarning("SignIn failed by api. Error => ", err);
-    yield put(signinFailure({ detail: [err.detail] }));
+    yield put(signinFailure({ errors: [err.detail] }));
   }
 };
 

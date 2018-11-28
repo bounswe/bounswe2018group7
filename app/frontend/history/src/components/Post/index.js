@@ -14,18 +14,6 @@ import Divider from "@material-ui/core/Divider";
 import PMaps from "../PMaps/index";
 
 class Post extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: []
-    };
-  }
-  componentDidMount() {
-    // if (data) {
-    //   this.setState({ data: data });
-    // }
-  }
-
   render() {
     const { data } = this.props;
     return (
@@ -38,7 +26,7 @@ class Post extends Component {
 
         <div className="postContentStyle">
           {data.story.map((element, index) => {
-            if (element.type === "text") {
+            if (element.type.startsWith("text")) {
               return (
                 <div key={index} className={"postTextStyle"}>
                   <Typography color={"textSecondary"} component="p">
@@ -46,11 +34,11 @@ class Post extends Component {
                   </Typography>
                 </div>
               );
-            } else if (element.type === "video") {
+            } else if (element.type.startsWith("video")) {
               return <PVideo key={index} url={element.payload} />;
-            } else if (element.type === "image") {
+            } else if (element.type.startsWith("image")) {
               return <PImg content={data.content} key={index} url={element.payload} />;
-            } else if (element.type === "sound") {
+            } else if (element.type.startsWith("audio")) {
               return <PSound key={index} url={element.payload} />;
             }
             return <div key={index} />;

@@ -6,6 +6,8 @@ import Dialog from "../Dialog/index";
 
 class PImg extends Component {
   render() {
+    console.log("VIDEO this.props :", this.props);
+
     const { url, content } = this.props;
     return (
       <div className={"imgDivStyle"}>

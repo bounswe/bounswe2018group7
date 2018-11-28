@@ -195,7 +195,7 @@ class CreatePost extends Component {
 
   render() {
     const { classes, history, ...rest } = this.props;
-    const { previewVisible, previewImage, locGlobal } = this.state;
+    const { previewVisible, previewImage } = this.state;
     const uploadButton = (
       <div>
         <IconX type="plus" />
@@ -415,22 +415,6 @@ class CreatePost extends Component {
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
               <Upload {...props}>
-                <ButtonX
-                  onClick={() =>
-                    this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[media]***") }))
-                  }
-                >
-                  <IconX type="upload" /> Add Media
-                </ButtonX>
-              </Upload>
-
-              {/*               
-              <Upload
-                {...props}
-                listType="picture-card"
-                onPreview={this.handlePreview}
-                onChange={this.handleUploadChange}
-              >
                 <div
                   onClick={() =>
                     this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[media]***") }))
@@ -438,7 +422,7 @@ class CreatePost extends Component {
                 >
                   {this.state.fileList.length >= 3 ? null : uploadButton}
                 </div>
-              </Upload> */}
+              </Upload>
               <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                 <img alt="example" style={{ width: "100%" }} src={previewImage} />
               </Modal>

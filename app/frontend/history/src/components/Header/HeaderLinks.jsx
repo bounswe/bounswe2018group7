@@ -10,7 +10,7 @@ import ListItem from "@material-ui/core/ListItem";
 import { signout } from "redux/auth/Actions";
 
 // @material-ui/icons
-import { Https, Person, ExitToApp, PersonAdd, Create } from "@material-ui/icons";
+import { Https, Person, ExitToApp, PersonAdd, Create, Home } from "@material-ui/icons";
 import { connect } from "react-redux";
 
 import {
@@ -47,27 +47,36 @@ class HeaderLinks extends Component {
     removeCookieListener(this.onCookieChanged);
   }
   signOut() {
-    this.props.signout();
     removeCookie(TOKEN_COOKIE);
     removeCookie(USER_COOKIE);
     removeCookie(LOGGEDIN_COOKIE);
+    this.props.signout();
   }
 
   render() {
-    const { classes } = this.props;
-
-    if (this.props.auth.user.username) {
+    console.log("this.user :", this.user);
+    const { classes, history } = this.props;
+    if (this.user) {
       return (
         <List className={classes.list}>
-          <ListItem className={classes.listItem}>
-            <CustomButton href="home/createpost" color="transparent" className={classes.navLink}>
-              <Create className={classes.icons} /> Create Post
-            </CustomButton>
-          </ListItem>
+          {history.location.pathname === "/home/createpost" ? (
+            <ListItem className={classes.listItem}>
+              <CustomButton href="../home" color="transparent" className={classes.navLink}>
+                <Create className={classes.icons} /> Home
+              </CustomButton>
+            </ListItem>
+          ) : null}
+          {history.location.pathname === "/home" ? (
+            <ListItem className={classes.listItem}>
+              <CustomButton href="../home/createpost" color="transparent" className={classes.navLink}>
+                <Home className={classes.icons} /> Create Post
+              </CustomButton>
+            </ListItem>
+          ) : null}
 
           <ListItem className={classes.listItem}>
             <CustomButton color="transparent" className={classes.navLink}>
-              <Person className={classes.icons} /> {this.props.auth.user.username}
+              <Person className={classes.icons} /> {this.user.username}
             </CustomButton>
           </ListItem>
           <ListItem className={classes.listItem}>
