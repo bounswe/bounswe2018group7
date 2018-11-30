@@ -80,9 +80,9 @@ class HeaderLinks extends Component {
             </CustomButton>
           </ListItem>
           <ListItem className={classes.listItem}>
-            <Button onClick={() => this.signOut()} color="transparent" className={classes.navLink}>
+            <CustomButton onClick={() => this.signOut()} color="transparent" className={classes.navLink}>
               <ExitToApp className={classes.icons} /> Log Out
-            </Button>
+            </CustomButton>
           </ListItem>
         </List>
       );

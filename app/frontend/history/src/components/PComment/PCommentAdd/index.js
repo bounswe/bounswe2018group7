@@ -15,7 +15,8 @@ class PCommentAdd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      commentText: ""
+      commentText: "",
+      once: false
     };
     this.user = getCookie(USER_COOKIE);
 
@@ -25,9 +26,14 @@ class PCommentAdd extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const { createCommentInProgress, createCommentHasError, createCommentCompleted } = this.props.post;
 
-    if (!createCommentInProgress && createCommentHasError && createCommentCompleted) {
-      this.props.createCommentReset();
-
+    if (
+      !createCommentInProgress &&
+      !createCommentHasError &&
+      createCommentCompleted &&
+      !this.state.once &&
+      this.state.commentText
+    ) {
+      this.setState({ once: true });
       this.props.pushLastComment(
         this.props.id,
         this.props.id,
@@ -35,6 +41,13 @@ class PCommentAdd extends React.Component {
         this.state.commentText,
         moment().format("MMMM-Do-YYYY, h:mm:ss")
       );
+      this.props.enqueueSnackbar("ADDED", { variant: "success" });
+      this.setState({ commentText: "" });
+      this.props.createCommentReset();
+    }
+
+    if (!createCommentInProgress && createCommentHasError && createCommentCompleted) {
+      this.props.createCommentReset();
     }
   }
 
@@ -42,6 +55,7 @@ class PCommentAdd extends React.Component {
     if (this.user) {
       if (this.state.commentText) {
         this.props.createComment(this.props.id, this.state.commentText);
+        this.setState({ once: false });
       } else {
         this.props.enqueueSnackbar("You must fill the comment 🤨", { variant: "warning" });
       }

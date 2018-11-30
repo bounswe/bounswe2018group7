@@ -63,8 +63,16 @@ export default function(state = initialState, action) {
       createPostCompleted: false
     };
   } else if (action.type === PUSH_LAST_COMMENT_REQUEST) {
-    state.postList.results[0].comments.push(payload);
+    console.log("payload :", payload);
+    console.log("state.postList.results[0].comments :", state.postList.results[0].comments);
 
+    if (payload.content) {
+      state.postList.results.map(el => {
+        if (el.id == payload.id) {
+          el.comments.push(payload);
+        }
+      });
+    }
     return {
       ...state
     };

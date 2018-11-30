@@ -26,8 +26,7 @@ const buttonStyle = {
     textTransform: "uppercase",
     letterSpacing: "0",
     willChange: "box-shadow, transform",
-    transition:
-      "box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+    transition: "box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
     lineHeight: "1.42857143",
     textAlign: "center",
     whiteSpace: "nowrap",
@@ -188,6 +187,12 @@ const buttonStyle = {
         "0 14px 26px -12px rgba(51, 51, 51, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(51, 51, 51, 0.2)"
     }
   },
+
+  transparent: {
+    backgroundColor: "transparent",
+    color: "#fff"
+  },
+
   simple: {
     "&,&:focus,&:hover,&:visited": {
       color: "#FFFFFF",
