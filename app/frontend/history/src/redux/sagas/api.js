@@ -2,6 +2,14 @@ import httpService from "services/HttpService";
 import { getCookie, TOKEN_COOKIE } from "utils/cookies.js";
 
 class api {
+  fetchPost = () => {
+    return httpService.fetch({
+      path: "api/v1/memory_posts/",
+      method: "GET",
+      sendToken: false
+    });
+  };
+
   doSignIn = (identity, password) => {
     return httpService.fetch({
       path: "api/v1/signin/",
@@ -21,6 +29,18 @@ class api {
         token
       },
       sendToken: false
+    });
+  };
+
+  doComment = (memory_post, content) => {
+    return httpService.fetch({
+      path: "api/v1/comments/",
+      method: "POST",
+      body: {
+        memory_post,
+        content
+      },
+      sendToken: true
     });
   };
   doSignUp = (username, email, password, password_confirmation, first_name, last_name) => {
@@ -47,8 +67,7 @@ class api {
     formData.append("location", location);
 
     // Object.keys(stories).forEach(el => formData.append(el, stories[el]));
-    console.log(String(tags));
-    formData.append("STRINGtags", String(tags));
+    formData.append("tags", tags);
 
     stories.forEach((el, index) => {
       let storytxt = "story[" + index + "]";

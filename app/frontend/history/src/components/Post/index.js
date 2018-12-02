@@ -16,23 +16,17 @@ import PMaps from "../PMaps/index";
 class Post extends Component {
   render() {
     const { data } = this.props;
-
     return (
       <Card className={"postComponent"}>
-        <PTitle
-          username={data.username}
-          like={data.like}
-          creation_date={data.creation_date}
-          creation_time={data.creation_time}
-        />
+        <PTitle username={data.username} like={data.like ? data.like : 0} creation_date={data.created} />
         <Divider />
         <Typography style={{ textAlign: "center", marginTop: 10 }} variant="headline" gutterBottom>
-          {data.header}
+          {data.title}
         </Typography>
 
         <div className="postContentStyle">
-          {data.content.map((element, index) => {
-            if (element.type === "text") {
+          {data.story.map((element, index) => {
+            if (element.type.startsWith("text")) {
               return (
                 <div key={index} className={"postTextStyle"}>
                   <Typography color={"textSecondary"} component="p">
@@ -40,11 +34,11 @@ class Post extends Component {
                   </Typography>
                 </div>
               );
-            } else if (element.type === "video") {
+            } else if (element.type.startsWith("video")) {
               return <PVideo key={index} url={element.payload} />;
-            } else if (element.type === "image") {
+            } else if (element.type.startsWith("image")) {
               return <PImg content={data.content} key={index} url={element.payload} />;
-            } else if (element.type === "sound") {
+            } else if (element.type.startsWith("audio")) {
               return <PSound key={index} url={element.payload} />;
             }
             return <div key={index} />;
@@ -55,7 +49,7 @@ class Post extends Component {
             <Divider />
           </div>
           <Typography align={"center"} variant="headline" gutterBottom>
-            {data.history_time}
+            {data.time.data}
           </Typography>
           <div style={{ marginTop: 20, marginBottom: 20 }}>
             <Divider />
@@ -71,7 +65,7 @@ class Post extends Component {
             <Divider />
           </div>
 
-          <PComment comments={data.comments} />
+          <PComment id={data.id} comments={data.comments} />
         </div>
       </Card>
     );

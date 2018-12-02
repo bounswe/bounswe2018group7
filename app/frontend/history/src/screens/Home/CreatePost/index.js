@@ -22,7 +22,7 @@ import PTag from "../../../components/PTag";
 import { withSnackbar } from "notistack";
 import { PARSE } from "../../../utils/parsingStory";
 
-import { Upload, Modal, Icon as IconX } from "antd";
+import { Upload, Modal, Button as ButtonX, Icon as IconX } from "antd";
 
 import "./index.css";
 // import Tags from "../../../components/Tag";
@@ -58,7 +58,8 @@ class CreatePost extends Component {
     });
   };
   handleUploadChange = ({ fileList }) => {
-    this.setState({ fileList });
+    // console.log(fileList);
+    // this.setState({ fileList });
   };
 
   handleDelete(i) {
@@ -105,10 +106,24 @@ class CreatePost extends Component {
   };
   handleCreatePost = () => {
     var storyArray = PARSE(this.state.storyText, this.state.fileList);
+    console.log("​------------------------------------------");
+    console.log("​handleCreatePost -> storyArray", storyArray);
+    console.log("​------------------------------------------");
+    console.log("​------------------------------------------------------------");
+    console.log("​handleCreatePost -> this.state.fileList", this.state.fileList);
+    console.log("​------------------------------------------------------------");
 
     const date = this.myCreateDateRef.getDate();
+    console.log("​------------------------------");
+    console.log("​handleCreatePost -> date", date);
+    console.log("​------------------------------");
+
     let dateObj = { type: this.state.timeType, data: date.date };
-    let tags = Object.values(this.state.tags);
+
+    let tagArr = [];
+    this.state.tags.forEach(element => {
+      tagArr.push(element.text);
+    });
 
     if (this.state.title && this.state.storyText) {
       this.setState({ isloaderOpen: true });
@@ -117,7 +132,7 @@ class CreatePost extends Component {
         JSON.stringify(dateObj),
         JSON.stringify(this.state.locGlobal),
         storyArray,
-        tags
+        JSON.stringify(tagArr)
       );
     } else {
       this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
@@ -180,37 +195,39 @@ class CreatePost extends Component {
 
   render() {
     const { classes, history, ...rest } = this.props;
-    const { previewVisible, previewImage, locGlobal } = this.state;
-    console.log("​render -> locGlobal", locGlobal);
+    const { previewVisible, previewImage } = this.state;
     const uploadButton = (
       <div>
         <IconX type="plus" />
         <div className="ant-upload-text">Upload Media</div>
       </div>
     );
-    // const props = {
-    //   action: file => {
-    //     Promise.resolve();
-    //   },
-    //   onRemove: file => {
-    //     this.setState(({ fileList }) => {
-    //       const index = fileList.indexOf(file);
-    //       const newFileList = fileList.slice();
-    //       newFileList.splice(index, 1);
-    //       return {
-    //         fileList: newFileList
-    //       };
-    //     });
-    //   },
-    //   beforeUpload: file => {
-    //     this.setState(({ fileList }) => ({
-    //       fileList: [...fileList, file]
-    //     }));
+    const props = {
+      action: file => {
+        Promise.resolve();
+      },
+      onRemove: file => {
+        this.setState(({ fileList }) => {
+          const index = fileList.indexOf(file);
+          const newFileList = fileList.slice();
+          newFileList.splice(index, 1);
+          return {
+            fileList: newFileList
+          };
+        });
+      },
+      beforeUpload: file => {
+        this.setState(({ fileList }) => ({
+          fileList: [...fileList, file]
+        }));
 
-    //     return false;
-    //   },
-    //   fileList: this.state.fileList
-    // };
+        return false;
+      },
+      fileList: this.state.fileList,
+      listType: "picture-card",
+      onPreview: this.handlePreview,
+      onChange: this.handleUploadChange
+    };
 
     return (
       <div>
@@ -264,13 +281,13 @@ class CreatePost extends Component {
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
               <Button variant="outlined" color="secondary" onClick={() => this.setState({ timeType: "interval" })}>
-                Interval Time
+                Interval Date
               </Button>
               <Button variant="outlined" color="inherit" onClick={() => this.setState({ timeType: "general" })}>
-                General Time
+                General Date
               </Button>
               <Button variant="outlined" color="primary" onClick={() => this.setState({ timeType: "certain" })}>
-                Certain Time
+                Certain Date
               </Button>
 
               <IconButton
@@ -396,7 +413,7 @@ class CreatePost extends Component {
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
-              <Upload listType="picture-card" onPreview={this.handlePreview} onChange={this.handleUploadChange}>
+              <Upload {...props}>
                 <div
                   onClick={() =>
                     this.setState(prevState => ({ storyText: prevState.storyText.concat("\n***[media]***") }))

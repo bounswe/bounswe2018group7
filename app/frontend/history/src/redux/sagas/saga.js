@@ -12,8 +12,15 @@ import {
 
 import api from "./api";
 import { clError, clWarning } from "utils/consolelog.js";
-import { createPostFailure, createPostSuccess } from "../post/Actions";
-import { CREATE_POST_REQUEST } from "../post/actionTypes";
+import {
+  createPostFailure,
+  createPostSuccess,
+  fetchPostSuccess,
+  fetchPostFailure,
+  createCommentFailure,
+  createCommentSuccess
+} from "../post/Actions";
+import { CREATE_POST_REQUEST, FETCH_POST_REQUEST, CREATE_COMMENT_REQUEST } from "../post/actionTypes";
 
 const trySignInSaga = function*(action) {
   const { identity, password } = action.payload;
@@ -29,17 +36,51 @@ const trySignInSaga = function*(action) {
       } else if (signinResponse.status === 400) {
         clError("Something wrong! Got a status 400", signinResponse.responseBody);
         yield put(signinFailure(signinResponse.responseBody));
+      } else if (signinResponse.status === 401) {
+        clError("Something wrong! Got a status 401", signinResponse.responseBody);
+        yield put(signinFailure(signinResponse.responseBody));
       } else {
         clError("Something wrong! Got an unknown status. API BOZUK!!!", signinResponse);
-        yield put(signinFailure({ detail: ["Unknown status. Check console!"] }));
+        yield put(signinFailure({ errors: ["Unknown status. Check console!"] }));
       }
     } else {
       clError("SignIn failed by api. No response !");
-      yield put(signinFailure({ detail: ["No response fetched. Please contact the API team!"] }));
+      yield put(signinFailure({ errors: ["No response fetched. Please contact the API team!"] }));
     }
   } catch (err) {
     clWarning("SignIn failed by api. Error => ", err);
-    yield put(signinFailure({ detail: [err.detail] }));
+    yield put(signinFailure({ errors: [err.detail] }));
+  }
+};
+
+const tryCreateCommentSaga = function*(action) {
+  const { memory_post, content } = action.payload;
+  try {
+    const commentResponse = yield call(api.doComment, memory_post, content);
+
+    if (commentResponse) {
+      console.log("​--------------------------------");
+      console.log("​commentResponse", commentResponse);
+      console.log("​--------------------------------");
+      if (commentResponse.status === 200) {
+        yield put(createCommentSuccess(commentResponse.responseBody));
+      } else if (commentResponse.status === 400) {
+        clError("Something wrong! Got a status 400", commentResponse.responseBody);
+        yield put(createCommentFailure(commentResponse.responseBody));
+      } else if (commentResponse.status === 401) {
+        clError("Something wrong! Got a status 401", commentResponse.responseBody);
+        yield put(createCommentFailure(commentResponse.responseBody));
+      } else {
+        clError("Something wrong! Got an unknown status. API BOZUK!!!", commentResponse);
+        yield put(createCommentFailure({ errors: ["Unknown status. Check console!"] }));
+      }
+    } else {
+      clError("SignIn failed by api. No response !");
+      yield put(createCommentFailure({ errors: ["No response fetched. Please contact the API team!"] }));
+    }
+  } catch (err) {
+    clWarning("SignIn failed by api. Error => ", err);
+    yield put(signinFailure({ errors: [err.detail] }));
   }
 };
 
@@ -107,9 +148,40 @@ const trySignUpSaga = function*(action) {
   }
 };
 
+const tryFetchPostSaga = function*() {
+  try {
+    const fetchPostResponse = yield call(api.fetchPost);
+
+    if (fetchPostResponse) {
+      console.log("fetchPostResponse", fetchPostResponse);
+
+      if (fetchPostResponse.status === 200) {
+        yield put(fetchPostSuccess(fetchPostResponse.responseBody));
+      } else if (fetchPostResponse.status === 400) {
+        clError("Something wrong! Got a status 400", fetchPostResponse.responseBody);
+        yield put(fetchPostFailure(fetchPostResponse.responseBody));
+      } else if (fetchPostResponse.status === 401) {
+        clError("Unauthorized request!");
+        yield put(fetchPostFailure({ errors: ["Unauthorized request!"] }));
+      } else {
+        clError("Something wrong! Got an unknown status. API BOZUK!!!", fetchPostResponse.responseBody);
+        yield put(fetchPostFailure({ errors: ["Unknown status. Check console!"] }));
+      }
+    } else {
+      clError("Deleting contact failed by api. No response !");
+      yield put(fetchPostFailure({ errors: ["No response fetched. Please contact the API team"] }));
+    }
+  } catch (err) {
+    clWarning("Deleting contact failed by api. Error => ", err);
+    yield put(fetchPostFailure({ errors: [err.detail] }));
+  }
+};
+
 const tryCreatePostSaga = function*(action) {
   const { title, time, location, stories, tags } = action.payload;
-  console.log("​location", typeof time);
+  console.log("​----------");
+  console.log("​tags", tags);
+  console.log("​----------");
 
   try {
     const createPostResponse = yield call(api.createPost, title, time, location, stories, tags);
@@ -147,6 +219,8 @@ const saga = function*() {
   yield takeLatest(SIGNUP_REQUEST, trySignUpSaga);
   yield takeLatest(EMAIL_REQUEST, tryVerifyEmailSaga);
   yield takeLatest(CREATE_POST_REQUEST, tryCreatePostSaga);
+  yield takeLatest(FETCH_POST_REQUEST, tryFetchPostSaga);
+  yield takeLatest(CREATE_COMMENT_REQUEST, tryCreateCommentSaga);
 };
 
 export default saga;

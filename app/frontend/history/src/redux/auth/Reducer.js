@@ -63,7 +63,7 @@ export default function(state = initialState, action) {
       signinInProgress: false,
       signinHasError: true,
       signinCompleted: true,
-      signinError: payload.errors
+      signinError: payload.errors[0]
     };
   } else if (action.type === SIGNIN_RESET) {
     return {
