@@ -106,22 +106,22 @@ class CreatePost extends Component {
   handleCreatePost = () => {
     var storyArray = PARSE(this.state.storyText, this.state.fileList);
 
-    // //const date = this.myCreateDateRef.getDate();
-    // let dateObj = { type: "this.state.timeType", data: "date.date" };
-    // let tags = Object.values(this.state.tags);
+    const date = this.myCreateDateRef.getDate();
+    let dateObj = { type: this.state.timeType, data: date.date };
+    let tags = Object.values(this.state.tags);
 
-    // if (this.state.title && this.state.storyText) {
-    //   this.setState({ isloaderOpen: true });
-    //   this.props.createPost(
-    //     this.state.title,
-    //     JSON.stringify(dateObj),
-    //     JSON.stringify(this.state.locGlobal),
-    //     storyArray,
-    //     tags
-    //   );
-    // } else {
-    //   this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
-    // }
+    if (this.state.title && this.state.storyText) {
+      this.setState({ isloaderOpen: true });
+      this.props.createPost(
+        this.state.title,
+        JSON.stringify(dateObj),
+        JSON.stringify(this.state.locGlobal),
+        storyArray,
+        tags
+      );
+    } else {
+      this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -269,7 +269,6 @@ class CreatePost extends Component {
               <Button variant="outlined" color="inherit" onClick={() => this.setState({ timeType: "general" })}>
                 General Time
               </Button>
-
               <Button variant="outlined" color="primary" onClick={() => this.setState({ timeType: "certain" })}>
                 Certain Time
               </Button>
