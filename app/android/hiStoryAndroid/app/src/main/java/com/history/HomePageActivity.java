@@ -51,6 +51,7 @@ public class HomePageActivity extends AppCompatActivity {
         authToken = prefs.getString("authToken", "");
         if (authToken.equals("")){
             signoutButton.setText("Log In");
+            mainLayout.removeView(findViewById(R.id.createPostButton));
         }
         else {
             signedIn = true;

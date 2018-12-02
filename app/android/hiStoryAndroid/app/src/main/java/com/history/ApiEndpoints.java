@@ -61,6 +61,4 @@ public interface ApiEndpoints {
             @Part("time") RequestBody time,
             @Part("location") RequestBody location,
             @Part List<MultipartBody.Part> story);
-
-
 }
