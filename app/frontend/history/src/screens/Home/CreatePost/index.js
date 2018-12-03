@@ -191,6 +191,7 @@ class CreatePost extends Component {
         locGlobal: [{ type: this.state.mapType, points: locationArea.coords }]
       });
     }
+    console.log(this.state.locGlobal);
   }
 
   render() {

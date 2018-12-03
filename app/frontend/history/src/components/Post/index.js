@@ -1,3 +1,4 @@
+/* global google */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./style.css";
@@ -10,9 +11,11 @@ import PTitle from "../PTitle";
 import PTagList from "../PTagList";
 import PComment from "../PComment";
 import PMapsDest from "../PMaps/DestinationMaps";
-import PMapsArea from "../PMaps/Area";
+import PMapsAreaView from "../PMaps/Area/PMapsAreaView";
 import Divider from "@material-ui/core/Divider";
 import PMaps from "../PMaps/index";
+
+import GoogleMapWithDirections from "../PMaps/DestinationMaps/dest";
 
 class Post extends Component {
   render() {
@@ -72,16 +75,34 @@ class Post extends Component {
       </Card>
     );
   }
+
   dataLocationFunc(loc) {
-    console.log(loc);
-    console.log("inside the datalocationfunc");
     if (loc.location[0] && loc.location[0].points && loc.location[0].points.length === 1) {
       return <PMaps />;
     } else if (loc.location[0] && loc.location[0].points && loc.location[0].points.length === 2) {
-      console.log("loloc inside");
-      return <PMapsDest point={loc.location.points} />;
+      return (
+        <GoogleMapWithDirections
+          googleMapURL={
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q&v=3.exp&libraries=geometry,drawing,places"
+          }
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          points={loc.location[0].points}
+        />
+      );
     } else if (loc.location[0] && loc.location[0].points && loc.location[0].points.length > 2) {
-      return <PMapsArea />;
+      return (
+        <PMapsAreaView
+          googleMapURL={
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q&v=3.exp&libraries=geometry,drawing,places"
+          }
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          coords={loc.location[0].points}
+        />
+      );
     }
   }
 }
