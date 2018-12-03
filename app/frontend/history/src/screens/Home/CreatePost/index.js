@@ -286,7 +286,6 @@ class CreatePost extends Component {
               <Button variant="outlined" color="inherit" onClick={() => this.setState({ timeType: "general" })}>
                 General Date
               </Button>
-
               <Button variant="outlined" color="primary" onClick={() => this.setState({ timeType: "certain" })}>
                 Certain Date
               </Button>
