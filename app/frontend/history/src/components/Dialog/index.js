@@ -40,7 +40,8 @@ class FullScreenDialog extends React.Component {
   };
 
   render() {
-    const { classes, content } = this.props;
+    const { classes, url } = this.props;
+
     return (
       <div>
         <IconButton onClick={this.handleClickOpen} aria-label="Add Annotate">
@@ -62,7 +63,7 @@ class FullScreenDialog extends React.Component {
               </Button>
             </Toolbar>
           </AppBar>
-          <Annotation content={content} />
+          <Annotation url={url} />
         </Dialog>
       </div>
     );

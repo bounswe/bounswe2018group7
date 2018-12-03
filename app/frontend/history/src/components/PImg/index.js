@@ -10,7 +10,7 @@ class PImg extends Component {
     return (
       <div className={"imgDivStyle"}>
         <Img className={"imgStyle"} src={url} />
-        <Dialog content={content} />
+        <Dialog url={url} />
       </div>
     );
   }

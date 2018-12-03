@@ -1,9 +1,9 @@
-.container {
+.containerAno {
   display: flex;
   flex-direction: column;
 }
 
-.content {
+.contentAno {
   position: relative;
   padding: 10px 20px 20px 20px;
   display: flex;

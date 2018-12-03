@@ -6,14 +6,12 @@ class Annotation extends Component {
   state = { loaded: false };
 
   render() {
-    const { content } = this.props;
+    const { content, url } = this.props;
     return (
-      <div className="container">
-        <div className="content">
+      <div className="containerAno">
+        <div className="contentAno">
           <div className={"measurements-body" + (this.state.loaded ? " loaded" : "")}>
-            <div>
-              <MeasuredImage content={content} onImageLoaded={this.onImageLoaded} />
-            </div>
+            <MeasuredImage url={url} onImageLoaded={this.onImageLoaded} />
           </div>
         </div>
       </div>

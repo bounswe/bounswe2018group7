@@ -27,24 +27,11 @@ class MeasuredImage extends Component {
   }
 
   render() {
-    const { content } = this.props;
+    const { content, url } = this.props;
     return (
       <div className="square-parent">
         <div className="square-child">
-          {content.map((element, index) => {
-            if (element.type === "image") {
-              return (
-                <img
-                  key={index}
-                  src={element.payload}
-                  alt="Pollen grains"
-                  ref={e => (this.image = e)}
-                  onLoad={this.onLoad}
-                />
-              );
-            }
-            return <div key={index} />;
-          })}
+          <img src={url} alt="Pollen grains" ref={e => (this.image = e)} onLoad={this.onLoad} />
 
           <MeasurementLayer
             measurements={this.state.measurements}
@@ -98,8 +85,8 @@ class MeasuredImage extends Component {
     {
       id: 2,
       type: "text",
-      arrowX: 0.482,
-      arrowY: 0.739,
+      arrowX: 0.2,
+      arrowY: 0.33,
       textX: 0.54,
       textY: 0.82,
       editorState: EditorState.createWithContent(ContentState.createFromText("History Annotation"))
