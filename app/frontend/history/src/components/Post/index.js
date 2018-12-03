@@ -9,13 +9,15 @@ import Card from "../Card/Card";
 import PTitle from "../PTitle";
 import PTagList from "../PTagList";
 import PComment from "../PComment";
-
+import PMapsDest from "../PMaps/DestinationMaps";
+import PMapsArea from "../PMaps/Area";
 import Divider from "@material-ui/core/Divider";
 import PMaps from "../PMaps/index";
 
 class Post extends Component {
   render() {
     const { data } = this.props;
+
     return (
       <Card className={"postComponent"}>
         <PTitle username={data.username} like={data.like ? data.like : 0} creation_date={data.created} />
@@ -59,7 +61,7 @@ class Post extends Component {
             <Divider />
           </div>
 
-          <PMaps />
+          {this.dataLocationFunc(data)}
 
           <div style={{ marginTop: 20, marginBottom: 20 }}>
             <Divider />
@@ -69,6 +71,18 @@ class Post extends Component {
         </div>
       </Card>
     );
+  }
+  dataLocationFunc(loc) {
+    console.log(loc);
+    console.log("inside the datalocationfunc");
+    if (loc.location[0] && loc.location[0].points && loc.location[0].points.length === 1) {
+      return <PMaps />;
+    } else if (loc.location[0] && loc.location[0].points && loc.location[0].points.length === 2) {
+      console.log("loloc inside");
+      return <PMapsDest point={loc.location.points} />;
+    } else if (loc.location[0] && loc.location[0].points && loc.location[0].points.length > 2) {
+      return <PMapsArea />;
+    }
   }
 }
 
