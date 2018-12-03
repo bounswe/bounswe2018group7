@@ -12,4 +12,96 @@
     <string name="example_post_story">Cahokia Mounds State Historic Site is the area of an ancient indigenous city (c. 600–1400 AD) near Collinsville, Illinois. It is the largest archaeological site related to the Mississippian culture, which developed advanced societies in central and eastern North America, beginning more than five centuries before the arrival of Europeans. It is a National Historic Landmark and designated site for state protection. In addition, it is one of only twenty World Heritage Sites in the territory of the United States. It is the largest prehistoric earthen construction in the Americas north of Mexico. It is also home to a wooden structure which appears identical in function to Stonehenge.At the high point of its development, Cahokia was the largest urban center north of the great Mesoamerican cities in Mexico. Although it was home to only about 1,000 people before c. 1050, its population grew explosively after that date. Archaeologists estimate the city’s population at between 8,000 and 40,000 at its peak, with more people living in outlying farming villages that supplied the main urban center. In 1250, its population was larger than that of London, England.If the highest population estimates are correct, Cahokia was larger than any subsequent city in the United States, until about 1800, when Philadelphia’s population grew beyond 40,000.</string>
 
     <string name="example_post_title">America’s Forgotten Rome</string>
+
+    <string-array name="days_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+    </string-array>
+
+    <string-array name="months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string-array name="years_array">
+        <item>1980</item>
+        <item>1990</item>
+        <item>1934</item>
+    </string-array>
+
+    <string-array name="general_first">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+
+    <string-array name="general_second">
+        <item>00</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+    </string-array>
+
 </resources>

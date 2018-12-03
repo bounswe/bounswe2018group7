@@ -51,7 +51,6 @@ public class HomePageActivity extends AppCompatActivity {
         authToken = prefs.getString("authToken", "");
         if (authToken.equals("")){
             signoutButton.setText("Log In");
-            mainLayout.removeView(findViewById(R.id.createPostButton));
         }
         else {
             signedIn = true;
@@ -223,29 +222,29 @@ public class HomePageActivity extends AppCompatActivity {
             openLoginActivity();
         }
         else{
-                signedIn = false;
-                signoutButton.setText("Log In");
-                Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+            signedIn = false;
+            signoutButton.setText("Log In");
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
-                ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
-                authToken = "Token " + authToken;
-                SharedPreferences.Editor editor = getSharedPreferences("userInfo", MODE_PRIVATE).edit();
-                editor.putString("authToken", "");
-                editor.apply();
-                final Call<User> call = apiEndpoints.signOut(authToken);
-                call.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                            Toast.makeText(HomePageActivity.this, "Successfully signed out", Toast.LENGTH_SHORT).show();
-                    }
+            ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
+            authToken = "Token " + authToken;
+            SharedPreferences.Editor editor = getSharedPreferences("userInfo", MODE_PRIVATE).edit();
+            editor.putString("authToken", "");
+            editor.apply();
+            final Call<User> call = apiEndpoints.signOut(authToken);
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    Toast.makeText(HomePageActivity.this, "Successfully signed out", Toast.LENGTH_SHORT).show();
+                }
 
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Log.d("Error", t.getMessage());
-                        Toast.makeText(HomePageActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                authToken = "";
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Log.d("Error", t.getMessage());
+                    Toast.makeText(HomePageActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
+                }
+            });
+            authToken = "";
         }
     }
 

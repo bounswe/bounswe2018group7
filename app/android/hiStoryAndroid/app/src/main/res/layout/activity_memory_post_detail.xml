@@ -20,6 +20,7 @@ tools:context=".CreatePostActivity">
             >
 
             <ImageView
+                android:padding="5dp"
                 android:id="@+id/iconImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

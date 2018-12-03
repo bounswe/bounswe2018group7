@@ -1,10 +1,13 @@
 package com.history;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -23,11 +26,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -80,7 +85,10 @@ public class CreatePostActivity extends AppCompatActivity {
         lastStoryElementId = R.id.addTitleEditText;
         storyComponentsLayout = findViewById(R.id.components);
         storyElements = new ArrayList();
+
     }
+
+
 
     public void checkUserData(){
         SharedPreferences prefs = getSharedPreferences("userInfo", MODE_PRIVATE);
@@ -91,7 +99,6 @@ public class CreatePostActivity extends AppCompatActivity {
     public void showDatePicker(View v) {
         DialogFragment newFragment = new MyDatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "date picker");
-
 
     }
 
@@ -352,4 +359,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         return cursor.getString(column_index);
     }
+
+    public void pickPresiceDate(View view) {
+        DateDialogFragment newFragment = new DateDialogFragment();
+        newFragment.show(getSupportFragmentManager(), "missiles");
+    }
+
 }
