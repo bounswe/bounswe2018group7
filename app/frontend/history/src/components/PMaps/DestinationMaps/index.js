@@ -45,14 +45,23 @@ class PMapsDest extends React.Component {
 
     this.changeRoute();
   }
+  componentDidMount() {
+    this.changeRoute();
+  }
 
   changeRoute() {
     const DirectionsService = new google.maps.DirectionsService();
-
+    console.log("inside the change route");
     DirectionsService.route(
       {
-        origin: new google.maps.LatLng(this.state.lat1, this.state.lng1),
-        destination: new google.maps.LatLng(this.state.lat2, this.state.lng2),
+        origin: new google.maps.LatLng(
+          this.props.points[0].lat1 || this.state.lat1,
+          this.props.points[0].lng1 || this.state.lng1
+        ),
+        destination: new google.maps.LatLng(
+          this.props.points[1].lat2 || this.state.lat2,
+          this.props.points[1].lat1 || this.state.lng2
+        ),
         travelMode: google.maps.TravelMode.DRIVING
       },
       (result, status) => {
