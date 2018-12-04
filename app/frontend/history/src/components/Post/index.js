@@ -1,3 +1,4 @@
+/* global google */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./style.css";
@@ -9,13 +10,17 @@ import Card from "../Card/Card";
 import PTitle from "../PTitle";
 import PTagList from "../PTagList";
 import PComment from "../PComment";
-
+import PMapsDest from "../PMaps/DestinationMaps";
+import PMapsAreaView from "../PMaps/Area/PMapsAreaView";
 import Divider from "@material-ui/core/Divider";
 import PMaps from "../PMaps/index";
+
+import GoogleMapWithDirections from "../PMaps/DestinationMaps/dest";
 
 class Post extends Component {
   render() {
     const { data } = this.props;
+
     return (
       <Card className={"postComponent"}>
         <PTitle username={data.username} like={data.like ? data.like : 0} creation_date={data.created} />
@@ -59,7 +64,7 @@ class Post extends Component {
             <Divider />
           </div>
 
-          <PMaps />
+          {this.dataLocationFunc(data)}
 
           <div style={{ marginTop: 20, marginBottom: 20 }}>
             <Divider />
@@ -69,6 +74,36 @@ class Post extends Component {
         </div>
       </Card>
     );
+  }
+
+  dataLocationFunc(loc) {
+    if (loc.location[0] && loc.location[0].points && loc.location[0].points.length === 1) {
+      return <PMaps />;
+    } else if (loc.location[0] && loc.location[0].points && loc.location[0].points.length === 2) {
+      return (
+        <GoogleMapWithDirections
+          googleMapURL={
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q&v=3.exp&libraries=geometry,drawing,places"
+          }
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          points={loc.location[0].points}
+        />
+      );
+    } else if (loc.location[0] && loc.location[0].points && loc.location[0].points.length > 2) {
+      return (
+        <PMapsAreaView
+          googleMapURL={
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyDHduayDw74dgAhiZeP-oby-oHd-uQGv1Q&v=3.exp&libraries=geometry,drawing,places"
+          }
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          coords={loc.location[0].points}
+        />
+      );
+    }
   }
 }
 
