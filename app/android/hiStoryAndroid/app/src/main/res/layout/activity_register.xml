@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    android:background="@drawable/bck">
 
     <EditText
         android:id="@+id/getFirstNameEditText"
@@ -16,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:hint="First Name" />
+        android:hint="@string/first_name" />
 
     <EditText
         android:id="@+id/getLastNameEditText"
@@ -89,16 +90,19 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:onClick="register"
+        android:background="@color/btnBackground1"
         android:text="Sign Up" />
 
     <Button
         android:id="@+id/goBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:text="Back"
+        android:background="#640d4cc2"
+        android:text="@string/back"
+        android:textColor="#091660"
         android:onClick="openLoginActivity"/>
 
 </android.widget.RelativeLayout>
