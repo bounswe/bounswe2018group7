@@ -21,6 +21,7 @@
             android:textColor="@color/colorWhite"
             android:background="@color/colorPrimaryDark"
             android:text="Go Back"
+            android:onClick="backToHomePage"
             />
 
         <TextView
@@ -190,7 +191,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/addTimeTextView"
-                    android:text="Precise time"/>
+                    android:text="Precise time"
+                    android:onClick="showDatePicker"/>
 
                 <Button
                     android:id="@+id/addTimeDurationButton"
@@ -198,7 +200,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/addTimeTextView"
                     android:layout_toRightOf="@+id/addTimePreciseButton"
-                    android:text="duration"/>
+                    android:text="duration"
+                    android:onClick="pickPresiceDate"/>
 
                 <Button
                     android:id="@+id/addTimeGeneralButton"
@@ -207,7 +210,10 @@
                     android:layout_below="@+id/addTimeTextView"
                     android:layout_toRightOf="@+id/addTimeDurationButton"
                     android:layout_alignParentEnd="true"
-                    android:text="General (XX's)"/>
+                    android:text="General (XX's)"
+                    android:onClick="pickPresiceDate"/>
+
+
 
             </RelativeLayout>
 
