@@ -202,7 +202,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			showPost.removeView(timeTextView);
 		}
 
-		
+
 		for (int j=0; j<memoryPost.story.length; j++){
 				if (memoryPost.story[j].type.equals("text")){
 					TextView storyTextView = new TextView(this);
@@ -293,6 +293,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(41.0082, 28.9784) , 12.0f) );
 		googleMap.setOnMarkerClickListener(this);
 	}
+
 	public boolean onMarkerClick(final Marker marker) {
 		return false;
 	}
