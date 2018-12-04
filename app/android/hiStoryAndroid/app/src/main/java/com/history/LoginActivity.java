@@ -42,8 +42,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        checkUserData();
     }
 
+    public void checkUserData(){
+        SharedPreferences prefs = getSharedPreferences("userInfo", MODE_PRIVATE);
+        String auth_token = prefs.getString("authToken", "");
+        if (!auth_token.equals("")) {
+            skipToHomepage(null);
+        }
+    }
     public void login(View view){
 
         if (!waitingResponse){
@@ -90,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         skipToHomepage(null);
     }
     public void saveUser(User user){
-        SharedPreferences.Editor editor = getSharedPreferences("sharedPreferences", MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("userInfo", MODE_PRIVATE).edit();
         editor.putString("username", user.username);
         editor.putString("email", user.email);
         editor.putString("first_name", user.first_name);
@@ -98,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.putBoolean("admin", user.admin);
         editor.putBoolean("confirmed", user.confirmed);
         editor.putBoolean("banned", user.banned);
-        editor.putString("auth_token", user.auth_token);
+        editor.putString("authToken", user.auth_token);
         editor.apply();
         System.out.println(user.username + " " + user.email + " " + user.first_name + " " + user.last_name + " " + user.admin + " " + user.confirmed + " " + user.banned + " " + user.auth_token);
     }

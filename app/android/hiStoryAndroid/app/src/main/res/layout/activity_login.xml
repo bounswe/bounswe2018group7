@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:textColor="#091660"
         android:layout_marginTop="250dp"
+        android:layout_below="@+id/passwordResetButton"
         android:layout_centerHorizontal="true"
         android:onClick="login"
         android:background="@color/btnBackground1"
@@ -55,25 +56,30 @@
 
     <Button
         android:id="@+id/passwordResetButton"
+        android:layout_alignLeft="@id/passwordEditText"
+        android:layout_alignRight="@id/passwordEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="180dp"
-        android:layout_marginStart="160dp"
         android:text="@string/forgot_your_password"
-        android:onClick="passwordReset"
         android:background="@color/btnBackground1"
-        android:textColor="#091660" />
+        android:textColor="#091660"
+        android:layout_below="@+id/passwordEditText"
+        android:layout_marginBottom="20dp"
+        android:onClick="passwordReset"/>
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/userIdentityEditText"
-        android:layout_marginTop="300dp"
         android:background="@color/btnBackground1"
         android:textAlignment="center"
         android:text="@string/don_t_have_an_account_register"
         android:onClick="openRegisterActivity"
-        android:textColor="#091660" />
+        android:textColor="#091660" 
+        android:layout_alignLeft="@id/passwordEditText"
+        android:layout_alignRight="@id/passwordEditText"
+        android:layout_below="@+id/loginButton" />
+
 
 </android.widget.RelativeLayout>
