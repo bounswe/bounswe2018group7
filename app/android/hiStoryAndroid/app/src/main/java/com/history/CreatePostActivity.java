@@ -102,6 +102,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
     }
 
+    public void addTag(View view){
+
+    }
 
     public void createPost(View view) throws Exception{
 
