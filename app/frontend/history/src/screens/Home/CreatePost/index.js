@@ -117,6 +117,7 @@ class CreatePost extends Component {
     });
 
     if (this.state.title && this.state.storyText) {
+      console.log("JSON.stringify(this.state.locGlobal) :", JSON.stringify(this.state.locGlobal));
       this.setState({ isloaderOpen: true });
       this.props.createPost(
         this.state.title,

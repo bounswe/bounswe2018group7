@@ -16,6 +16,7 @@ import Divider from "@material-ui/core/Divider";
 import PMaps from "../PMaps/index";
 
 import GoogleMapWithDirections from "../PMaps/DestinationMaps/dest";
+import moment from "moment";
 
 class Post extends Component {
   render() {
@@ -54,7 +55,7 @@ class Post extends Component {
             <Divider />
           </div>
           <Typography align={"center"} variant="headline" gutterBottom>
-            {data.time.data}
+            {moment(data.time.data).format("dddd, MMMM Do YYYY, h:mm")}
           </Typography>
           <div style={{ marginTop: 20, marginBottom: 20 }}>
             <Divider />
