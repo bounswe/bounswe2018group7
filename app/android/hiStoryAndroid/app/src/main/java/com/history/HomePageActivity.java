@@ -205,7 +205,7 @@ public class HomePageActivity extends AppCompatActivity {
             if (memoryPost.time != null){
                 TextView timeTextView = new TextView(this);
                 RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                timeTextView.setText(memoryPost.time.toString());
+                timeTextView.setText(memoryPost.time.data.toString());
                 timeTextView.setTextSize(25);
                 paramsTimeTextView.addRule(RelativeLayout.BELOW, id);
                 timeTextView.setId(View.generateViewId());

@@ -187,7 +187,14 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		int id = titleTextView.getId();
 
 		if (memoryPost.time != null){
-			timeTextView.setText(memoryPost.time.toString());
+			if (memoryPost.time.data.getClass().equals(String.class)){
+				timeTextView.setText(memoryPost.time.data.toString());
+			}
+			else if (memoryPost.time.data.getClass().equals(ArrayList.class)){
+				ArrayList list = (ArrayList) memoryPost.time.data;
+				timeTextView.setText((String) list.get(0));
+			}
+			System.out.println("Data class : " + memoryPost.time.data.getClass());
 			timeTextView.setId(View.generateViewId());
 			id = timeTextView.getId();
 		}
