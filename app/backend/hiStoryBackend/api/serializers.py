@@ -82,10 +82,24 @@ class MemoryPostSerializer(ReadOnlyUsernameFieldMixin,
     tags = serializers.JSONField(required=False, default=[])
     location = serializers.JSONField(required=False, default=[])
     comments = CommentSerializer(many=True, read_only=True)
+    reactions = serializers.SerializerMethodField()
 
     class Meta:
         model = MemoryPost
         exclude = ('user',)
+
+    def get_reactions(self, obj):
+        try:
+            user_reaction = Reaction.objects.get(user=obj.user, memory_post=obj)
+            user_liked = user_reaction.like
+        except Reaction.DoesNotExist:
+            user_liked = None
+
+        return {
+            'current_user_liked': user_liked,
+            'like': Reaction.objects.filter(memory_post=obj, like=True).count(),
+            'dislike': Reaction.objects.filter(memory_post=obj, like=False).count()
+        }
 
     def validate_json_array(self, field_value):
         if isinstance(field_value, str):
