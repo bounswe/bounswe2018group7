@@ -8,7 +8,7 @@ class PMapsDest extends React.Component {
     super(props);
 
     this.state = {
-      city1: "bursa",
+      city1: "Malatya",
       city2: "istanbul",
       lat1: 41.85073,
       lng1: -87.65126,

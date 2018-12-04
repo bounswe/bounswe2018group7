@@ -106,17 +106,8 @@ class CreatePost extends Component {
   };
   handleCreatePost = () => {
     var storyArray = PARSE(this.state.storyText, this.state.fileList);
-    console.log("​------------------------------------------");
-    console.log("​handleCreatePost -> storyArray", storyArray);
-    console.log("​------------------------------------------");
-    console.log("​------------------------------------------------------------");
-    console.log("​handleCreatePost -> this.state.fileList", this.state.fileList);
-    console.log("​------------------------------------------------------------");
 
     const date = this.myCreateDateRef.getDate();
-    console.log("​------------------------------");
-    console.log("​handleCreatePost -> date", date);
-    console.log("​------------------------------");
 
     let dateObj = { type: this.state.timeType, data: date.date };
 
@@ -145,6 +136,9 @@ class CreatePost extends Component {
     if (!createPostInProgress && !createPostHasError && createPostCompleted) {
       this.props.createPostReset();
       setTimeout(() => this.setState({ isloaderOpen: false }), 1000);
+      this.props.enqueueSnackbar("YOUR POST CREATED :) ", { variant: "success" });
+
+      this.props.history.replace("../");
     } else if (!createPostInProgress && createPostHasError && createPostCompleted) {
       this.props.enqueueSnackbar(createPostError, { variant: "warning" });
       this.props.createPostReset();
