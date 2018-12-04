@@ -34,7 +34,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#091660"
-        android:layout_marginTop="250dp"
         android:layout_below="@+id/passwordResetButton"
         android:layout_centerHorizontal="true"
         android:onClick="login"
@@ -71,7 +70,6 @@
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/userIdentityEditText"
         android:background="@color/btnBackground1"
         android:textAlignment="center"
         android:text="@string/don_t_have_an_account_register"
@@ -79,7 +77,8 @@
         android:textColor="#091660" 
         android:layout_alignLeft="@id/passwordEditText"
         android:layout_alignRight="@id/passwordEditText"
-        android:layout_below="@+id/loginButton" />
+        android:layout_below="@+id/loginButton"
+        android:layout_marginTop="20dp"/>
 
 
 </android.widget.RelativeLayout>
