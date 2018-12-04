@@ -96,13 +96,6 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
 
-    public void showDatePicker(View v) {
-        DialogFragment newFragment = new MyDatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "date picker");
-
-    }
-
-
     public void createPost(View view) throws Exception{
 
         if (!waitingResponse){
@@ -137,7 +130,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
             String exampleTitle = newTitle;
             //String exampleTime = "{\"type\": \"duration\", \"data\": [\"1980\", \"1990\"]}";
-            String exampleTime2 = "{\"type\": \"certainTime\", \"data\": [\""+ day_ +"\", \""+ month_ +"\", \""+year_+"\"]}";
+            String certainDateData = "{ \"data\": [\""+ day_ +"\", \""+month_+"\", \""+ year_ + "\", \"null\", \"null\"], \"type\": \"certainDate\"}";
+            String intervalDateData = "{ \"data\": [\""+ day_ +"\", \""+month_+"\", \""+ year_ + "\", \"null\", \"null\"], \"type\": \"certainDate\"}";
 
             String exampleLocation = "[{\"type\": \"region\", \"name\": \" "+ "Istanbul" +"\"}]";
 
@@ -154,7 +148,7 @@ public class CreatePostActivity extends AppCompatActivity {
                     okhttp3.MultipartBody.FORM, exampleTitle);
 
             RequestBody time = RequestBody.create(
-                    okhttp3.MultipartBody.FORM, exampleTime2);
+                    okhttp3.MultipartBody.FORM, certainDateData);
 
             RequestBody location = RequestBody.create(
                     okhttp3.MultipartBody.FORM, exampleLocation);
@@ -363,6 +357,12 @@ public class CreatePostActivity extends AppCompatActivity {
     public void pickPresiceDate(View view) {
         DateDialogFragment newFragment = new DateDialogFragment();
         newFragment.show(getSupportFragmentManager(), "missiles");
+    }
+
+    public void showDatePicker(View v) {
+        DialogFragment newFragment = new MyDatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "date picker");
+
     }
 
 }
