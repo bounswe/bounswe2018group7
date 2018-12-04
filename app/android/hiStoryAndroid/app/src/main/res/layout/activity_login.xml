@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="@drawable/bck">
 
     <EditText
         android:id="@+id/userIdentityEditText"
@@ -13,39 +14,44 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
         android:gravity="center"
-        android:hint="Email Address / Username" />
+        android:hint="@string/email_address_username" />
 
     <EditText
         android:id="@+id/passwordEditText"
-        android:layout_alignLeft="@+id/userIdentityEditText"
-        android:layout_alignRight="@+id/userIdentityEditText"
+        android:layout_alignStart="@+id/userIdentityEditText"
+        android:layout_alignEnd="@+id/userIdentityEditText"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="126dp"
         android:gravity="center"
-        android:hint="Password" />
+        android:hint="@string/password" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_alignLeft="@+id/userIdentityEditText"
-        android:layout_alignRight="@+id/userIdentityEditText"
+        android:layout_alignStart="@+id/userIdentityEditText"
+        android:layout_alignEnd="@+id/userIdentityEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#091660"
+        android:layout_marginTop="250dp"
         android:layout_below="@+id/passwordResetButton"
         android:layout_centerHorizontal="true"
         android:onClick="login"
-        android:text="Log In" />
+        android:background="@color/btnBackground1"
+        android:text="@string/log_in" />
 
     <Button
         android:id="@+id/skipToHomepageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#091660"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="16dp"
-        android:text="Skip"
+        android:text="@string/skip"
+        android:background="@color/btnBackground1"
         android:onClick="skipToHomepage"/>
 
     <Button
@@ -54,8 +60,10 @@
         android:layout_alignRight="@id/passwordEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/forgot_your_password"
+        android:background="@color/btnBackground1"
+        android:textColor="#091660"
         android:layout_below="@+id/passwordEditText"
-        android:text="Forgot Your Password?"
         android:layout_marginBottom="20dp"
         android:onClick="passwordReset"/>
 
@@ -63,11 +71,15 @@
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/userIdentityEditText"
+        android:background="@color/btnBackground1"
+        android:textAlignment="center"
+        android:text="@string/don_t_have_an_account_register"
+        android:onClick="openRegisterActivity"
+        android:textColor="#091660" 
         android:layout_alignLeft="@id/passwordEditText"
         android:layout_alignRight="@id/passwordEditText"
-        android:text="Don't have an account? Register"
-        android:layout_below="@+id/loginButton"
+        android:layout_below="@+id/loginButton" />
 
-        android:onClick="openRegisterActivity"/>
 
 </android.widget.RelativeLayout>
