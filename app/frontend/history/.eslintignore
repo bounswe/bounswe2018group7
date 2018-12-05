@@ -1,0 +1,6 @@
+!.eslintrc.js
+documentation/
+build/
+*.jsx
+*.jsx
+*.js
