@@ -5,10 +5,10 @@ import "./style.css";
 import "../../../node_modules/video-react/dist/video-react.css"; // import css
 class PVideo extends Component {
   render() {
-    const { poster, url } = this.props;
+    const { url } = this.props;
     return (
       <div>
-        <Player className={"videoStyle"} playsInline poster={poster} src={url} />
+        <Player className={"videoStyle"} playsInline src={url} />
       </div>
     );
   }
@@ -20,7 +20,6 @@ PVideo.propTypes = {
 };
 
 PVideo.defaultProps = {
-  poster: "https://i.ytimg.com/vi/5WgTGVkaQJQ/maxresdefault.jpg",
   url: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
 };
 

@@ -106,29 +106,32 @@ class CreatePost extends Component {
   };
   handleCreatePost = () => {
     var storyArray = PARSE(this.state.storyText, this.state.fileList);
+    console.log("​------------------------------------------");
+    console.log("​handleCreatePost -> storyArray", storyArray);
+    console.log("​------------------------------------------");
 
-    const date = this.myCreateDateRef.getDate();
+    // const date = this.myCreateDateRef.getDate();
 
-    let dateObj = { type: this.state.timeType, data: date.date };
+    // let dateObj = { type: this.state.timeType, data: date.date };
 
     let tagArr = [];
     this.state.tags.forEach(element => {
       tagArr.push(element.text);
     });
 
-    if (this.state.title && this.state.storyText) {
-      console.log("JSON.stringify(this.state.locGlobal) :", JSON.stringify(this.state.locGlobal));
-      this.setState({ isloaderOpen: true });
-      this.props.createPost(
-        this.state.title,
-        JSON.stringify(dateObj),
-        JSON.stringify(this.state.locGlobal),
-        storyArray,
-        JSON.stringify(tagArr)
-      );
-    } else {
-      this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
-    }
+    // if (this.state.title && this.state.storyText) {
+    //   console.log("JSON.stringify(this.state.locGlobal) :", JSON.stringify(this.state.locGlobal));
+    //   this.setState({ isloaderOpen: true });
+    //   this.props.createPost(
+    //     this.state.title,
+    //     JSON.stringify(dateObj),
+    //     JSON.stringify(this.state.locGlobal),
+    //     storyArray,
+    //     JSON.stringify(tagArr)
+    //   );
+    // } else {
+    //   this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
+    // }
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -190,6 +193,7 @@ class CreatePost extends Component {
   }
 
   render() {
+    console.log("this.state.fileList :", this.state.fileList);
     const { classes, history, ...rest } = this.props;
     const { previewVisible, previewImage } = this.state;
     const uploadButton = (

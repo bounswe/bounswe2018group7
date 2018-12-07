@@ -1,4 +1,10 @@
 export function PARSE(texts, files) {
+  console.log("​---------------------");
+  console.log("​PARSE -> files", files);
+  console.log("​---------------------");
+  console.log("​---------------------");
+  console.log("​PARSE -> texts", texts);
+  console.log("​---------------------");
   var story = [];
   var filtered = texts
     .replace(/\n/g, "")
@@ -9,8 +15,9 @@ export function PARSE(texts, files) {
 
   filtered.forEach(element => {
     if (element === "[media]") {
+      console.log("files[0] :", files[0]);
       story.push(files[0]);
-      files.pop();
+      files.shift();
     } else {
       story.push(element);
     }
