@@ -71,6 +71,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
     String filename = "aaa";
     ArrayList storyElements;
+    ArrayList tags;
     int lastStoryElementId;
     RelativeLayout storyComponentsLayout;
 
@@ -85,7 +86,7 @@ public class CreatePostActivity extends AppCompatActivity {
         lastStoryElementId = R.id.addTitleEditText;
         storyComponentsLayout = findViewById(R.id.components);
         storyElements = new ArrayList();
-
+        tags = new ArrayList();
     }
 
 
@@ -103,7 +104,9 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     public void addTag(View view){
-
+        EditText tagEditText = findViewById(R.id.addTagEditText);
+        tags.add(tagEditText.getText().toString());
+        tagEditText.setText("");
     }
 
     public void createPost(View view) throws Exception{
@@ -144,6 +147,14 @@ public class CreatePostActivity extends AppCompatActivity {
 
             String exampleLocation = "[{\"type\": \"region\", \"name\": \" "+ "Istanbul" +"\"}]";
 
+            String tagString = "[";
+            for (int i=0; i<tags.size(); i++){
+                tagString += "\"" + tags.get(i) + "\"";
+                if (i<tags.size() -1) tagString += ", ";
+            }
+            tagString += "]";
+            System.out.println("Tag String: " + tagString);
+
             String exampleStoryBody= "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, " +
                     "at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. " +
                     "The name comes from a legend: the Byzantine emperor heard a prophecy telling him " +
@@ -162,6 +173,7 @@ public class CreatePostActivity extends AppCompatActivity {
             RequestBody location = RequestBody.create(
                     okhttp3.MultipartBody.FORM, exampleLocation);
 
+            RequestBody tag = RequestBody.create(okhttp3.MultipartBody.FORM, tagString);
              List<MultipartBody.Part> story = new ArrayList<>();
 
              for (int i=0; i<storyElements.size(); i++){
@@ -176,7 +188,7 @@ public class CreatePostActivity extends AppCompatActivity {
              }
 
 
-             final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token " + auth_token, title,time,location,story);
+             final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token " + auth_token, title,time,location,tag,story);
       
             call.enqueue(new Callback<ResponseBody>() {
                 @Override

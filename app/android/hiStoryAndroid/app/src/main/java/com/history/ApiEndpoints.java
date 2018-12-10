@@ -60,5 +60,6 @@ public interface ApiEndpoints {
             @Part("title") RequestBody title,
             @Part("time") RequestBody time,
             @Part("location") RequestBody location,
+            @Part("tags") RequestBody tags,
             @Part List<MultipartBody.Part> story);
 }

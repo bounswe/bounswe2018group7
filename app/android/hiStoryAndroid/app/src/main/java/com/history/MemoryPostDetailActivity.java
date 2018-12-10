@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,6 +51,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 	GoogleMap googleMap;
 	Retrofit retrofit;
 	ApiEndpoints apiEndpoints;
+	int firstCommentId;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,7 +67,14 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 
 		getComments();
 
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+	}
+
+	public void commentSend(View view){
+		EditText editText = findViewById(R.id.commentSectionTitle);
+		createComment(editText.getText().toString());
+		editText.setText("");
 	}
 	public void getMemoryPost(){
 		retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
@@ -96,6 +105,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 	}
 	public void getComments(){
 
+		firstCommentId = R.id.firstComment;
 		final Call<ArrayList<Comment>> commentsCall = apiEndpoints.getCommentsForMemoryPost("Token " + authToken, Integer.toString(memoryPostId));
 		commentsCall.enqueue(new Callback<ArrayList<Comment>>(){
 			@Override
@@ -118,10 +128,25 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 
 	public void addComments(ArrayList<Comment> commentList){
 		System.out.println(commentList.size());
-		for (int i=0; i<commentList.size(); i++){
+
+        RelativeLayout commentSectionBody = findViewById(R.id.commentSectionBody);
+
+        for (int i=0; i<commentList.size(); i++){
 			Comment comment = commentList.get(i);
 			System.out.println("Content: " + comment.content + " Username: " + comment.username + " MemoryPost: " + comment.memoryPost + " Id: " + comment.id + " Created: " + comment.created);
+            TextView commentTextView = new TextView(this);
+            RelativeLayout.LayoutParams paramsComment = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            commentTextView.setText(comment.username + ": " + comment.content);
+            commentTextView.setTextSize(20);
+            paramsComment.addRule(RelativeLayout.BELOW, firstCommentId);
+            commentTextView.setId(View.generateViewId());
+            firstCommentId = commentTextView.getId();
+            commentSectionBody.addView(commentTextView, paramsComment);
 		}
+
+
+
+
 	}
 
 	public void deleteComment(int commentId){
@@ -155,6 +180,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			public void onResponse(Call<Comment> call, Response<Comment> response) {
 				if (response.isSuccessful()) {
 					System.out.println("Success");
+
 				} else {
 					System.out.println("Failure " + response.toString());
 				}
@@ -192,7 +218,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			}
 			else if (memoryPost.time.data.getClass().equals(ArrayList.class)){
 				ArrayList list = (ArrayList) memoryPost.time.data;
-				timeTextView.setText((String) list.get(0));
+				timeTextView.setText((String) list.get(0).toString());
 			}
 			System.out.println("Data class : " + memoryPost.time.data.getClass());
 			timeTextView.setId(View.generateViewId());
@@ -225,13 +251,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 				}
 		}
 
-            /*TextView tagTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            tagTextView.setText("Tags: " + memoryPost.tags);
-            tagTextView.setTextSize(15);
-            paramsTagTextView.addRule(RelativeLayout.BELOW, id);
-            tagTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(tagTextView, paramsTagTextView);*/
+
 
 //		if (memoryPost.time != null){
 //			TextView timeTextView = new TextView(this);
@@ -260,6 +280,19 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		fragmentTransaction.add(map.getId(), mMapFragment);
 		fragmentTransaction.commit();
 		mMapFragment.getMapAsync(this);
+
+		TextView tagTextView = new TextView(this);
+		RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		if (memoryPost.tags != null){
+			tagTextView.setText("Tags: ");
+			for (int i=0; i<((ArrayList)memoryPost.tags).size(); i++){
+				tagTextView.setText(tagTextView.getText() + " #" + ((ArrayList)memoryPost.tags).get(i));
+			}
+		}
+		tagTextView.setTextSize(25);
+		paramsTagTextView.addRule(RelativeLayout.BELOW, id);
+		tagTextView.setId(View.generateViewId());
+		memoryPostLayout.addView(tagTextView, paramsTagTextView);
 
 /*		EditText editText = new EditText(this);
 		RelativeLayout.LayoutParams paramsEditText = new RelativeLayout.LayoutParams(screenWidth/2, ViewGroup.LayoutParams.WRAP_CONTENT);
