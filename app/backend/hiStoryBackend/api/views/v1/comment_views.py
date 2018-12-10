@@ -8,7 +8,6 @@ from api.helpers import json_response_helpers as jrh
 
 
 class CommentView(mixins.ListModelMixin,
-				  mixins.CreateModelMixin,
 				  mixins.DestroyModelMixin,
 				  generics.GenericAPIView):
 
