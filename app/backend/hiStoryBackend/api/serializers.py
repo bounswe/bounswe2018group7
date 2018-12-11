@@ -25,7 +25,7 @@ class UserSerializer(CustomBaseModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'admin', 'confirmed', 'banned',
-                  'password', 'password_confirmation')
+                  'profile_picture', 'password', 'password_confirmation')
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate(self, data):
@@ -48,18 +48,33 @@ class UserSerializer(CustomBaseModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
+        # File name of the profile picture needs User id. Hence, add it after User is saved
+        profile_picture = validated_data.get('profile_picture')
+        if profile_picture:
+            user.profile_picture = profile_picture
+            user.save(update_fields=['profile_picture'])
+
         return user
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
-        instance.email = validated_data.get('email', instance.email)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
 
-        password = validated_data.get('password', None)
+        email = validated_data.get('email')
+        if email:
+            instance.email = email
+            instance.confirmed = False
+            instance.send_confirmation_email()
+
+        password = validated_data.get('password')
         if password:
             instance.set_password(password)
             instance.password_reset_token = None
+
+        if validated_data.get('profile_picture'):
+            instance.profile_picture.delete()  # Delete previous profile picture if exists
+            instance.profile_picture = validated_data.get('profile_picture')
 
         instance.save()
 
@@ -182,3 +197,9 @@ class ReactionSerializer(ReadOnlyUsernameFieldMixin,
         model = Reaction
         fields = ('id', 'memory_post', 'username', 'like')
         validators = ()
+
+
+class ProfileMemoryPostSerializer(CustomBaseModelSerializer):
+    class Meta:
+        model = MemoryPost
+        fields = ('id', 'title')
