@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,6 +51,10 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 	GoogleMap googleMap;
 	Retrofit retrofit;
 	ApiEndpoints apiEndpoints;
+	int firstCommentId;
+	RelativeLayout commentSectionBody;
+	int likeCount = 0, dislikeCount = 0;
+	Boolean currentUserLiked = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,7 +70,16 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 
 		getComments();
 
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+		commentSectionBody = findViewById(R.id.commentSectionBody);
+
+	}
+
+	public void commentSend(View view){
+		EditText editText = findViewById(R.id.commentSectionTitle);
+		createComment(editText.getText().toString());
+		editText.setText("");
 	}
 	public void getMemoryPost(){
 		retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
@@ -96,7 +110,10 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 	}
 	public void getComments(){
 
-		final Call<ArrayList<Comment>> commentsCall = apiEndpoints.getCommentsForMemoryPost("Token " + authToken, Integer.toString(memoryPostId));
+		firstCommentId = R.id.firstComment;
+		final Call<ArrayList<Comment>> commentsCall = apiEndpoints.getCommentsForMemoryPost
+				("Token " + authToken, Integer.toString
+						(memoryPostId));
 		commentsCall.enqueue(new Callback<ArrayList<Comment>>(){
 			@Override
 			public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
@@ -118,10 +135,23 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 
 	public void addComments(ArrayList<Comment> commentList){
 		System.out.println(commentList.size());
-		for (int i=0; i<commentList.size(); i++){
+
+
+        for (int i=0; i<commentList.size(); i++){
 			Comment comment = commentList.get(i);
-			System.out.println("Content: " + comment.content + " Username: " + comment.username + " MemoryPost: " + comment.memoryPost + " Id: " + comment.id + " Created: " + comment.created);
+			addComment(comment);
 		}
+	}
+	public void addComment(Comment comment){
+		System.out.println("Content: " + comment.content + " Username: " + comment.username + " MemoryPost: " + comment.memoryPost + " Id: " + comment.id + " Created: " + comment.created);
+		TextView commentTextView = new TextView(this);
+		RelativeLayout.LayoutParams paramsComment = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		commentTextView.setText(comment.username + ": " + comment.content);
+		commentTextView.setTextSize(20);
+		paramsComment.addRule(RelativeLayout.BELOW, firstCommentId);
+		commentTextView.setId(View.generateViewId());
+		firstCommentId = commentTextView.getId();
+		commentSectionBody.addView(commentTextView, paramsComment);
 	}
 
 	public void deleteComment(int commentId){
@@ -145,26 +175,30 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 	}
 	public void createComment(String comment){
 
-		Comment c = new Comment();
-		c.content = comment;
-		c.memoryPost = memoryPostId;
+		if (comment.length() != 0){
+			Comment c = new Comment();
+			c.content = comment;
+			c.memoryPost = memoryPostId;
 
-		final Call<Comment> call = apiEndpoints.createComment("Token " + authToken, c);
-		call.enqueue(new Callback<Comment>() {
-			@Override
-			public void onResponse(Call<Comment> call, Response<Comment> response) {
-				if (response.isSuccessful()) {
-					System.out.println("Success");
-				} else {
-					System.out.println("Failure " + response.toString());
+			final Call<Comment> call = apiEndpoints.createComment("Token " + authToken, c);
+			call.enqueue(new Callback<Comment>() {
+				@Override
+				public void onResponse(Call<Comment> call, Response<Comment> response) {
+					if (response.isSuccessful()) {
+						System.out.println("Success");
+						addComment(response.body());
+
+					} else {
+						System.out.println("Failure " + response.toString());
+					}
 				}
-			}
 
-			@Override
-			public void onFailure(Call<Comment> call, Throwable t) {
-				System.out.println("Error");
-			}
-		});
+				@Override
+				public void onFailure(Call<Comment> call, Throwable t) {
+					System.out.println("Error");
+				}
+			});
+		}
 	}
 	public void listPost(MemoryPost memoryPost){
 		RelativeLayout showPost = findViewById(R.id.showPost);
@@ -192,7 +226,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			}
 			else if (memoryPost.time.data.getClass().equals(ArrayList.class)){
 				ArrayList list = (ArrayList) memoryPost.time.data;
-				timeTextView.setText((String) list.get(0));
+				timeTextView.setText((String) list.get(0).toString());
 			}
 			System.out.println("Data class : " + memoryPost.time.data.getClass());
 			timeTextView.setId(View.generateViewId());
@@ -225,13 +259,32 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 				}
 		}
 
-            /*TextView tagTextView = new TextView(this);
-            RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            tagTextView.setText("Tags: " + memoryPost.tags);
-            tagTextView.setTextSize(15);
-            paramsTagTextView.addRule(RelativeLayout.BELOW, id);
-            tagTextView.setId(View.generateViewId());
-            memoryPostLayout.addView(tagTextView, paramsTagTextView);*/
+
+		Reactions reactions = memoryPost.reactions;
+
+		System.out.println("Reactions: " + reactions.toString());
+		if (reactions.current_user_liked == null){
+			System.out.println("Current user liked: null");
+		}
+		else if(reactions.current_user_liked){
+			System.out.println("Current user liked: true");
+			like();
+		}
+		else{
+			System.out.println("Current user liked: false");
+			dislike();
+		}
+		if (reactions.like != 0){
+			Button likeButton = findViewById(R.id.likeButton);
+			likeButton.setText("LIKE: " + reactions.like);
+		}
+		if (reactions.dislike != 0){
+			Button dislikeButton = findViewById(R.id.dislikeButton);
+			dislikeButton.setText("DISLIKE: " + reactions.dislike);
+		}
+		likeCount = reactions.like;
+		dislikeCount = reactions.dislike;
+		System.out.println("Like: " + reactions.like + " Dislike: " + reactions.dislike);
 
 //		if (memoryPost.time != null){
 //			TextView timeTextView = new TextView(this);
@@ -260,6 +313,19 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		fragmentTransaction.add(map.getId(), mMapFragment);
 		fragmentTransaction.commit();
 		mMapFragment.getMapAsync(this);
+
+		TextView tagTextView = new TextView(this);
+		RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		if (memoryPost.tags != null){
+			tagTextView.setText("Tags: ");
+			for (int i=0; i<((ArrayList)memoryPost.tags).size(); i++){
+				tagTextView.setText(tagTextView.getText() + " #" + ((ArrayList)memoryPost.tags).get(i));
+			}
+		}
+		tagTextView.setTextSize(25);
+		paramsTagTextView.addRule(RelativeLayout.BELOW, id);
+		tagTextView.setId(View.generateViewId());
+		memoryPostLayout.addView(tagTextView, paramsTagTextView);
 
 /*		EditText editText = new EditText(this);
 		RelativeLayout.LayoutParams paramsEditText = new RelativeLayout.LayoutParams(screenWidth/2, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -305,4 +371,82 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		screenHeight = size.y;
 	}
 
+	public void like(View view){
+		if (currentUserLiked == null){
+			Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+
+			ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
+
+			Reaction reaction = new Reaction(memoryPostId, true);
+
+			final Call<Reaction> call = apiEndpoints.postReaction("Token " + authToken, reaction);
+			call.enqueue(new Callback<Reaction>() {
+				@Override
+				public void onResponse(Call<Reaction> call, Response<Reaction> response) {
+					if (response.isSuccessful()) {
+						System.out.println("Liked successfully");
+						likeCount++;
+						Button likeButton = findViewById(R.id.likeButton);
+						likeButton.setText("LIKE: " + likeCount);
+						like();
+					} else {
+						Log.d("Failure", response.toString());
+					}
+				}
+
+				@Override
+				public void onFailure(Call<Reaction> call, Throwable t) {
+					Log.d("Error", t.getMessage());
+					Toast.makeText(MemoryPostDetailActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT)
+							.show();
+				}
+			});
+		}
+		else {
+		}
+	}
+	public void like(){
+		currentUserLiked = true;
+		Button likeButton = findViewById(R.id.likeButton);
+		likeButton.setBackgroundResource(R.color.colorPrimary);
+	}
+	public void dislike(){
+		currentUserLiked = false;
+		Button dislikeButton = findViewById(R.id.dislikeButton);
+		dislikeButton.setBackgroundResource(R.color.colorPrimary);
+	}
+	public void dislike(View view){
+		if (currentUserLiked == null){
+			Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+
+			ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
+
+			Reaction reaction = new Reaction(memoryPostId, false);
+
+			final Call<Reaction> call = apiEndpoints.postReaction("Token " + authToken, reaction);
+			call.enqueue(new Callback<Reaction>() {
+				@Override
+				public void onResponse(Call<Reaction> call, Response<Reaction> response) {
+					if (response.isSuccessful()) {
+						System.out.println("Disliked successfully");
+						dislikeCount++;
+						Button dislikeButton = findViewById(R.id.dislikeButton);
+						dislikeButton.setText("DISLIKE: " + dislikeCount);
+						dislike();
+					} else {
+						Log.d("Failure", response.toString());
+					}
+				}
+
+				@Override
+				public void onFailure(Call<Reaction> call, Throwable t) {
+					Log.d("Error", t.getMessage());
+					Toast.makeText(MemoryPostDetailActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT)
+							.show();
+				}
+			});
+		}
+		else {
+		}
+	}
 }
