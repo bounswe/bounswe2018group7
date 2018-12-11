@@ -90,8 +90,12 @@ class MemoryPostSerializer(ReadOnlyUsernameFieldMixin,
 
     def get_reactions(self, obj):
         try:
-            user_reaction = Reaction.objects.get(user=obj.user, memory_post=obj)
-            user_liked = user_reaction.like
+            user = self.context['request'].user
+            if isinstance(user, User):
+                user_reaction = Reaction.objects.get(user=user, memory_post=obj)
+                user_liked = user_reaction.like
+            else:
+                user_liked = None
         except Reaction.DoesNotExist:
             user_liked = None
 
