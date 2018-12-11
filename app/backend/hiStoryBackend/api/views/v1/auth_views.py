@@ -57,7 +57,7 @@ class SignInView(APIView):
             auth_token = token.key
 
         return jrh.success(
-            {**UserSerializer(user).data, **{'auth_token': auth_token}}
+            {**UserSerializer(user).data, 'auth_token': auth_token}
         )
 
 
