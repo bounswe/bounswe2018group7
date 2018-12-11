@@ -4,6 +4,7 @@ from .views.v1.reaction_views import ReactionView
 from .views.v1.comment_views import CommentView
 from .views.v1.auth_views import SignUpView, SignInView, SignOutView, EmailConfirmationView, PasswordResetView
 from .views.v1.memory_post_views import MemoryPostView
+from .views.v1.profile_views import ProfileView
 
 app_name = 'api'
 
@@ -18,5 +19,7 @@ urlpatterns = [
 
 	url(r'^v1/comments/?(/(?P<id>\d+)/?)?$', CommentView.as_view()),
 
-	url(r'^v1/reactions/?(/(?P<id>\d+)/?)?$', ReactionView.as_view())
+	url(r'^v1/reactions/?(/(?P<id>\d+)/?)?$', ReactionView.as_view()),
+
+	url(r'^v1/profiles/?(/(?P<username>[^/]+)/?)?$', ProfileView.as_view())
 ]
