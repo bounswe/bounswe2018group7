@@ -18,10 +18,14 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiEndpoints {
     @POST("/api/v1/signup/")
     public Call<User> signUp(@Body User user);
+
+    @POST("/api/v1/reactions/")
+    public Call<Reaction> postReaction(@Header("Authorization") String token, @Body Reaction reaction);
 
     @POST("/api/v1/signin/")
     public Call<User> signIn(@Body User user);
@@ -42,8 +46,9 @@ public interface ApiEndpoints {
     public Call<MemoryPost> getMemoryPost(@Header("Authorization") String token, @Path("memoryPostId") String memoryPostId);
 
 
-    @GET("/api/v1/comments/{memoryPostId}/")
-    public Call<ArrayList<com.history.Comment>> getCommentsForMemoryPost(@Header("Authorization") String token, @Path("memoryPostId") String memoryPostId);
+    @GET("/api/v1/comments/")
+    public Call<ArrayList<com.history.Comment>> getCommentsForMemoryPost(@Header("Authorization") String token, @Query("memory_post") String memoryPostId);
+
 
     @POST("/api/v1/comments")
     public Call<com.history.Comment> createComment(@Header("Authorization") String token, @Body com.history.Comment comment);
