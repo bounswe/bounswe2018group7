@@ -13,6 +13,20 @@ from rest_framework.authtoken.models import Token
 from hiStoryBackend import settings
 
 
+def upload_profile_picture_to(instance, filename):
+    """
+    Returns a custom name for the profile picture of User.
+    :param instance: User object
+    :param filename: Name of the file stored in 'profile_picture' field
+    :return: A string in the format pp_<user_id>_<year>-<month>-<day>_<hour>_<minute>_<second>_<original_file_name>
+    """
+    return 'profile_picture/pp_{0}_{1}_{2}'.format(
+        instance.id,
+        datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
+        filename
+    )
+
+
 class User(AbstractUser):
     email = models.EmailField(
         null=False,
@@ -38,6 +52,8 @@ class User(AbstractUser):
         blank=True,
         default=None
     )
+
+    profile_picture = models.ImageField(blank=True, null=True, default=None, upload_to=upload_profile_picture_to)
 
     @property
     def admin(self):
@@ -129,6 +145,14 @@ class User(AbstractUser):
             return False
 
 
+@receiver(post_delete, sender=User)
+def delete_profile_picture(sender, instance, **kwargs):
+    """
+    This method makes sure to delete the profile picture when the related User object is deleted.
+    """
+    instance.profile_picture.delete(False)
+
+
 # hiStory Models
 
 
@@ -172,7 +196,7 @@ class MemoryMedia(BaseModel):
 
 
 @receiver(post_delete, sender=MemoryMedia)
-def submission_delete(sender, instance, **kwargs):
+def delete_memory_media_file(sender, instance, **kwargs):
     """
     This method makes sure to delete the actual file when the related MemoryMedia object is deleted.
     """
@@ -192,4 +216,3 @@ class Reaction(BaseModel):
 
     class Meta:
         unique_together = (('user', 'memory_post'),)
-
