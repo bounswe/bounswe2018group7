@@ -44,7 +44,10 @@ class ProfileView(APIView):
 
     def patch(self, request, *args, **kwargs):
         try:
-            ban = json.loads(request.data.get('ban', ''))
+            ban = request.data.get('ban')
+            if isinstance(ban, str):
+                ban = json.loads(ban)
+
             if isinstance(ban, bool):
                 return self.ban_or_unban_user(kwargs.get('username'), ban, request.user)
         except JSONDecodeError:
