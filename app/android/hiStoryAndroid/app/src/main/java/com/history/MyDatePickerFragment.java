@@ -30,7 +30,7 @@ public class MyDatePickerFragment extends DialogFragment {
                     // Bundle bnl =
                     CreatePostActivity c = (CreatePostActivity) getActivity();
                     c.day_ = ""+ view.getDayOfMonth();
-                    c.month_ = ""+ view.getMonth()+1;
+                    c.month_ = (view.getMonth()+1) + "";
                     c.year_ = ""+ view.getYear();
 
                 }
