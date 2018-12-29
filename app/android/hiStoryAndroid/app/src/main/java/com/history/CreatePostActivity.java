@@ -71,6 +71,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
     String filename = "aaa";
     ArrayList storyElements;
+    ArrayList tags;
     int lastStoryElementId;
     RelativeLayout storyComponentsLayout;
 
@@ -85,7 +86,7 @@ public class CreatePostActivity extends AppCompatActivity {
         lastStoryElementId = R.id.addTitleEditText;
         storyComponentsLayout = findViewById(R.id.components);
         storyElements = new ArrayList();
-
+        tags = new ArrayList();
     }
 
 
@@ -95,7 +96,19 @@ public class CreatePostActivity extends AppCompatActivity {
         auth_token = prefs.getString("authToken", "");
     }
 
+    public void showDatePicker(View v) {
+        DialogFragment newFragment = new MyDatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "date picker");
 
+    }
+
+    public void addTag(View view){
+        EditText tagEditText = findViewById(R.id.addTagEditText);
+        tags.add(tagEditText.getText().toString());
+        tagEditText.setText("");
+    }
+
+  
     public void createPost(View view) throws Exception{
 
         if (!waitingResponse){
@@ -107,10 +120,8 @@ public class CreatePostActivity extends AppCompatActivity {
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            // add your other interceptors …
-
-            // add logging as last interceptor
-            httpClient.addInterceptor(logging);  // <-- this is the important line!
+           
+            httpClient.addInterceptor(logging);
 
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -123,8 +134,6 @@ public class CreatePostActivity extends AppCompatActivity {
             ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
 
             String newTitle = ((EditText)findViewById(R.id.addTitleEditText)).getText().toString();
-            //String newTime = ((EditText)findViewById(R.id.timeEditText)).getText().toString();
-            //String newLocation = ((EditText)findViewById(R.id.locationEditText)).getText().toString();
 
 
 
@@ -135,13 +144,14 @@ public class CreatePostActivity extends AppCompatActivity {
 
             String exampleLocation = "[{\"type\": \"region\", \"name\": \" "+ "Istanbul" +"\"}]";
 
-            String exampleStoryBody= "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, " +
-                    "at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. " +
-                    "The name comes from a legend: the Byzantine emperor heard a prophecy telling him " +
-                    "that his beloved daughter would die at the age of 18 by a snake. So he decided to put her " +
-                    "in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. " +
-                    "But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city " +
-                    "bit the princess and killed her.";
+            String tagString = "[";
+            for (int i=0; i<tags.size(); i++){
+                tagString += "\"" + tags.get(i) + "\"";
+                if (i<tags.size() -1) tagString += ", ";
+            }
+            tagString += "]";
+            System.out.println("Tag String: " + tagString);
+
 
 
             RequestBody title = RequestBody.create(
@@ -153,6 +163,7 @@ public class CreatePostActivity extends AppCompatActivity {
             RequestBody location = RequestBody.create(
                     okhttp3.MultipartBody.FORM, exampleLocation);
 
+            RequestBody tag = RequestBody.create(okhttp3.MultipartBody.FORM, tagString);
              List<MultipartBody.Part> story = new ArrayList<>();
 
              for (int i=0; i<storyElements.size(); i++){
@@ -161,13 +172,21 @@ public class CreatePostActivity extends AppCompatActivity {
                      MultipartBody.Part storyBody = MultipartBody.Part.createFormData( "story[" + i + "]",  storyElement.getText().toString());
                      story.add(storyBody);
                  }
-                 else if(storyElements.get(i).getClass() == MultipartBody.Part.class){
-                     story.add((MultipartBody.Part) storyElements.get(i));
-                 }
              }
 
+            for (int i=0; i<storyElements.size(); i++){
+                if(storyElements.get(i).getClass() == File.class){
 
-             final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token " + auth_token, title,time,location,story);
+                    File file = ((File) storyElements.get(i));
+                    System.out.println("File: " + file.getAbsolutePath() + " " + file.getCanonicalPath() + " " + file.getName() + " length: " + file.length());
+                    RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+                    MultipartBody.Part image = MultipartBody.Part.createFormData("story[" + i
+                            +"]", "" + i,requestFile);
+                    story.add(image);
+                }
+            }
+
+             final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token " + auth_token, title,time,location,tag,story);
       
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -234,6 +253,10 @@ public class CreatePostActivity extends AppCompatActivity {
         if (storyElements.size() == 0){
             TextView defaultStoryTextView = findViewById(R.id.defaultPostStory);
             storyComponentsLayout.removeView(defaultStoryTextView);
+        }
+        else if(!storyElements.get(storyElements.size()-1).getClass().equals(EditText.class))  {
+            EditText editText = new EditText(this);
+            storyElements.add(editText);
         }
 
         EditText editText = new EditText(this);
@@ -318,7 +341,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
         Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        File f = new File(this.getCacheDir(), filename);
+        File f = new File(this.getCacheDir(), "" + (storyElements.size() + 1));
         f.createNewFile();
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -329,12 +352,8 @@ public class CreatePostActivity extends AppCompatActivity {
         fos.write(bitmapdata);
         fos.flush();
         fos.close();
-        RequestBody requestFile = RequestBody.create(
-                MediaType.parse("image/png"), f);
 
-        MultipartBody.Part image = MultipartBody.Part.createFormData("story[" + (storyElements.size()+1) +"]", "a",requestFile);
-
-        storyElements.add(image);
+        storyElements.add(f);
     }
 
 

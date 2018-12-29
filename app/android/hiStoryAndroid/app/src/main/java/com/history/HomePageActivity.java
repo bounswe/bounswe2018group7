@@ -143,7 +143,7 @@ public class HomePageActivity extends AppCompatActivity {
             memoryPostLayout.addView(memoryPostInfoLayout, paramsMemoryPostInfoLayout);
 
             ImageView profilPicture = new ImageView(this);
-            profilPicture.setBackgroundResource(R.drawable.default_pp);
+            profilPicture.setBackgroundResource(R.drawable.einstein);
             profilPicture.setId(View.generateViewId());
             memoryPostInfoLayout.addView(profilPicture);
 
@@ -204,7 +204,7 @@ public class HomePageActivity extends AppCompatActivity {
             if (memoryPost.time != null){
                 TextView timeTextView = new TextView(this);
                 RelativeLayout.LayoutParams paramsTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                timeTextView.setText(memoryPost.time.toString());
+                if (memoryPost.time.data != null) timeTextView.setText(memoryPost.time.data.toString());
                 timeTextView.setTextSize(25);
                 paramsTimeTextView.addRule(RelativeLayout.BELOW, id);
                 timeTextView.setId(View.generateViewId());

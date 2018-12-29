@@ -5,11 +5,10 @@ import java.util.ArrayList;
 public class MemoryPost {
     String title;
 
-    //MemoryPostTime time[];
-    Object time;
+    MemoryPostTime time;
     Object location;
     Object tags;
-
+    Reactions reactions;
 
 
     MemoryPostStory story[];

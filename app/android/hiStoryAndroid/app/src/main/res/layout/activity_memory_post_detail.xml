@@ -24,7 +24,7 @@ tools:context=".CreatePostActivity">
                 android:id="@+id/iconImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher_round"/>
+                android:src="@drawable/einstein"/>
 
             <RelativeLayout
                 android:id="@+id/postHeading"
@@ -93,11 +93,41 @@ tools:context=".CreatePostActivity">
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/commentSection"
+            android:id="@+id/likeSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/showPost">
+
+            <Button
+                android:id="@+id/likeButton"
+                android:text="LIKE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="like"
+                >
+
+            </Button>
+
+            <Button
+                android:id="@+id/dislikeButton"
+                android:text="DISLIKE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:onClick="dislike"
+                >
+            </Button>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/commentSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/likeSection">
 
             <RelativeLayout
                 android:id="@+id/commentSectionHeader"
@@ -108,12 +138,12 @@ tools:context=".CreatePostActivity">
                 android:background="@color/colorPrimary"
                 >
 
-                <TextView
+                <EditText
                     android:id="@+id/commentSectionTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="Comments"
+                    android:hint="Add Comment"
                     android:textColor="@color/colorWhite"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/addCommentButton"
@@ -129,7 +159,8 @@ tools:context=".CreatePostActivity">
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
                     android:layout_margin="5dp"
-                    android:text="Comment"/>
+                    android:text="Comment"
+                    android:onClick="commentSend"/>
 
 
             </RelativeLayout>
@@ -144,7 +175,8 @@ tools:context=".CreatePostActivity">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Comment Body Here"/>
+                    android:text=""
+                    android:id="@+id/firstComment"/>
 
             </RelativeLayout>
 

@@ -113,7 +113,7 @@
                         android:layout_toRightOf="@+id/addTextButton"
                         android:text="IMAGE"
                         android:onClick="selectImage"/>
-                    <Button
+                   <!-- <Button
                         android:id="@+id/addVideoButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/addVideoButton"
-                        android:text="AUDIO"/>
+                        android:text="AUDIO"/>  -->
 
                 </RelativeLayout>
 
@@ -164,7 +164,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_below="@+id/addTagTextView"
-                    android:text="Add TAG"/>
+                    android:text="Add TAG"
+                    android:onClick="addTag"/>
 
             </RelativeLayout>
 

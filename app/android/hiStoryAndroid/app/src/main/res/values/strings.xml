@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">HiStory</string>
     <string name="title_activity_create_post">CreatePostActivity</string>
+    <string name="skip">Skip</string>
+    <string name="email_address_username">Email Address / Username</string>
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="backgroundimage">backGroundImage</string>
+    <string name="back">Back</string>
+    <string name="first_name">First Name</string>
+    <string name="forgot_your_password">Forgot Your Password?</string>
+    <string name="don_t_have_an_account_register">Don\'t have an account? Register</string>
     <string name="default_post_story">Hello friend!
         \nStorytelling is what connects us to our humanity. It is what links us to our past, and provides a glimpse into our future.
         Since humans first walked the earth, they have told stories, before even the written word or oral language.
