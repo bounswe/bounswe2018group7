@@ -216,3 +216,12 @@ class Reaction(BaseModel):
 
     class Meta:
         unique_together = (('user', 'memory_post'),)
+
+
+class Annotation(BaseModel):
+    user = models.ForeignKey(User, related_name='annotations', on_delete=models.CASCADE)
+    body = JSONField(db_index=True)
+    target = JSONField(db_index=True)
+
+    class Meta:
+        unique_together = (('user', 'body', 'target'),)
