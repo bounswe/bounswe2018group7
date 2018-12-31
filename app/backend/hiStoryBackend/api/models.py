@@ -228,11 +228,11 @@ class Annotation(BaseModel):
 
 
 @receiver(post_delete, sender=Annotation)
-def delete_media_file(sender, instance, **kwargs):
+def delete_annotation_media_file(sender, instance, **kwargs):
     """
     This method makes sure to delete the media file when the related Annotation object is deleted.
     """
-    id_key = instance.body.get(id)
+    id_key = instance.body.get('id')
     if id_key:
         try:
             media_upload = MediaUpload.objects.get(file__contains=id_key.split('/')[-1])
