@@ -225,3 +225,47 @@ class Annotation(BaseModel):
 
     class Meta:
         unique_together = (('user', 'body', 'target'),)
+
+
+@receiver(post_delete, sender=Annotation)
+def delete_media_file(sender, instance, **kwargs):
+    """
+    This method makes sure to delete the media file when the related Annotation object is deleted.
+    """
+    id_key = instance.body.get(id)
+    if id_key:
+        try:
+            media_upload = MediaUpload.objects.get(file__contains=id_key.split('/')[-1])
+            media_upload.delete()
+        except MediaUpload.DoesNotExist:
+            pass
+
+
+def upload_media_to(instance, filename):
+    """
+    Returns a custom name for the file stored in 'file' field of MediaUpload.
+    :param instance: MediaUpload object
+    :param filename: Name of the file stored in 'file' field
+    :return: A string in the format <type>_<user_id>_<year>-<month>-<day>_<hour>_<minute>_<second>_<original_file_name>
+    """
+    return '{0}/{1}_{2}_{3}_{4}'.format(
+        instance.type,
+        instance.type,
+        instance.user.id,
+        datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
+        filename
+    )
+
+
+class MediaUpload(BaseModel):
+    user = models.ForeignKey(User, related_name='media', on_delete=models.CASCADE)
+    type = models.CharField(max_length=64)
+    file = models.FileField(upload_to=upload_media_to, db_index=True)
+
+
+@receiver(post_delete, sender=MediaUpload)
+def delete_media_file(sender, instance, **kwargs):
+    """
+    This method makes sure to delete the actual file when the related MediaUpload object is deleted.
+    """
+    instance.file.delete(False)
