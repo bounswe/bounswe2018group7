@@ -27,9 +27,10 @@ class SearchView(APIView):
                 if text in story['payload']:
                     if post.id not in mem_list:
                         mem_list.append(post.id)
-            if text in post.time['data']:
-                if post.id not in mem_list:
-                    mem_list.append(post.id)
+            if post.time:
+                if text in post.time['data']:
+                    if post.id not in mem_list:
+                        mem_list.append(post.id)
             for tag in post.tags:
                 if text in tag:
                     if post.id not in mem_list:
