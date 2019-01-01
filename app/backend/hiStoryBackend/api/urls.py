@@ -24,5 +24,5 @@ urlpatterns = [
 
 	url(r'^v1/profiles/?(/(?P<username>[^/]+)/?)?$', ProfileView.as_view()),
 
-	url(r'^v1/recommendation/?$', RecommendationView.as_view())
+	url(r'^v1/recommendations/?$', RecommendationView.as_view())
 ]
