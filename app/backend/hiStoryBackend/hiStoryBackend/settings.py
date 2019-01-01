@@ -15,6 +15,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'tr52&u^)2b$ro+q(#s!q^8w5b(3*us
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000/')
+MEDIA_SITE_URL = os.environ.get('MEDIA_SITE_URL', '')
+API_VERSION = os.environ.get('API_VERSION', '1')
+
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [

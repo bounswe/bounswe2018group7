@@ -1,9 +1,22 @@
 import json
+import re
 from json import JSONDecodeError
-from api.models import *
+
+from django.core.exceptions import ValidationError
 from django.core.files.base import File
+from django.core.validators import URLValidator
 from rest_framework import serializers
+
 from api.helpers.custom_helpers import errors_from_dict_to_arr
+from api.models import *
+
+
+def check_field_for_url(msg_prefix, url_string):
+    val = URLValidator()
+    try:
+        val(str(url_string))
+    except ValidationError:
+        raise serializers.ValidationError(msg_prefix + " is not a valid URL")
 
 
 class CustomBaseModelSerializer(serializers.ModelSerializer):
@@ -207,3 +220,157 @@ class ProfileMemoryPostSerializer(CustomBaseModelSerializer):
     class Meta:
         model = MemoryPost
         fields = ('id', 'title')
+
+
+class AnnotationSerializer(CustomBaseModelSerializer):
+    type = serializers.SerializerMethodField()
+    id = serializers.SerializerMethodField()
+    creator = serializers.SerializerMethodField()
+    generated = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%SZ", read_only=True, source='updated')
+    body = serializers.JSONField(required=True)
+    target = serializers.JSONField(required=True)
+
+    class Meta:
+        model = Annotation
+        fields = ('@context', 'type', 'id', 'creator', 'generated', 'body', 'target', 'user')
+        extra_kwargs = {'user': {'write_only': True}}
+
+    def get_context(self, obj):
+        return "http://www.w3.org/ns/anno.jsonld"
+
+    def get_type(self, obj):
+        return "Annotation"
+
+    def get_id(self, obj):
+        try:
+            return settings.SITE_URL + "api/v" + settings.API_VERSION + "/annotations/" + str(obj.id)
+        except AttributeError:
+            return None
+
+    def get_creator(self, obj):
+        try:
+            return settings.SITE_URL + "api/v" + settings.API_VERSION + "/profiles/" + obj.user.username
+        except AttributeError:
+            return None
+
+    def validate_body(self, body):
+        body_type = body.get("type")
+        if not body_type:
+            raise serializers.ValidationError("'type' is missing.")
+
+        body_type = str(body_type)
+        if body_type == 'TextualBody':
+            body_value = body.get("value")
+
+            if not body_value:
+                raise serializers.ValidationError("'value' is missing.")
+
+            return {
+                "type": "TextualBody",
+                "value": str(body_value)
+            }
+
+        elif body_type in ('Image', 'Video', 'Sound'):
+            body_id = body.get("id")
+
+            if not body_id:
+                raise serializers.ValidationError("'id' is missing.")
+
+            check_field_for_url("'id'", body_id)
+
+            return {
+                "type": body_type,
+                "id": body_id
+            }
+
+        else:
+            raise serializers.ValidationError("Provided 'type' is not supported.")
+
+    def validate_target(self, target):
+        target_source = target.get("source")
+        if not target_source:
+            raise serializers.ValidationError("'source' is missing.")
+
+        target_source = str(target_source).lower()
+
+        memory_post_api_url_pattern = settings.SITE_URL + "api/v" + settings.API_VERSION + "/memory_posts/\d+"
+        if not (re.match(memory_post_api_url_pattern, target_source) or settings.MEDIA_SITE_URL in target_source):
+            raise serializers.ValidationError("does not belong to HiStory")
+
+        check_field_for_url("'source'", target_source)
+
+        target_selector = target.get("selector")
+
+        if not target_selector:
+            return {
+                "source": target_source
+            }
+
+        elif not isinstance(target_selector, dict):
+            raise serializers.ValidationError("'selector' must be a JSON.")
+
+        else:
+            selector_type = target_selector.get("type")
+            if not selector_type:
+                raise serializers.ValidationError("'type' of 'selector' is missing.")
+
+            selector_type = str(selector_type)
+
+            if selector_type == 'TextQuoteSelector':
+                exact_key = target_selector.get("exact")
+                if not exact_key:
+                    raise serializers.ValidationError("'exact' of 'selector' is missing.")
+
+                prefix_key = target_selector.get("prefix")
+                if not prefix_key:
+                    raise serializers.ValidationError("'prefix' of 'selector' is missing.")
+
+                suffix_key = target_selector.get("suffix")
+                if not suffix_key:
+                    raise serializers.ValidationError("'suffix' of 'selector' is missing.")
+
+                return {
+                    "source": target_source,
+                    "selector": {
+                        "type": "TextQuoteSelector",
+                        "exact": str(exact_key),
+                        "prefix": str(prefix_key),
+                        "suffix": str(suffix_key)
+                    }
+                }
+
+            elif selector_type == 'FragmentSelector':
+                value_key = target_selector.get("value")
+                if not value_key:
+                    raise serializers.ValidationError("'value' of 'selector' is missing.")
+
+                value_key = str(value_key).lower()
+                match_object = re.match(r'^xywh=\d+,\d+,\d+,\d+$', value_key)
+                if not match_object:
+                    raise serializers.ValidationError("'value' of 'selector' must be in the form 'xywh=<number>,<number>,<number>,<number>")
+
+                return {
+                    "source": target_source,
+                    "selector": {
+                        "type": "FragmentSelector",
+                        "conformsTo": "http://www.w3.org/TR/media-frags/",
+                        "value": value_key
+                    }
+                }
+
+            else:
+                raise serializers.ValidationError("Provided 'type' for 'selector' is not supported.")
+
+    def create(self, validated_data):
+        annotation = Annotation(**validated_data)
+        annotation.save()
+        return annotation
+
+    def update(self, instance, validated_data):
+        instance.body = validated_data.get('body', instance.body)
+        instance.target = validated_data.get('target', instance.target)
+        instance.save()
+        return instance
+
+
+AnnotationSerializer._declared_fields["@context"] = serializers.SerializerMethodField(method_name='get_context')

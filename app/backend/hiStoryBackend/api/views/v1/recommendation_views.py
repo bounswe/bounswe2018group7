@@ -1,7 +1,9 @@
 from random import randint
+
 import requests
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from api.models import MemoryPost
 from api.serializers import MemoryPostSerializer
 from hiStoryBackend import settings
