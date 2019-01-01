@@ -8,6 +8,8 @@ from .views.v1.comment_views import CommentView
 from .views.v1.memory_post_views import MemoryPostView
 from .views.v1.profile_views import ProfileView
 from .views.v1.reaction_views import ReactionView
+from .views.v1.search_views import SearchView
+
 
 app_name = 'api'
 
@@ -30,5 +32,9 @@ urlpatterns = [
 
 	url(r'^v1/annotations/?(/(?P<id>\d+)/?)?$', AnnotationView.as_view()),
 
-	url(r'^v1/media_upload/annotation$', MediaUploadView.as_view())
+	url(r'^v1/media_upload/annotation$', MediaUploadView.as_view()),
+
+	url(r'^v1/profiles/?(/(?P<username>[^/]+)/?)?$', ProfileView.as_view()),
+
+	url(r'^v1/search', SearchView.as_view())
 ]
