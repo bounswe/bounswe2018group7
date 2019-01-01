@@ -32,9 +32,7 @@ urlpatterns = [
 
 	url(r'^v1/annotations/?(/(?P<id>\d+)/?)?$', AnnotationView.as_view()),
 
-	url(r'^v1/media_upload/annotation$', MediaUploadView.as_view()),
+	url(r'^v1/media_upload/annotation/?$', MediaUploadView.as_view()),
 
-	url(r'^v1/profiles/?(/(?P<username>[^/]+)/?)?$', ProfileView.as_view()),
-
-	url(r'^v1/search', SearchView.as_view())
+	url(r'^v1/search/?$', SearchView.as_view())
 ]

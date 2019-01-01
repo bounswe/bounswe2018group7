@@ -1,14 +1,7 @@
-from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import get_object_or_404
-
 
 from api.helpers import json_response_helpers as jrh
 from api.models import User, MemoryPost
-
-import requests
-from rest_framework.response import Response
 
 
 class SearchView(APIView):
@@ -72,6 +65,6 @@ class SearchView(APIView):
                     user_list.append(user.username)
         
         return jrh.success(
-            {'memory_posts':  { 'ids': mem_list_id, 'titles' : mem_list_title},
-            'users': user_list}
-    )
+            {'memory_posts':  {'ids': mem_list_id, 'titles': mem_list_title},
+             'users': user_list}
+        )
