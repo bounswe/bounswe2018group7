@@ -31,18 +31,18 @@ class RecommendationView(APIView):
 
 		user = request.user
 
-		number_of_user_posts = MemoryPost.objects.filter(user=user).count()
-
 		# Array of Arrays: [[<tag1>, <tag2>, ...], [<tag1>, <tag2>, ...], ...]
 		user_post_tags = MemoryPost.objects.filter(user=user).values_list('tags', flat=True)
+		number_of_user_posts = len(user_post_tags)
+
 		if number_of_user_posts > number_of_random_user_posts_to_process:
 			random_indices = get_distinct_random_ints(number_of_user_posts-1, number_of_random_user_posts_to_process)
 			user_post_tags = [user_post_tags[i] for i in random_indices]
 
-		number_of_other_posts = MemoryPost.objects.exclude(user=user).count()
-
 		# Array of Dicts [{'id': <id>, 'tags': [<tag1>, <tag2>, ...]}, ...]
 		other_posts = MemoryPost.objects.exclude(user=user).values('id', 'tags')
+		number_of_other_posts = len(other_posts)
+
 		if number_of_other_posts > number_of_random_other_posts_to_process:
 			random_indices = get_distinct_random_ints(number_of_other_posts-1, number_of_random_other_posts_to_process)
 			other_posts = [other_posts[i] for i in random_indices]
