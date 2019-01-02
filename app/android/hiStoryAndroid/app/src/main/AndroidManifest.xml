@@ -29,7 +29,8 @@
 
         <activity android:name=".MemoryPostDetailActivity" />
         <activity android:name=".ProfilePageActivity" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".AnnotationActivity"></activity>
     </application>
 
 </manifest>

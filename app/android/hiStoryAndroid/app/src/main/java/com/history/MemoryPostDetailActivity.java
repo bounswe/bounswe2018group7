@@ -281,12 +281,20 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			if (memoryPost.story[j].type.equals("text")){
 				TextView storyTextView = new TextView(this);
 				RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-				storyTextView.setText(memoryPost.story[j].payload.toString());
+				storyTextView.setText("\n" + memoryPost.story[j].payload.toString());
 				storyTextView.setTextSize(20);
 				paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
 				storyTextView.setId(View.generateViewId());
-				id = storyTextView.getId();
 				memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+
+				TextView annotate = new TextView(this);
+				annotate.setText("Annotate");
+				annotate.setTextColor(Color.RED);
+				RelativeLayout.LayoutParams paramsAnnotate = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+				annotate.setTextSize(20);
+				paramsAnnotate.addRule(RelativeLayout.BELOW, id);
+				id = storyTextView.getId();
+				memoryPostLayout.addView(annotate, paramsAnnotate);
 			}
 			else if(memoryPost.story[j].type.contains("image")){
 				ImageView storyImageView = new ImageView(this);
@@ -294,8 +302,16 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 				RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 				paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
 				storyImageView.setId(View.generateViewId());
-				id = storyImageView.getId();
 				memoryPostLayout.addView(storyImageView, paramsStoryImageView);
+
+				TextView annotate = new TextView(this);
+				annotate.setText("Annotate");
+				annotate.setTextColor(Color.RED);
+				RelativeLayout.LayoutParams paramsAnnotate = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+				annotate.setTextSize(20);
+				paramsAnnotate.addRule(RelativeLayout.BELOW, id);
+				id = storyImageView.getId();
+				memoryPostLayout.addView(annotate, paramsAnnotate);
 			}
 			else if(memoryPost.story[j].type.contains("video")){
 
