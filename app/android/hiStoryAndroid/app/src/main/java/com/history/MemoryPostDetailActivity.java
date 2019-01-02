@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -238,25 +240,55 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 
 
 		for (int j=0; j<memoryPost.story.length; j++){
-				if (memoryPost.story[j].type.equals("text")){
-					TextView storyTextView = new TextView(this);
-					RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-					storyTextView.setText(memoryPost.story[j].payload.toString());
-					storyTextView.setTextSize(20);
-					paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
-					storyTextView.setId(View.generateViewId());
-					id = storyTextView.getId();
-					memoryPostLayout.addView(storyTextView, paramsStoryTextView);
-				}
-				else{
-					ImageView storyImageView = new ImageView(this);
-					Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
-					RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-					paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
-					storyImageView.setId(View.generateViewId());
-					id = storyImageView.getId();
-					memoryPostLayout.addView(storyImageView, paramsStoryImageView);
-				}
+			if (memoryPost.story[j].type.equals("text")){
+				TextView storyTextView = new TextView(this);
+				RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				storyTextView.setText(memoryPost.story[j].payload.toString());
+				storyTextView.setTextSize(20);
+				paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
+				storyTextView.setId(View.generateViewId());
+				id = storyTextView.getId();
+				memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+			}
+			else if(memoryPost.story[j].type.contains("image")){
+				ImageView storyImageView = new ImageView(this);
+				Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
+				RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
+				storyImageView.setId(View.generateViewId());
+				id = storyImageView.getId();
+				memoryPostLayout.addView(storyImageView, paramsStoryImageView);
+			}
+			else if(memoryPost.story[j].type.contains("video")){
+
+				RelativeLayout videoLayout = new RelativeLayout(this);
+				RelativeLayout.LayoutParams paramsVideoLayout = new RelativeLayout
+						.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, screenHeight/5);
+				paramsVideoLayout.addRule(RelativeLayout.BELOW, id);
+				paramsVideoLayout.addRule(RelativeLayout.CENTER_HORIZONTAL);
+				videoLayout.setId(View.generateViewId());
+				id = videoLayout.getId();
+				memoryPostLayout.addView(videoLayout, paramsVideoLayout);
+
+
+				final VideoView videoView = new VideoView(this);
+				videoView.setVideoPath(((String) memoryPost.story[j].payload));
+				RelativeLayout.LayoutParams paramsVideoView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				paramsVideoView.addRule(RelativeLayout.CENTER_HORIZONTAL);
+				videoLayout.addView(videoView, paramsVideoView);
+				videoView.seekTo( 5 );
+
+				TextView button = new TextView(this);
+				RelativeLayout.LayoutParams paramsButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+				button.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (videoView.isPlaying()) videoView.pause();
+						else videoView.start();
+					}
+				});
+				videoLayout.addView(button, paramsButton);
+			}
 		}
 
 

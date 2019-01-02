@@ -40,7 +40,7 @@ public interface ApiEndpoints {
     public Call<MemoryPostPage> getMemoryPostsGuest();
 
     @GET("/api/v1/memory_posts/")
-    public Call<MemoryPostPage> getMemoryPostsUser(@Header("Authorization") String token);
+    public Call<MemoryPostPage> getMemoryPostsUser(@Header("Authorization") String token, @Query("page") String page);
 
     @GET("/api/v1/memory_posts/{memoryPostId}/")
     public Call<MemoryPost> getMemoryPost(@Header("Authorization") String token, @Path("memoryPostId") String memoryPostId);

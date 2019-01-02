@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,24 +18,31 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.android.gms.maps.MapFragment;
 import com.squareup.picasso.Picasso;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomePageActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity implements ScrollView.OnScrollChangeListener {
     String SERVER_URL = "https://history-backend.herokuapp.com";
     Button signoutButton;
     boolean signedIn = false;
+    boolean waiting = false;
     String authToken = "";
     RelativeLayout mainLayout;
     int screenWidth, screenHeight;
-    int lastViewId;
+    Integer lastViewId;
+    MemoryPostPage memoryPostPage;
+    ScrollView memoryPostsView;
+    RelativeLayout memoryPostsLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +51,14 @@ public class HomePageActivity extends AppCompatActivity {
         mainLayout =  findViewById(R.id.homePageActivityMainLayout);
         getScreenSize();
         checkUserData();
-        getMemoryPosts();
+        getMemoryPosts(null);
+
+       /* final Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?" + "saddr="+"41.85073"+"," + ""+"-87.65126"+"&daddr="+"41.85258"+", "+"-87.65141"));
+        intent.setClassName(
+                "com.google.android.apps.maps",
+                "com.google.android.maps.MapsActivity");
+        startActivity(intent);    */
     }
 
     public void checkUserData(){
@@ -56,26 +72,36 @@ public class HomePageActivity extends AppCompatActivity {
             signedIn = true;
         }
     }
-    public void getMemoryPosts(){
+    public void getMemoryPosts(String page){
 
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        // set your desired log level
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+        httpClient.addInterceptor(logging);
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
 
         ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
 
         final Call<MemoryPostPage> call;
-        if (signedIn) call  = apiEndpoints.getMemoryPostsUser(authToken);
+        if (signedIn) call  = apiEndpoints.getMemoryPostsUser("Token " + authToken, page);
         else call = apiEndpoints.getMemoryPostsGuest();
 
-
+        waiting = true;
         call.enqueue(new Callback<MemoryPostPage>() {
             @Override
             public void onResponse(Call<MemoryPostPage> call, Response<MemoryPostPage> response) {
                 if (response.isSuccessful()) {
+                    waiting = false;
                     if (response.body().count > 0){
-                        listPosts(response.body());
+                        memoryPostPage = response.body();
+                        listPosts();
                     }
-                    Toast.makeText(HomePageActivity.this, "Successfully got memory posts", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomePageActivity.this, "Successfully got memory posts ", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -90,33 +116,40 @@ public class HomePageActivity extends AppCompatActivity {
 
     }
 
-    public void listPosts(MemoryPostPage memoryPostPage){
+    public void listPosts(){
 
-        ScrollView memoryPostsView = new ScrollView(this);
-        RelativeLayout.LayoutParams paramsMemoryPostsView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mainLayout.addView(memoryPostsView, paramsMemoryPostsView);
+        if (memoryPostsView == null){
+            memoryPostsView = new ScrollView(this);
+            RelativeLayout.LayoutParams paramsMemoryPostsView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            memoryPostsView.setBackgroundColor(Color.parseColor("#cceeddbb"));
+            mainLayout.addView(memoryPostsView, paramsMemoryPostsView);
+            memoryPostsView.setOnScrollChangeListener(this);
 
-        RelativeLayout memoryPostsLayout = new RelativeLayout(this);
-        RelativeLayout.LayoutParams paramsMemoryPostsLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        memoryPostsView.addView(memoryPostsLayout, paramsMemoryPostsLayout);
+            memoryPostsLayout = new RelativeLayout(this);
+            RelativeLayout.LayoutParams paramsMemoryPostsLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            memoryPostsView.addView(memoryPostsLayout, paramsMemoryPostsLayout);
+        }
 
 
-        for (int i=0; i< memoryPostPage.count; i++){
+
+        for (int i=0; i< memoryPostPage.results.size(); i++){
             MemoryPost memoryPost = memoryPostPage.results.get(i);
 
             ScrollView memoryPostView = new ScrollView(this);
             memoryPostView.setId(View.generateViewId());
             RelativeLayout.LayoutParams paramsMemoryPostView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             memoryPostView.setPadding(screenWidth/30, screenWidth/30, screenWidth/30, screenWidth/30);
-            if (i>0) paramsMemoryPostView.addRule(RelativeLayout.BELOW, lastViewId);
+            if (lastViewId != null) paramsMemoryPostView.addRule(RelativeLayout.BELOW, lastViewId);
             lastViewId = memoryPostView.getId();
             memoryPostsLayout.addView(memoryPostView, paramsMemoryPostView);
 
 
 
             GradientDrawable memoryPostBorder =  new GradientDrawable();
-            memoryPostBorder.setStroke(screenWidth/360, Color.GRAY);
+            memoryPostBorder.setCornerRadius(screenWidth/30);
+            memoryPostBorder.setColor(Color.parseColor("#f8f8f0"));
             RelativeLayout memoryPostLayout = new RelativeLayout(this);
+            memoryPostLayout.setPadding(screenWidth/30, screenWidth/30, screenWidth/30, screenWidth/30);
             memoryPostLayout.setBackground(memoryPostBorder);
             RelativeLayout.LayoutParams paramsMemoryPostLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             memoryPostView.addView(memoryPostLayout, paramsMemoryPostLayout);
@@ -136,11 +169,17 @@ public class HomePageActivity extends AppCompatActivity {
 
 
             RelativeLayout memoryPostInfoLayout = new RelativeLayout(this);
-            RelativeLayout.LayoutParams paramsMemoryPostInfoLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams paramsMemoryPostInfoLayout = new RelativeLayout
+                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/10);
             memoryPostInfoLayout.setId(View.generateViewId());
-            memoryPostInfoLayout.setBackground(memoryPostBorder);
-            memoryPostInfoLayout.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+            memoryPostInfoLayout.setPadding(0, 0, 0, 2);
             memoryPostLayout.addView(memoryPostInfoLayout, paramsMemoryPostInfoLayout);
+
+            View line = new View(this);
+            RelativeLayout.LayoutParams paramsLine = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
+            line.setBackgroundColor(Color.BLACK);
+            paramsLine.addRule(RelativeLayout.BELOW, memoryPostInfoLayout.getId());
+            memoryPostLayout.addView(line, paramsLine);
 
             ImageView profilPicture = new ImageView(this);
             profilPicture.setBackgroundResource(R.drawable.einstein);
@@ -151,6 +190,7 @@ public class HomePageActivity extends AppCompatActivity {
             RelativeLayout.LayoutParams paramsAuthorTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             authorTextView.setText(memoryPost.username);
             authorTextView.setTextSize(25);
+            authorTextView.setId(View.generateViewId());
             authorTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
             paramsAuthorTextView.addRule(RelativeLayout.RIGHT_OF , profilPicture.getId());
             memoryPostInfoLayout.addView(authorTextView, paramsAuthorTextView);
@@ -158,15 +198,17 @@ public class HomePageActivity extends AppCompatActivity {
             TextView createdTimeTextView = new TextView(this);
             RelativeLayout.LayoutParams paramsCreatedTimeTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             createdTimeTextView.setText(memoryPost.created);
-            createdTimeTextView.setTextSize(25);
+            createdTimeTextView.setTextSize(20);
             createdTimeTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-            paramsCreatedTimeTextView.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            paramsCreatedTimeTextView.addRule(RelativeLayout.RIGHT_OF , profilPicture.getId());
+            paramsCreatedTimeTextView.addRule(RelativeLayout.BELOW, authorTextView.getId());
             memoryPostInfoLayout.addView(createdTimeTextView, paramsCreatedTimeTextView);
 
             TextView titleTextView = new TextView(this);
             RelativeLayout.LayoutParams paramsTitleTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             titleTextView.setText(memoryPost.title);
             titleTextView.setTextSize(30);
+            titleTextView.setGravity(Gravity.CENTER);
             titleTextView.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
             paramsTitleTextView.addRule(RelativeLayout.BELOW, memoryPostInfoLayout.getId());
             titleTextView.setId(View.generateViewId());
@@ -175,8 +217,11 @@ public class HomePageActivity extends AppCompatActivity {
 
             int id = titleTextView.getId();
 
+            int k=0;
             for (int j=0; j<memoryPost.story.length; j++){
-                if (j==0){
+                System.out.println("Story element type: " + memoryPost.story[j].type);
+                if ((k==0) && !memoryPost.story[j].type.equals("text")){
+                    k++;
                     if (memoryPost.story[j].type.equals("text")){
                         TextView storyTextView = new TextView(this);
                         RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -187,7 +232,7 @@ public class HomePageActivity extends AppCompatActivity {
                         id = storyTextView.getId();
                         memoryPostLayout.addView(storyTextView, paramsStoryTextView);
                     }
-                    else{
+                    else if(memoryPost.story[j].type.contains("image")){
                         ImageView storyImageView = new ImageView(this);
                         Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
                         RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -196,8 +241,48 @@ public class HomePageActivity extends AppCompatActivity {
                         id = storyImageView.getId();
                         memoryPostLayout.addView(storyImageView, paramsStoryImageView);
                     }
-                }
+                    else if(memoryPost.story[j].type.contains("video")){
 
+                        RelativeLayout videoLayout = new RelativeLayout(this);
+                        RelativeLayout.LayoutParams paramsVideoLayout = new RelativeLayout
+                                .LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                screenHeight/5);
+                        paramsVideoLayout.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                        paramsVideoLayout.addRule(RelativeLayout.BELOW, id);
+                        videoLayout.setId(View.generateViewId());
+                        id = videoLayout.getId();
+                        memoryPostLayout.addView(videoLayout, paramsVideoLayout);
+
+
+                        final VideoView videoView = new VideoView(this);
+                        videoView.setVideoPath(((String) memoryPost.story[j].payload));
+                        RelativeLayout.LayoutParams paramsVideoView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        videoLayout.addView(videoView, paramsVideoView);
+                        paramsVideoView.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                        videoView.seekTo( 5 );
+
+                        TextView button = new TextView(this);
+                        RelativeLayout.LayoutParams paramsButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (videoView.isPlaying()) videoView.pause();
+                                else videoView.start();
+                            }
+                        });
+                        videoLayout.addView(button, paramsButton);
+                    }
+                }
+            }
+            if ((k==0) && (memoryPost.story.length != 0)){
+                TextView storyTextView = new TextView(this);
+                RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                storyTextView.setText(memoryPost.story[0].payload.toString());
+                storyTextView.setTextSize(20);
+                paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
+                storyTextView.setId(View.generateViewId());
+                id = storyTextView.getId();
+                memoryPostLayout.addView(storyTextView, paramsStoryTextView);
             }
 
 
@@ -211,10 +296,6 @@ public class HomePageActivity extends AppCompatActivity {
                 id = timeTextView.getId();
                 memoryPostLayout.addView(timeTextView, paramsTimeTextView);
             }
-
-
-
-
         }
     }
     public void signout(View view){
@@ -265,5 +346,15 @@ public class HomePageActivity extends AppCompatActivity {
         display.getSize(size);
         screenWidth = size.x;
         screenHeight = size.y;
+    }
+
+    @Override
+    public void onScrollChange(View view, int x, int y, int oldX, int oldY){
+        if (y >= (((ScrollView) view).getChildAt(0).getHeight() - view.getHeight())){
+            if (!waiting && (memoryPostPage.next != null)){
+                getMemoryPosts(memoryPostPage.next.substring(memoryPostPage.next.indexOf("=")
+                + 1));
+            }
+        }
     }
 }
