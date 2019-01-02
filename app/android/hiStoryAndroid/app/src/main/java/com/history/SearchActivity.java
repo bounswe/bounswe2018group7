@@ -1,9 +1,16 @@
 package com.history;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -21,10 +28,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SearchActivity extends AppCompatActivity {
     String SERVER_URL = "https://history-backend.herokuapp.com";
     String authToken, searchText;
+    ScrollView mainLayout;
+    RelativeLayout scrollLayout;
+    int screenWidth, screenHeight;
+    int lastViewId = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        mainLayout = findViewById(R.id.searchActivityMainLayout);
+        scrollLayout = new RelativeLayout(this);
+        mainLayout.addView(scrollLayout);
+
+        getScreenSize();
 
         Bundle extras = getIntent().getExtras();
         searchText = (String) extras.get("searchText");
@@ -68,9 +85,87 @@ public class SearchActivity extends AppCompatActivity {
         authToken = "";
     }
     public void addUsers(ArrayList users){
-        
+        TextView usersTextView = new TextView(this);
+        RelativeLayout.LayoutParams paramsUsersTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        usersTextView.setText("Users");
+        usersTextView.setGravity(Gravity.CENTER);
+        usersTextView.setTextSize(22);
+        if (lastViewId != 0) paramsUsersTextView.addRule(RelativeLayout.BELOW, lastViewId);
+        paramsUsersTextView.topMargin = 30;
+        usersTextView.setId(View.generateViewId());
+        lastViewId = usersTextView.getId();
+        scrollLayout.addView(usersTextView);
+
+        for (int i=0; i<users.size(); i++){
+            final TextView usernameView = new TextView(this);
+            RelativeLayout.LayoutParams paramsUsernameView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            usernameView.setText(((String) users.get(i)));
+            usernameView.setGravity(Gravity.CENTER);
+            usernameView.setTextSize(16);
+            if (lastViewId != 0) paramsUsernameView.addRule(RelativeLayout.BELOW, lastViewId);
+            paramsUsernameView.topMargin = 15;
+            paramsUsernameView.leftMargin = 20;
+            usernameView.setId(View.generateViewId());
+            lastViewId = usernameView.getId();
+            scrollLayout.addView(usernameView);
+            usernameView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SearchActivity.this, ProfilePageActivity.class);
+                    intent.putExtra("username", usernameView.getText());
+                    intent.putExtra("authToken", authToken);
+                    startActivity(intent);
+                }
+            });
+        }
     }
     public void addMemoryPosts(Map memoryPosts){
+        ArrayList ids = (ArrayList) memoryPosts.get("ids");
+        ArrayList titles = (ArrayList) memoryPosts.get("titles");
 
+        TextView memoryPostsTextView = new TextView(this);
+        RelativeLayout.LayoutParams paramsMemoryPostsTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        memoryPostsTextView.setText("Memory Posts");
+        memoryPostsTextView.setGravity(Gravity.CENTER);
+        memoryPostsTextView.setTextSize(22);
+        if (lastViewId != 0) paramsMemoryPostsTextView.addRule(RelativeLayout.BELOW, lastViewId);
+        paramsMemoryPostsTextView.topMargin = 30;
+        memoryPostsTextView.setId(View.generateViewId());
+        lastViewId = memoryPostsTextView.getId();
+        scrollLayout.addView(memoryPostsTextView);
+
+        for (int i=0; i<titles.size(); i++){
+            final TextView titleTextView = new TextView(this);
+            RelativeLayout.LayoutParams paramsTitleTextView = new RelativeLayout.LayoutParams
+                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            titleTextView.setText(((String) titles.get(i)));
+            titleTextView.setGravity(Gravity.CENTER);
+            titleTextView.setTextSize(16);
+            if (lastViewId != 0) paramsTitleTextView.addRule(RelativeLayout.BELOW, lastViewId);
+            paramsTitleTextView.topMargin = 15;
+            paramsTitleTextView.leftMargin = 20;
+            titleTextView.setId(View.generateViewId());
+            lastViewId = titleTextView.getId();
+            scrollLayout.addView(titleTextView);
+            titleTextView.setTag(ids.get(i));
+            titleTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SearchActivity.this, ProfilePageActivity.class);
+                    intent.putExtra("memoryPostId",(int) v.getTag());
+                    intent.putExtra("authToken", authToken);
+                    startActivity(intent);
+                }
+            });
+        }
     }
+
+    void getScreenSize() {
+        android.view.Display display = getWindowManager().getDefaultDisplay();
+        android.graphics.Point size = new android.graphics.Point();
+        display.getSize(size);
+        screenWidth = size.x;
+        screenHeight = size.y;
+    }
+
 }
