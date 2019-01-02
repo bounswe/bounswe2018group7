@@ -3,9 +3,12 @@ package com.history;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,12 +35,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsRoute;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,6 +69,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 	RelativeLayout commentSectionBody;
 	int likeCount = 0, dislikeCount = 0;
 	Boolean currentUserLiked = null;
+	MemoryPost memoryPost;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,8 +108,8 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			@Override
 			public void onResponse(Call<MemoryPost> call, Response<MemoryPost> response) {
 				if (response.isSuccessful()) {
-
-					listPost(response.body());
+					memoryPost = response.body();
+					listPost();
 					Toast.makeText(MemoryPostDetailActivity.this, "Successfully got memory post", Toast.LENGTH_SHORT).show();
 				}
 			}
@@ -202,7 +215,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			});
 		}
 	}
-	public void listPost(MemoryPost memoryPost){
+	public void listPost(){
 		RelativeLayout showPost = findViewById(R.id.showPost);
 
 		RelativeLayout memoryPostLayout = findViewById(R.id.showPostBody);
@@ -330,22 +343,25 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 //		}
 
 
-		MapView map = new MapView(this);
-		RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
-		paramsMap.addRule(RelativeLayout.BELOW, id);
-		map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-		map.setId(View.generateViewId());
-		id = map.getId();
-		memoryPostLayout.addView(map , paramsMap);
 
 
-		MapFragment mMapFragment = MapFragment.newInstance();
-		FragmentTransaction fragmentTransaction =
-				getFragmentManager().beginTransaction();
-		fragmentTransaction.add(map.getId(), mMapFragment);
-		fragmentTransaction.commit();
-		mMapFragment.getMapAsync(this);
+		if (memoryPost.location.length > 0){
+			MapView map = new MapView(this);
+			RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
+			paramsMap.addRule(RelativeLayout.BELOW, id);
+			map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+			map.setId(View.generateViewId());
+			id = map.getId();
+			memoryPostLayout.addView(map , paramsMap);
 
+
+			MapFragment mMapFragment = MapFragment.newInstance();
+			FragmentTransaction fragmentTransaction =
+					getFragmentManager().beginTransaction();
+			fragmentTransaction.add(map.getId(), mMapFragment);
+			fragmentTransaction.commit();
+			mMapFragment.getMapAsync(this);
+		}
 		TextView tagTextView = new TextView(this);
 		RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		if (memoryPost.tags != null){
@@ -359,37 +375,92 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		tagTextView.setId(View.generateViewId());
 		memoryPostLayout.addView(tagTextView, paramsTagTextView);
 
-/*		EditText editText = new EditText(this);
-		RelativeLayout.LayoutParams paramsEditText = new RelativeLayout.LayoutParams(screenWidth/2, ViewGroup.LayoutParams.WRAP_CONTENT);
-		editText.setHint("Search");
-		editText.setTextSize(25);
-		paramsEditText.leftMargin = screenWidth/10;
-		paramsEditText.addRule(RelativeLayout.BELOW, id);
-		memoryPostLayout.addView(editText, paramsEditText);
-
-		Button search = new Button(this);
-		search.setText("Search");
-		RelativeLayout.LayoutParams paramsSearch = new RelativeLayout.LayoutParams(screenWidth/4, screenWidth/9);
-		paramsSearch.addRule(RelativeLayout.BELOW, id);
-		paramsSearch.leftMargin = screenWidth/2;
-		memoryPostLayout.addView(search, paramsSearch);
-		search.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (googleMap != null){
-
-				}
-			}
-		});
-*/
 	}
 
 	@Override
-	public void onMapReady(GoogleMap googleMap) {
+	public void onMapReady(final GoogleMap googleMap) {
 		this.googleMap = googleMap;
-		googleMap.addMarker(new MarkerOptions().position(new LatLng(41.0082, 28.9784)).title("Istanbul"));
-		googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(41.0082, 28.9784) , 12.0f) );
-		googleMap.setOnMarkerClickListener(this);
+		final GeoApiContext context = new GeoApiContext();
+		context.setApiKey("AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM");
+
+		for (int i=0; i<memoryPost.location.length; i++){
+			MemoryPostLocation loc = memoryPost.location[i];
+			if (loc.type.equals("path")){
+				double lat = ((double) ((Map) loc.points.get(0)).get("lat1"));
+				double lng = ((double) ((Map) loc.points.get(0)).get("lng1"));
+				final String latlng = lat + "," + lng;
+				double lat2 = ((double) ((Map) loc.points.get(1)).get("lat2"));
+				double lng2 = ((double) ((Map) loc.points.get(1)).get("lng2"));
+				final String latlng2 = lat2 + "," + lng2;
+
+				Thread thread = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							final DirectionsRoute route[] = DirectionsApi.newRequest(context).origin
+									(latlng).destination(latlng2).await();
+
+							new Handler(Looper.getMainLooper()).post(new Runnable() {
+								@Override
+								public void run() {
+									List<com.google.maps.model.LatLng> list = route[0].overviewPolyline.decodePath();
+									PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+									for (int z = 0; z < list.size(); z++) {
+										com.google.maps.model.LatLng point = list.get(z);
+										LatLng point2 = new LatLng(point.lat, point.lng);
+										options.add(point2);
+										if((z==0) || (z== list.size() -1)) googleMap.addMarker(new
+												MarkerOptions()
+												.position
+												(point2));
+										googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(point2,
+												13.0f) );
+									}
+									googleMap.addPolyline(options);
+								}
+							});
+						}
+						catch (Exception e){
+							System.out.println("Error: ");
+							e.printStackTrace();
+						}
+					}
+				});
+
+				thread.start();
+			}
+			else if(loc.type.equals("area")){
+				PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+				LatLng latlng = null;
+				for (int z = 0; z < loc.points.size() + 1; z++){
+					latlng = new LatLng(((double) ((Map) loc.points.get(z%loc.points.size())).get
+							("lat")), (
+							(double) ((Map) loc.points.get(z%loc.points.size())).get("lng")));
+					options.add(latlng);
+					googleMap.addMarker(new MarkerOptions().position(latlng));
+				}
+				googleMap.addPolyline(options);
+				googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latlng, 12.0f) );
+			}
+			else if (loc.type.equals("certain")){
+				double lat = ((double) ((Map) loc.points.get(0)).get("lat1"));
+				double lng = ((double) ((Map) loc.points.get(0)).get("lng1"));
+				LatLng latlng = new LatLng(lat, lng);
+				googleMap.addMarker(new MarkerOptions().position(latlng));
+				googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latlng, 12.0f) );
+				googleMap.setOnMarkerClickListener(this);
+			}
+		}
+
+
+
+
+
+
+
+
+
 	}
 
 	public boolean onMarkerClick(final Marker marker) {
@@ -482,19 +553,4 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		}
 	}
 
-	public String makeURL (double sourcelat, double sourcelog, double destlat, double destlog ){
-		StringBuilder urlString = new StringBuilder();
-		urlString.append("http://maps.googleapis.com/maps/api/directions/json");
-		urlString.append("?origin=");// from
-		urlString.append(Double.toString(sourcelat));
-		urlString.append(",");
-		urlString.append(Double.toString( sourcelog));
-		urlString.append("&destination=");// to
-		urlString.append(Double.toString( destlat));
-		urlString.append(",");
-		urlString.append(Double.toString( destlog));
-		urlString.append("&sensor=false&mode=driving&alternatives=true");
-		urlString.append("&key=AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM");
-		return urlString.toString();
-	}
 }

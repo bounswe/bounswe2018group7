@@ -378,10 +378,4 @@ public class CreatePostActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "missiles");
     }
 
-    public void showDatePicker(View v) {
-        DialogFragment newFragment = new MyDatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "date picker");
-
-    }
-
 }
