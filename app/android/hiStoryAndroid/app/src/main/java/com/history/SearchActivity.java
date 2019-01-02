@@ -83,7 +83,6 @@ public class SearchActivity extends AppCompatActivity {
                 Toast.makeText(SearchActivity.this, "Couldn't connect to server", Toast.LENGTH_SHORT).show();
             }
         });
-        authToken = "";
     }
     public void addUsers(ArrayList users){
         TextView usersTextView = new TextView(this);
@@ -157,7 +156,7 @@ public class SearchActivity extends AppCompatActivity {
                     Intent intent = new Intent(SearchActivity.this, MemoryPostDetailActivity.class);
                     intent.putExtra("memoryPostId" ,Integer.valueOf(((Double) v.getTag())
                             .intValue()));
-                    intent.putExtra("authToken", (String) SearchActivity.this.getIntent().getExtras().get("authToken"));
+                    intent.putExtra("authToken", authToken);
                     System.out.println("c: " + authToken);
                     startActivity(intent);
                 }

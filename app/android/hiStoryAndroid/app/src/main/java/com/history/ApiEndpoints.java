@@ -43,6 +43,10 @@ public interface ApiEndpoints {
     @GET("/api/v1/recommendations/")
     public Call<ArrayList<MemoryPost>> getRecommendations(@Header("Authorization") String token);
 
+    @GET("/api/v1/profiles/{username}/")
+    public Call<Map> getProfile(@Header("Authorization") String token, @Path("username") String username);
+
+
     @POST("/api/v1/search")
     public Call<Map> search(@Header("Authorization") String token, @Body SearchBody text);
 
