@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsRoute;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -31,7 +45,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomePageActivity extends AppCompatActivity implements ScrollView.OnScrollChangeListener {
+public class HomePageActivity extends AppCompatActivity implements ScrollView
+        .OnScrollChangeListener, OnMapReadyCallback {
     String SERVER_URL = "https://history-backend.herokuapp.com";
     Button signoutButton;
     boolean signedIn = false;
@@ -43,6 +58,9 @@ public class HomePageActivity extends AppCompatActivity implements ScrollView.On
     MemoryPostPage memoryPostPage;
     ScrollView memoryPostsView;
     RelativeLayout memoryPostsLayout;
+    GoogleMap googleMap;
+    MemoryPostLocation[] location;
+    int added = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +71,6 @@ public class HomePageActivity extends AppCompatActivity implements ScrollView.On
         checkUserData();
         getMemoryPosts(null);
 
-       /* final Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://maps.google.com/maps?" + "saddr="+"41.85073"+"," + ""+"-87.65126"+"&daddr="+"41.85258"+", "+"-87.65141"));
-        intent.setClassName(
-                "com.google.android.apps.maps",
-                "com.google.android.maps.MapsActivity");
-        startActivity(intent);    */
     }
 
     public void checkUserData(){
@@ -117,6 +129,76 @@ public class HomePageActivity extends AppCompatActivity implements ScrollView.On
     }
 
     public void listPosts(){
+        if (googleMap != null){
+            if (added == 0) return;
+            final GeoApiContext context = new GeoApiContext();
+            context.setApiKey("AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM");
+            for (int i=added; i<location.length; i++){
+                MemoryPostLocation loc = location[i];
+                if (loc.type.equals("path")){
+                    double lat = ((double) ((Map) loc.points.get(0)).get("lat1"));
+                    double lng = ((double) ((Map) loc.points.get(0)).get("lng1"));
+                    final String latlng = lat + "," + lng;
+                    double lat2 = ((double) ((Map) loc.points.get(1)).get("lat2"));
+                    double lng2 = ((double) ((Map) loc.points.get(1)).get("lng2"));
+                    final String latlng2 = lat2 + "," + lng2;
+
+                    Thread thread = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            try {
+                                final DirectionsRoute route[] = DirectionsApi.newRequest(context).origin
+                                        (latlng).destination(latlng2).await();
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        List<com.google.maps.model.LatLng> list = route[0].overviewPolyline.decodePath();
+                                        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+                                        for (int z = 0; z < list.size(); z++) {
+                                            com.google.maps.model.LatLng point = list.get(z);
+                                            LatLng point2 = new LatLng(point.lat, point.lng);
+                                            options.add(point2);
+                                            if((z==0) || (z== list.size() -1)) googleMap.addMarker(new
+                                                    MarkerOptions()
+                                                    .position
+                                                            (point2));
+                                        }
+                                        googleMap.addPolyline(options);
+                                    }
+                                });
+                            }
+                            catch (Exception e){
+                                System.out.println("Error: ");
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    thread.start();
+                }
+                else if(loc.type.equals("area")){
+                    PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+                    LatLng latlng = null;
+                    for (int z = 0; z < loc.points.size() + 1; z++){
+                        latlng = new LatLng(((double) ((Map) loc.points.get(z%loc.points.size())).get
+                                ("lat")), (
+                                (double) ((Map) loc.points.get(z%loc.points.size())).get("lng")));
+                        options.add(latlng);
+                        googleMap.addMarker(new MarkerOptions().position(latlng));
+                    }
+                    googleMap.addPolyline(options);
+                }
+                else if (loc.type.equals("certain")){
+                    double lat = ((double) ((Map) loc.points.get(0)).get("lat1"));
+                    double lng = ((double) ((Map) loc.points.get(0)).get("lng1"));
+                    LatLng latlng = new LatLng(lat, lng);
+                    googleMap.addMarker(new MarkerOptions().position(latlng));
+                }
+            }
+            added = location.length;
+        }
 
         if (memoryPostsView == null){
             memoryPostsView = new ScrollView(this);
@@ -128,13 +210,37 @@ public class HomePageActivity extends AppCompatActivity implements ScrollView.On
             memoryPostsLayout = new RelativeLayout(this);
             RelativeLayout.LayoutParams paramsMemoryPostsLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             memoryPostsView.addView(memoryPostsLayout, paramsMemoryPostsLayout);
+
+            MapView map = new MapView(this);
+            RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
+            map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+            map.setId(View.generateViewId());
+            lastViewId = map.getId();
+            memoryPostsLayout.addView(map , paramsMap);
+
+
+            MapFragment mMapFragment = MapFragment.newInstance();
+            FragmentTransaction fragmentTransaction =
+                    getFragmentManager().beginTransaction();
+            fragmentTransaction.add(map.getId(), mMapFragment);
+            fragmentTransaction.commit();
+            mMapFragment.getMapAsync(this);
         }
 
 
 
         for (int i=0; i< memoryPostPage.results.size(); i++){
-            MemoryPost memoryPost = memoryPostPage.results.get(i);
 
+            MemoryPost memoryPost = memoryPostPage.results.get(i);
+            if (i==0){
+             location = memoryPost.location;
+            }
+            else {
+                MemoryPostLocation[] location2 = new MemoryPostLocation[location.length + memoryPost.location.length];
+                for (int j=0; j<location.length; j++) location2[j] = location[j];
+                for (int j=0; j<memoryPost.location.length; j++) location2[location.length + j] = memoryPost.location[j];
+                location = location2;
+            }
             ScrollView memoryPostView = new ScrollView(this);
             memoryPostView.setId(View.generateViewId());
             RelativeLayout.LayoutParams paramsMemoryPostView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -354,6 +460,79 @@ public class HomePageActivity extends AppCompatActivity implements ScrollView.On
             if (!waiting && (memoryPostPage.next != null)){
                 getMemoryPosts(memoryPostPage.next.substring(memoryPostPage.next.indexOf("=")
                 + 1));
+            }
+        }
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        final GeoApiContext context = new GeoApiContext();
+        context.setApiKey("AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM");
+        if (location == null) return;
+        added = location.length;
+        for (int i=0; i<location.length; i++){
+            MemoryPostLocation loc = location[i];
+            if (loc.type.equals("path")){
+                double lat = ((double) ((Map) loc.points.get(0)).get("lat1"));
+                double lng = ((double) ((Map) loc.points.get(0)).get("lng1"));
+                final String latlng = lat + "," + lng;
+                double lat2 = ((double) ((Map) loc.points.get(1)).get("lat2"));
+                double lng2 = ((double) ((Map) loc.points.get(1)).get("lng2"));
+                final String latlng2 = lat2 + "," + lng2;
+
+                Thread thread = new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try {
+                            final DirectionsRoute route[] = DirectionsApi.newRequest(context).origin
+                                    (latlng).destination(latlng2).await();
+
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    List<com.google.maps.model.LatLng> list = route[0].overviewPolyline.decodePath();
+                                    PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+                                    for (int z = 0; z < list.size(); z++) {
+                                        com.google.maps.model.LatLng point = list.get(z);
+                                        LatLng point2 = new LatLng(point.lat, point.lng);
+                                        options.add(point2);
+                                        if((z==0) || (z== list.size() -1)) googleMap.addMarker(new
+                                                MarkerOptions()
+                                                .position
+                                                        (point2));
+                                    }
+                                    googleMap.addPolyline(options);
+                                }
+                            });
+                        }
+                        catch (Exception e){
+                            System.out.println("Error: ");
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                thread.start();
+            }
+            else if(loc.type.equals("area")){
+                PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+                LatLng latlng = null;
+                for (int z = 0; z < loc.points.size() + 1; z++){
+                    latlng = new LatLng(((double) ((Map) loc.points.get(z%loc.points.size())).get
+                            ("lat")), (
+                            (double) ((Map) loc.points.get(z%loc.points.size())).get("lng")));
+                    options.add(latlng);
+                    googleMap.addMarker(new MarkerOptions().position(latlng));
+                }
+                googleMap.addPolyline(options);
+            }
+            else if (loc.type.equals("certain")){
+                double lat = ((double) ((Map) loc.points.get(0)).get("lat1"));
+                double lng = ((double) ((Map) loc.points.get(0)).get("lng1"));
+                LatLng latlng = new LatLng(lat, lng);
+                googleMap.addMarker(new MarkerOptions().position(latlng));
             }
         }
     }

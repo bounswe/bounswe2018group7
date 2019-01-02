@@ -57,7 +57,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MemoryPostDetailActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MemoryPostDetailActivity extends AppCompatActivity implements OnMapReadyCallback,
+		GoogleMap.OnMarkerClickListener {
 	String SERVER_URL = "https://history-backend.herokuapp.com";
 	int memoryPostId;
 	String authToken;
@@ -452,15 +453,6 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 				googleMap.setOnMarkerClickListener(this);
 			}
 		}
-
-
-
-
-
-
-
-
-
 	}
 
 	public boolean onMarkerClick(final Marker marker) {
