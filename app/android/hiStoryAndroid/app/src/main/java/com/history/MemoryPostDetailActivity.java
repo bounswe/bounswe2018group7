@@ -290,11 +290,23 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 				TextView annotate = new TextView(this);
 				annotate.setText("Annotate");
 				annotate.setTextColor(Color.RED);
+				annotate.setTag(storyTextView.getText());
 				RelativeLayout.LayoutParams paramsAnnotate = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 				annotate.setTextSize(20);
 				paramsAnnotate.addRule(RelativeLayout.BELOW, id);
 				id = storyTextView.getId();
 				memoryPostLayout.addView(annotate, paramsAnnotate);
+				annotate.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(MemoryPostDetailActivity.this, AnnotationActivity.class);
+						intent.putExtra("type", true);
+						intent.putExtra("text", (String) v.getTag());
+						intent.putExtra("url", SERVER_URL + "/api/v1/memory_posts/" + memoryPostId);
+						intent.putExtra("authToken", authToken);
+						startActivity(intent);
+					}
+				});
 			}
 			else if(memoryPost.story[j].type.contains("image")){
 				ImageView storyImageView = new ImageView(this);
@@ -305,6 +317,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 				memoryPostLayout.addView(storyImageView, paramsStoryImageView);
 
 				TextView annotate = new TextView(this);
+				annotate.setTag(memoryPost.story[j].payload.toString());
 				annotate.setText("Annotate");
 				annotate.setTextColor(Color.RED);
 				RelativeLayout.LayoutParams paramsAnnotate = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -312,6 +325,16 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 				paramsAnnotate.addRule(RelativeLayout.BELOW, id);
 				id = storyImageView.getId();
 				memoryPostLayout.addView(annotate, paramsAnnotate);
+				annotate.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(MemoryPostDetailActivity.this, AnnotationActivity.class);
+						intent.putExtra("type", false);
+						intent.putExtra("url", (String) v.getTag());
+						intent.putExtra("authToken", authToken);
+						startActivity(intent);
+					}
+				});
 			}
 			else if(memoryPost.story[j].type.contains("video")){
 

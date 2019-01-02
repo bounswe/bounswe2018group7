@@ -53,6 +53,11 @@ public interface ApiEndpoints {
     @GET("/api/v1/memory_posts/")
     public Call<MemoryPostPage> getMemoryPostsUser(@Header("Authorization") String token, @Query("page") String page);
 
+    @POST("/api/v1/annotations/")
+    public Call<Object> sendAnnotation(@Header("Authorization") String token, @Body Annotation
+            annotation);
+
+
     @GET("/api/v1/memory_posts/{memoryPostId}/")
     public Call<MemoryPost> getMemoryPost(@Header("Authorization") String token, @Path("memoryPostId") String memoryPostId);
 

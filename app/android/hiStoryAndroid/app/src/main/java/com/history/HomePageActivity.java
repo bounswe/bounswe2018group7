@@ -249,7 +249,7 @@ public class HomePageActivity extends AppCompatActivity implements ScrollView
             memoryPostLayout.addView(line, paramsLine);
 
             ImageView profilPicture = new ImageView(this);
-            profilPicture.setBackgroundResource(R.drawable.einstein);
+            profilPicture.setBackgroundResource(R.drawable.default_pp);
             profilPicture.setId(View.generateViewId());
             memoryPostInfoLayout.addView(profilPicture);
 
