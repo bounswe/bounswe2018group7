@@ -10,7 +10,7 @@ import ListItem from "@material-ui/core/ListItem";
 import { signout } from "redux/auth/Actions";
 
 // @material-ui/icons
-import { Https, Person, ExitToApp, PersonAdd, Create, Home } from "@material-ui/icons";
+import { Https, Person, ExitToApp, PersonAdd, Create, Home, LineWeight } from "@material-ui/icons";
 import { connect } from "react-redux";
 
 import {
@@ -73,6 +73,12 @@ class HeaderLinks extends Component {
               </CustomButton>
             </ListItem>
           ) : null}
+
+          <ListItem className={classes.listItem}>
+            <CustomButton href="../home/an" color="transparent" className={classes.navLink}>
+              <LineWeight className={classes.icons} /> List Annotate
+            </CustomButton>
+          </ListItem>
 
           <ListItem className={classes.listItem}>
             <CustomButton color="transparent" className={classes.navLink}>

@@ -10,6 +10,14 @@ class api {
     });
   };
 
+  fetchAnnotate = () => {
+    return httpService.fetch({
+      path: "api/v1/annotations/?target=http://history-backend.herokuapp.com/api/v1/memory_posts/5",
+      method: "GET",
+      sendToken: true
+    });
+  };
+
   doSignIn = (identity, password) => {
     return httpService.fetch({
       path: "api/v1/signin/",
@@ -43,6 +51,19 @@ class api {
       sendToken: true
     });
   };
+
+  doAnnotate = (body, target) => {
+    return httpService.fetch({
+      path: "api/v1/annotations/",
+      method: "POST",
+      body: {
+        body,
+        target
+      },
+      sendToken: true
+    });
+  };
+
   doSignUp = (username, email, password, password_confirmation, first_name, last_name) => {
     return httpService.fetch({
       path: "api/v1/signup/",

@@ -25,6 +25,7 @@ import { PARSE } from "../../../utils/parsingStory";
 import { Upload, Modal, Button as ButtonX, Icon as IconX } from "antd";
 
 import "./index.css";
+//import date3 from "../../../components/date3";
 // import Tags from "../../../components/Tag";
 class CreatePost extends Component {
   constructor(props) {
@@ -110,28 +111,28 @@ class CreatePost extends Component {
     console.log("​handleCreatePost -> storyArray", storyArray);
     console.log("​------------------------------------------");
 
-    // const date = this.myCreateDateRef.getDate();
+    const date = this.myCreateDateRef.getDate();
 
-    // let dateObj = { type: this.state.timeType, data: date.date };
+    let dateObj = { type: this.state.timeType, data: date.date };
 
     let tagArr = [];
     this.state.tags.forEach(element => {
       tagArr.push(element.text);
     });
 
-    // if (this.state.title && this.state.storyText) {
-    //   console.log("JSON.stringify(this.state.locGlobal) :", JSON.stringify(this.state.locGlobal));
-    //   this.setState({ isloaderOpen: true });
-    //   this.props.createPost(
-    //     this.state.title,
-    //     JSON.stringify(dateObj),
-    //     JSON.stringify(this.state.locGlobal),
-    //     storyArray,
-    //     JSON.stringify(tagArr)
-    //   );
-    // } else {
-    //   this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
-    // }
+    if (this.state.title && this.state.storyText) {
+      console.log("JSON.stringify(this.state.locGlobal) :", JSON.stringify(this.state.locGlobal));
+      this.setState({ isloaderOpen: true });
+      this.props.createPost(
+        this.state.title,
+        JSON.stringify(dateObj),
+        JSON.stringify(this.state.locGlobal),
+        storyArray,
+        JSON.stringify(tagArr)
+      );
+    } else {
+      this.props.enqueueSnackbar("Title and Stories are required", { variant: "warning" });
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -280,9 +281,9 @@ class CreatePost extends Component {
           <Grid container spacing={24}>
             <Grid item xs={6} sm={3} />
             <Grid item xs={12} sm={6}>
-              <Button variant="outlined" color="secondary" onClick={() => this.setState({ timeType: "interval" })}>
+              {/* <Button variant="outlined" color="secondary" onClick={() => this.setState({ timeType: "interval" })}>
                 Interval Date
-              </Button>
+              </Button> */}
               <Button variant="outlined" color="inherit" onClick={() => this.setState({ timeType: "general" })}>
                 General Date
               </Button>
@@ -307,6 +308,7 @@ class CreatePost extends Component {
               <Grid item xs={6} sm={3} />
 
               <Grid item xs={12} sm={6}>
+                {/* <date3 /> */}
                 <DateTime dateRef={el => (this.myCreateDateRef = el)} />
               </Grid>
               <Grid item xs={6} sm={3} />

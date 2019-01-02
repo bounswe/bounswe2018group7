@@ -17,8 +17,13 @@ import PMaps from "../PMaps/index";
 
 import GoogleMapWithDirections from "../PMaps/DestinationMaps/dest";
 import moment from "moment";
+import PostTexture from "../PostTexture";
 
 class Post extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const { data } = this.props;
 
@@ -35,9 +40,7 @@ class Post extends Component {
             if (element.type.startsWith("text")) {
               return (
                 <div key={index} className={"postTextStyle"}>
-                  <Typography color={"textSecondary"} component="p">
-                    {element.payload}
-                  </Typography>
+                  <PostTexture texture={element.payload} />
                 </div>
               );
             } else if (element.type.startsWith("video")) {

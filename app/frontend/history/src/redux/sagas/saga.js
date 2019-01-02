@@ -18,9 +18,19 @@ import {
   fetchPostSuccess,
   fetchPostFailure,
   createCommentFailure,
-  createCommentSuccess
+  createCommentSuccess,
+  createAnnotateSuccess,
+  createAnnotateFailure,
+  fetchAnnotateSuccess,
+  fetchAnnotateFailure
 } from "../post/Actions";
-import { CREATE_POST_REQUEST, FETCH_POST_REQUEST, CREATE_COMMENT_REQUEST } from "../post/actionTypes";
+import {
+  CREATE_POST_REQUEST,
+  FETCH_POST_REQUEST,
+  CREATE_COMMENT_REQUEST,
+  CREATE_ANNOTATE_REQUEST,
+  FETCH_ANNOTATE_REQUEST
+} from "../post/actionTypes";
 
 const trySignInSaga = function*(action) {
   const { identity, password } = action.payload;
@@ -77,6 +87,37 @@ const tryCreateCommentSaga = function*(action) {
     } else {
       clError("SignIn failed by api. No response !");
       yield put(createCommentFailure({ errors: ["No response fetched. Please contact the API team!"] }));
+    }
+  } catch (err) {
+    clWarning("SignIn failed by api. Error => ", err);
+    yield put(signinFailure({ errors: [err.detail] }));
+  }
+};
+
+const tryCreateAnnotateSaga = function*(action) {
+  const { body, target } = action.payload;
+  try {
+    const annotateResponse = yield call(api.doAnnotate, body, target);
+
+    if (annotateResponse) {
+      console.log("​--------------------------------");
+      console.log("​annotateResponse", annotateResponse);
+      console.log("​--------------------------------");
+      if (annotateResponse.status === 200) {
+        yield put(createAnnotateSuccess(annotateResponse.responseBody));
+      } else if (annotateResponse.status === 400) {
+        clError("Something wrong! Got a status 400", annotateResponse.responseBody);
+        yield put(createAnnotateFailure(annotateResponse.responseBody));
+      } else if (annotateResponse.status === 401) {
+        clError("Something wrong! Got a status 401", annotateResponse.responseBody);
+        yield put(createAnnotateFailure(annotateResponse.responseBody));
+      } else {
+        clError("Something wrong! Got an unknown status. API BOZUK!!!", annotateResponse);
+        yield put(createAnnotateFailure({ errors: ["Unknown status. Check console!"] }));
+      }
+    } else {
+      clError("SignIn failed by api. No response !");
+      yield put(createAnnotateFailure({ errors: ["No response fetched. Please contact the API team!"] }));
     }
   } catch (err) {
     clWarning("SignIn failed by api. Error => ", err);
@@ -177,6 +218,35 @@ const tryFetchPostSaga = function*() {
   }
 };
 
+const tryFetchAnnotateSaga = function*() {
+  try {
+    const fetchAnnotateResponse = yield call(api.fetchAnnotate);
+
+    if (fetchAnnotateResponse) {
+      console.log("fetchAnnotateResponse", fetchAnnotateResponse);
+
+      if (fetchAnnotateResponse.status === 200) {
+        yield put(fetchAnnotateSuccess(fetchAnnotateResponse.responseBody));
+      } else if (fetchAnnotateResponse.status === 400) {
+        clError("Something wrong! Got a status 400", fetchAnnotateResponse.responseBody);
+        yield put(fetchAnnotateFailure(fetchAnnotateResponse.responseBody));
+      } else if (fetchAnnotateResponse.status === 401) {
+        clError("Unauthorized request!");
+        yield put(fetchAnnotateFailure({ errors: ["Unauthorized request!"] }));
+      } else {
+        clError("Something wrong! Got an unknown status. API BOZUK!!!", fetchAnnotateResponse.responseBody);
+        yield put(fetchAnnotateFailure({ errors: ["Unknown status. Check console!"] }));
+      }
+    } else {
+      clError("Deleting contact failed by api. No response !");
+      yield put(fetchAnnotateFailure({ errors: ["No response fetched. Please contact the API team"] }));
+    }
+  } catch (err) {
+    clWarning("Deleting contact failed by api. Error => ", err);
+    yield put(fetchAnnotateFailure({ errors: [err.detail] }));
+  }
+};
+
 const tryCreatePostSaga = function*(action) {
   const { title, time, location, stories, tags } = action.payload;
   console.log("​----------");
@@ -220,6 +290,8 @@ const saga = function*() {
   yield takeLatest(EMAIL_REQUEST, tryVerifyEmailSaga);
   yield takeLatest(CREATE_POST_REQUEST, tryCreatePostSaga);
   yield takeLatest(FETCH_POST_REQUEST, tryFetchPostSaga);
+  yield takeLatest(FETCH_ANNOTATE_REQUEST, tryFetchAnnotateSaga);
+  yield takeLatest(CREATE_ANNOTATE_REQUEST, tryCreateAnnotateSaga);
   yield takeLatest(CREATE_COMMENT_REQUEST, tryCreateCommentSaga);
 };
 

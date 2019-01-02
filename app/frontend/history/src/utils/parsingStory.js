@@ -1,10 +1,4 @@
 export function PARSE(texts, files) {
-  console.log("​---------------------");
-  console.log("​PARSE -> files", files);
-  console.log("​---------------------");
-  console.log("​---------------------");
-  console.log("​PARSE -> texts", texts);
-  console.log("​---------------------");
   var story = [];
   var filtered = texts
     .replace(/\n/g, "")

@@ -13,6 +13,8 @@ import Slide from "@material-ui/core/Slide";
 import AnnotateImage from "@material-ui/icons/AspectRatio";
 import Annotation from "../Annotation/index";
 
+import { withSnackbar } from "notistack";
+
 const styles = {
   appBar: {
     position: "relative"
@@ -37,6 +39,7 @@ class FullScreenDialog extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.props.enqueueSnackbar("ADDED ANNOTATE", { variant: "success" });
   };
 
   render() {
@@ -74,4 +77,4 @@ FullScreenDialog.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(FullScreenDialog);
+export default withStyles(styles)(withSnackbar(FullScreenDialog));
