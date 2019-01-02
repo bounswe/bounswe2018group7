@@ -24,7 +24,7 @@ tools:context=".CreatePostActivity">
                 android:id="@+id/iconImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/einstein"/>
+                android:src="@drawable/default_pp"/>
 
             <RelativeLayout
                 android:id="@+id/postHeading"

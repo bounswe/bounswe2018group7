@@ -3,12 +3,16 @@ package com.history;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,12 +35,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsRoute;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +59,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MemoryPostDetailActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MemoryPostDetailActivity extends AppCompatActivity implements OnMapReadyCallback,
+		GoogleMap.OnMarkerClickListener {
 	String SERVER_URL = "https://history-backend.herokuapp.com";
 	int memoryPostId;
 	String authToken;
@@ -55,6 +72,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 	RelativeLayout commentSectionBody;
 	int likeCount = 0, dislikeCount = 0;
 	Boolean currentUserLiked = null;
+	MemoryPost memoryPost;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,6 +104,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 
 		apiEndpoints = retrofit.create(ApiEndpoints.class);
 
+		System.out.println("Auth Token : " + authToken);
 		final Call<MemoryPost> call = apiEndpoints.getMemoryPost("Token " + authToken , Integer.toString(memoryPostId));
 
 
@@ -93,8 +112,13 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			@Override
 			public void onResponse(Call<MemoryPost> call, Response<MemoryPost> response) {
 				if (response.isSuccessful()) {
+					memoryPost = response.body();
+					try {
+						listPost();
+					}
+					catch (Exception e){
 
-					listPost(response.body());
+					}
 					Toast.makeText(MemoryPostDetailActivity.this, "Successfully got memory post", Toast.LENGTH_SHORT).show();
 				}
 			}
@@ -200,12 +224,23 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			});
 		}
 	}
-	public void listPost(MemoryPost memoryPost){
+	public void listPost() throws Exception{
 		RelativeLayout showPost = findViewById(R.id.showPost);
 
 		RelativeLayout memoryPostLayout = findViewById(R.id.showPostBody);
 
 		ImageView profilePicture = findViewById(R.id.iconImageView);
+
+		RelativeLayout infoLayout = findViewById(R.id.navigationBarActivityMemoryPost);
+		infoLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MemoryPostDetailActivity.this, ProfilePageActivity.class);
+				intent.putExtra("username", memoryPost.username);
+				intent.putExtra("authToken", authToken);
+				startActivity(intent);
+			}
+		});
 
 		TextView authorTextView = findViewById(R.id.showUsernameTextView);
 		authorTextView.setText(memoryPost.username);
@@ -221,14 +256,19 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		int id = titleTextView.getId();
 
 		if (memoryPost.time != null){
-			if (memoryPost.time.data.getClass().equals(String.class)){
-				timeTextView.setText(memoryPost.time.data.toString());
+			if (memoryPost.time.type.equals("certain")){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+				Date parsedDate = sdf.parse(((String) memoryPost.time.data));
+				String time = new SimpleDateFormat("EEEE, MMM dd yyyy, HH:mm").format(parsedDate);
+				timeTextView.setText(time);
 			}
-			else if (memoryPost.time.data.getClass().equals(ArrayList.class)){
+			else if(memoryPost.time.type.equals("duration")){
 				ArrayList list = (ArrayList) memoryPost.time.data;
 				timeTextView.setText((String) list.get(0).toString());
 			}
-			System.out.println("Data class : " + memoryPost.time.data.getClass());
+			else if(memoryPost.time.type.equals("general")){
+				timeTextView.setText(memoryPost.time.data.toString());
+			}
 			timeTextView.setId(View.generateViewId());
 			id = timeTextView.getId();
 		}
@@ -238,25 +278,94 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 
 
 		for (int j=0; j<memoryPost.story.length; j++){
-				if (memoryPost.story[j].type.equals("text")){
-					TextView storyTextView = new TextView(this);
-					RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-					storyTextView.setText(memoryPost.story[j].payload.toString());
-					storyTextView.setTextSize(20);
-					paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
-					storyTextView.setId(View.generateViewId());
-					id = storyTextView.getId();
-					memoryPostLayout.addView(storyTextView, paramsStoryTextView);
-				}
-				else{
-					ImageView storyImageView = new ImageView(this);
-					Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
-					RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-					paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
-					storyImageView.setId(View.generateViewId());
-					id = storyImageView.getId();
-					memoryPostLayout.addView(storyImageView, paramsStoryImageView);
-				}
+			if (memoryPost.story[j].type.equals("text")){
+				TextView storyTextView = new TextView(this);
+				RelativeLayout.LayoutParams paramsStoryTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				storyTextView.setText("\n" + memoryPost.story[j].payload.toString());
+				storyTextView.setTextSize(20);
+				paramsStoryTextView.addRule(RelativeLayout.BELOW, id);
+				storyTextView.setId(View.generateViewId());
+				memoryPostLayout.addView(storyTextView, paramsStoryTextView);
+
+				TextView annotate = new TextView(this);
+				annotate.setText("Annotate");
+				annotate.setTextColor(Color.RED);
+				annotate.setTag(storyTextView.getText());
+				RelativeLayout.LayoutParams paramsAnnotate = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+				annotate.setTextSize(20);
+				paramsAnnotate.addRule(RelativeLayout.BELOW, id);
+				id = storyTextView.getId();
+				memoryPostLayout.addView(annotate, paramsAnnotate);
+				annotate.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(MemoryPostDetailActivity.this, AnnotationActivity.class);
+						intent.putExtra("type", true);
+						intent.putExtra("text", (String) v.getTag());
+						intent.putExtra("url", SERVER_URL + "/api/v1/memory_posts/" + memoryPostId);
+						intent.putExtra("authToken", authToken);
+						startActivity(intent);
+					}
+				});
+			}
+			else if(memoryPost.story[j].type.contains("image")){
+				ImageView storyImageView = new ImageView(this);
+				Picasso.get().load(memoryPost.story[j].payload.toString()).into(storyImageView);
+				RelativeLayout.LayoutParams paramsStoryImageView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				paramsStoryImageView.addRule(RelativeLayout.BELOW, id);
+				storyImageView.setId(View.generateViewId());
+				memoryPostLayout.addView(storyImageView, paramsStoryImageView);
+
+				TextView annotate = new TextView(this);
+				annotate.setTag(memoryPost.story[j].payload.toString());
+				annotate.setText("Annotate");
+				annotate.setTextColor(Color.RED);
+				RelativeLayout.LayoutParams paramsAnnotate = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+				annotate.setTextSize(20);
+				paramsAnnotate.addRule(RelativeLayout.BELOW, id);
+				id = storyImageView.getId();
+				memoryPostLayout.addView(annotate, paramsAnnotate);
+				annotate.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(MemoryPostDetailActivity.this, AnnotationActivity.class);
+						intent.putExtra("type", false);
+						intent.putExtra("url", (String) v.getTag());
+						intent.putExtra("authToken", authToken);
+						startActivity(intent);
+					}
+				});
+			}
+			else if(memoryPost.story[j].type.contains("video")){
+
+				RelativeLayout videoLayout = new RelativeLayout(this);
+				RelativeLayout.LayoutParams paramsVideoLayout = new RelativeLayout
+						.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, screenHeight/5);
+				paramsVideoLayout.addRule(RelativeLayout.BELOW, id);
+				paramsVideoLayout.addRule(RelativeLayout.CENTER_HORIZONTAL);
+				videoLayout.setId(View.generateViewId());
+				id = videoLayout.getId();
+				memoryPostLayout.addView(videoLayout, paramsVideoLayout);
+
+
+				final VideoView videoView = new VideoView(this);
+				videoView.setVideoPath(((String) memoryPost.story[j].payload));
+				RelativeLayout.LayoutParams paramsVideoView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				paramsVideoView.addRule(RelativeLayout.CENTER_HORIZONTAL);
+				videoLayout.addView(videoView, paramsVideoView);
+				videoView.seekTo( 5 );
+
+				TextView button = new TextView(this);
+				RelativeLayout.LayoutParams paramsButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+				button.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (videoView.isPlaying()) videoView.pause();
+						else videoView.start();
+					}
+				});
+				videoLayout.addView(button, paramsButton);
+			}
 		}
 
 
@@ -298,22 +407,25 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 //		}
 
 
-		MapView map = new MapView(this);
-		RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
-		paramsMap.addRule(RelativeLayout.BELOW, id);
-		map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
-		map.setId(View.generateViewId());
-		id = map.getId();
-		memoryPostLayout.addView(map , paramsMap);
 
 
-		MapFragment mMapFragment = MapFragment.newInstance();
-		FragmentTransaction fragmentTransaction =
-				getFragmentManager().beginTransaction();
-		fragmentTransaction.add(map.getId(), mMapFragment);
-		fragmentTransaction.commit();
-		mMapFragment.getMapAsync(this);
+		if (memoryPost.location.length > 0){
+			MapView map = new MapView(this);
+			RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/2);
+			paramsMap.addRule(RelativeLayout.BELOW, id);
+			map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+			map.setId(View.generateViewId());
+			id = map.getId();
+			memoryPostLayout.addView(map , paramsMap);
 
+
+			MapFragment mMapFragment = MapFragment.newInstance();
+			FragmentTransaction fragmentTransaction =
+					getFragmentManager().beginTransaction();
+			fragmentTransaction.add(map.getId(), mMapFragment);
+			fragmentTransaction.commit();
+			mMapFragment.getMapAsync(this);
+		}
 		TextView tagTextView = new TextView(this);
 		RelativeLayout.LayoutParams paramsTagTextView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		if (memoryPost.tags != null){
@@ -327,37 +439,83 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		tagTextView.setId(View.generateViewId());
 		memoryPostLayout.addView(tagTextView, paramsTagTextView);
 
-/*		EditText editText = new EditText(this);
-		RelativeLayout.LayoutParams paramsEditText = new RelativeLayout.LayoutParams(screenWidth/2, ViewGroup.LayoutParams.WRAP_CONTENT);
-		editText.setHint("Search");
-		editText.setTextSize(25);
-		paramsEditText.leftMargin = screenWidth/10;
-		paramsEditText.addRule(RelativeLayout.BELOW, id);
-		memoryPostLayout.addView(editText, paramsEditText);
-
-		Button search = new Button(this);
-		search.setText("Search");
-		RelativeLayout.LayoutParams paramsSearch = new RelativeLayout.LayoutParams(screenWidth/4, screenWidth/9);
-		paramsSearch.addRule(RelativeLayout.BELOW, id);
-		paramsSearch.leftMargin = screenWidth/2;
-		memoryPostLayout.addView(search, paramsSearch);
-		search.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (googleMap != null){
-
-				}
-			}
-		});
-*/
 	}
 
 	@Override
-	public void onMapReady(GoogleMap googleMap) {
+	public void onMapReady(final GoogleMap googleMap) {
 		this.googleMap = googleMap;
-		googleMap.addMarker(new MarkerOptions().position(new LatLng(41.0082, 28.9784)).title("Istanbul"));
-		googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(41.0082, 28.9784) , 12.0f) );
-		googleMap.setOnMarkerClickListener(this);
+		final GeoApiContext context = new GeoApiContext();
+		context.setApiKey("AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM");
+
+		for (int i=0; i<memoryPost.location.length; i++){
+			MemoryPostLocation loc = memoryPost.location[i];
+			if (loc.type.equals("path")){
+				double lat = ((double) ((Map) loc.points.get(0)).get("lat1"));
+				double lng = ((double) ((Map) loc.points.get(0)).get("lng1"));
+				final String latlng = lat + "," + lng;
+				double lat2 = ((double) ((Map) loc.points.get(1)).get("lat2"));
+				double lng2 = ((double) ((Map) loc.points.get(1)).get("lng2"));
+				final String latlng2 = lat2 + "," + lng2;
+
+				Thread thread = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							final DirectionsRoute route[] = DirectionsApi.newRequest(context).origin
+									(latlng).destination(latlng2).await();
+
+							new Handler(Looper.getMainLooper()).post(new Runnable() {
+								@Override
+								public void run() {
+									List<com.google.maps.model.LatLng> list = route[0].overviewPolyline.decodePath();
+									PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+									for (int z = 0; z < list.size(); z++) {
+										com.google.maps.model.LatLng point = list.get(z);
+										LatLng point2 = new LatLng(point.lat, point.lng);
+										options.add(point2);
+										if((z==0) || (z== list.size() -1)) googleMap.addMarker(new
+												MarkerOptions()
+												.position
+												(point2));
+										googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(point2,
+												13.0f) );
+									}
+									googleMap.addPolyline(options);
+								}
+							});
+						}
+						catch (Exception e){
+							System.out.println("Error: ");
+							e.printStackTrace();
+						}
+					}
+				});
+
+				thread.start();
+			}
+			else if(loc.type.equals("area")){
+				PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+				LatLng latlng = null;
+				for (int z = 0; z < loc.points.size() + 1; z++){
+					latlng = new LatLng(((double) ((Map) loc.points.get(z%loc.points.size())).get
+							("lat")), (
+							(double) ((Map) loc.points.get(z%loc.points.size())).get("lng")));
+					options.add(latlng);
+					googleMap.addMarker(new MarkerOptions().position(latlng));
+				}
+				googleMap.addPolyline(options);
+				googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latlng, 12.0f) );
+			}
+			else if (loc.type.equals("certain")){
+				double lat = ((double) ((Map) loc.points.get(0)).get("lat1"));
+				double lng = ((double) ((Map) loc.points.get(0)).get("lng1"));
+				LatLng latlng = new LatLng(lat, lng);
+				googleMap.addMarker(new MarkerOptions().position(latlng));
+				googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(latlng, 12.0f) );
+				googleMap.setOnMarkerClickListener(this);
+			}
+		}
 	}
 
 	public boolean onMarkerClick(final Marker marker) {
@@ -449,4 +607,5 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		else {
 		}
 	}
+
 }

@@ -6,7 +6,7 @@ public class MemoryPost {
     String title;
 
     MemoryPostTime time;
-    Object location;
+    MemoryPostLocation[] location;
     Object tags;
     Reactions reactions;
 

@@ -4,6 +4,7 @@ package com.history;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -18,10 +19,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +41,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsRoute;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -57,7 +74,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CreatePostActivity extends AppCompatActivity {
+public class CreatePostActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     String SERVER_URL = "https://history-backend.herokuapp.com";
 
@@ -68,12 +85,14 @@ public class CreatePostActivity extends AppCompatActivity {
     boolean waitingResponse = false;
     private static final int SELECT_PICTURE = 1;
     private static final int SELECT_VIDEO = 2;
-
+    int screenHeight, screenWidth;
     String filename = "aaa";
     ArrayList storyElements;
     ArrayList tags;
     int lastStoryElementId;
     RelativeLayout storyComponentsLayout;
+    GoogleMap googleMap;
+    ArrayList allPoints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +101,17 @@ public class CreatePostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_post);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        getScreenSize();
         checkUserData();
+
         lastStoryElementId = R.id.addTitleEditText;
         storyComponentsLayout = findViewById(R.id.components);
         storyElements = new ArrayList();
         tags = new ArrayList();
+        addEditText(null);
+
+        allPoints = new ArrayList();
+        addMap();
     }
 
 
@@ -96,19 +121,36 @@ public class CreatePostActivity extends AppCompatActivity {
         auth_token = prefs.getString("authToken", "");
     }
 
-
     public void showDatePicker(View v) {
         DialogFragment newFragment = new MyDatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "date picker");
 
     }
+    public void addMap(){
 
+        RelativeLayout locationLayout = findViewById(R.id.locationLine);
+
+        MapView map = new MapView(this);
+        RelativeLayout.LayoutParams paramsMap = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight/3);
+        map.setPadding(screenWidth/60, screenWidth/60, screenWidth/60, screenWidth/60);
+        map.setId(View.generateViewId());
+        locationLayout.addView(map , paramsMap);
+
+
+        MapFragment mMapFragment = MapFragment.newInstance();
+        FragmentTransaction fragmentTransaction =
+                getFragmentManager().beginTransaction();
+        fragmentTransaction.add(map.getId(), mMapFragment);
+        fragmentTransaction.commit();
+        mMapFragment.getMapAsync(this);
+    }
     public void addTag(View view){
         EditText tagEditText = findViewById(R.id.addTagEditText);
         tags.add(tagEditText.getText().toString());
         tagEditText.setText("");
     }
 
+  
     public void createPost(View view) throws Exception{
 
         if (!waitingResponse){
@@ -120,10 +162,8 @@ public class CreatePostActivity extends AppCompatActivity {
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            // add your other interceptors …
-
-            // add logging as last interceptor
-            httpClient.addInterceptor(logging);  // <-- this is the important line!
+           
+            httpClient.addInterceptor(logging);
 
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -136,14 +176,13 @@ public class CreatePostActivity extends AppCompatActivity {
             ApiEndpoints apiEndpoints = retrofit.create(ApiEndpoints.class);
 
             String newTitle = ((EditText)findViewById(R.id.addTitleEditText)).getText().toString();
-            //String newTime = ((EditText)findViewById(R.id.timeEditText)).getText().toString();
-            //String newLocation = ((EditText)findViewById(R.id.locationEditText)).getText().toString();
 
 
 
             String exampleTitle = newTitle;
             //String exampleTime = "{\"type\": \"duration\", \"data\": [\"1980\", \"1990\"]}";
-            String exampleTime2 = "{\"type\": \"certainTime\", \"data\": [\""+ day_ +"\", \""+ month_ +"\", \""+year_+"\"]}";
+            String certainDateData = "{ \"data\": [\""+ day_ +"\", \""+month_+"\", \""+ year_ + "\", \"null\", \"null\"], \"type\": \"certainDate\"}";
+            String intervalDateData = "{ \"data\": [\""+ day_ +"\", \""+month_+"\", \""+ year_ + "\", \"null\", \"null\"], \"type\": \"certainDate\"}";
 
             String exampleLocation = "[{\"type\": \"region\", \"name\": \" "+ "Istanbul" +"\"}]";
 
@@ -155,23 +194,33 @@ public class CreatePostActivity extends AppCompatActivity {
             tagString += "]";
             System.out.println("Tag String: " + tagString);
 
-            String exampleStoryBody= "Kizkulesi is located off the coast of Salacak neighborhood in Üsküdar district, " +
-                    "at the southern entrance of the Bosphorus. It literally means 'Maiden's Tower' in Turkish. " +
-                    "The name comes from a legend: the Byzantine emperor heard a prophecy telling him " +
-                    "that his beloved daughter would die at the age of 18 by a snake. So he decided to put her " +
-                    "in this tower built on a rock on the Bosphorus isolated from the land thus no snake could kill her. " +
-                    "But she couldn't escape from her destiny after all, a snake hidden in a fruit basket brought from the city " +
-                    "bit the princess and killed her.";
 
 
             RequestBody title = RequestBody.create(
                     okhttp3.MultipartBody.FORM, exampleTitle);
 
             RequestBody time = RequestBody.create(
-                    okhttp3.MultipartBody.FORM, exampleTime2);
+                    okhttp3.MultipartBody.FORM, certainDateData);
 
-            RequestBody location = RequestBody.create(
-                    okhttp3.MultipartBody.FORM, exampleLocation);
+            RequestBody location;
+            if (allPoints.size() == 0){
+                location = RequestBody.create(okhttp3.MultipartBody.FORM, "[]");
+            }
+            else{
+                ArrayList locations = new ArrayList();
+                for (int j=0; j<allPoints.size(); j++){
+                    String a = " {\"type\": \"certain\",\n" +
+                            "                    \"points\": [\n" +
+                            "                        {\n" +
+                            "                            \"lat1\": " + ((LatLng) allPoints.get(j)).latitude + ",\n" +
+                            "                            \"lng1\": " +  ((LatLng) allPoints.get(j)).longitude + "\n" +
+                            "                        }\n" +
+                            "                    ]}";
+                    locations.add(a);
+                }
+                location = RequestBody.create(okhttp3.MultipartBody.FORM, locations.toString());
+            }
+
 
             RequestBody tag = RequestBody.create(okhttp3.MultipartBody.FORM, tagString);
              List<MultipartBody.Part> story = new ArrayList<>();
@@ -182,11 +231,19 @@ public class CreatePostActivity extends AppCompatActivity {
                      MultipartBody.Part storyBody = MultipartBody.Part.createFormData( "story[" + i + "]",  storyElement.getText().toString());
                      story.add(storyBody);
                  }
-                 else if(storyElements.get(i).getClass() == MultipartBody.Part.class){
-                     story.add((MultipartBody.Part) storyElements.get(i));
-                 }
              }
 
+            for (int i=0; i<storyElements.size(); i++){
+                if(storyElements.get(i).getClass() == File.class){
+
+                    File file = ((File) storyElements.get(i));
+                    System.out.println("File: " + file.getAbsolutePath() + " " + file.getCanonicalPath() + " " + file.getName() + " length: " + file.length());
+                    RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+                    MultipartBody.Part image = MultipartBody.Part.createFormData("story[" + i
+                            +"]", "" + i,requestFile);
+                    story.add(image);
+                }
+            }
 
              final Call<ResponseBody> call = apiEndpoints.uploadMultipleFiles("Token " + auth_token, title,time,location,tag,story);
       
@@ -252,13 +309,13 @@ public class CreatePostActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Video"), SELECT_VIDEO);
     }
     public void addEditText(View view){
-        if (storyElements.size() == 0){
-            TextView defaultStoryTextView = findViewById(R.id.defaultPostStory);
-            storyComponentsLayout.removeView(defaultStoryTextView);
+        if((storyElements.size() > 0) && !storyElements.get(storyElements.size()-1).getClass().equals(EditText.class))  {
+            EditText editText = new EditText(this);
+            storyElements.add(editText);
         }
 
         EditText editText = new EditText(this);
-        editText.setHint("Write something...");
+        editText.setHint("Story...");
         editText.setPadding(20,20,20,20);
         RelativeLayout.LayoutParams paramsEditText = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         paramsEditText.addRule(RelativeLayout.BELOW, lastStoryElementId);
@@ -292,10 +349,7 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
     public void addVideo(Uri videoUri){
-        if (storyElements.size() == 0){
-            TextView defaultStoryTextView = findViewById(R.id.defaultPostStory);
-            storyComponentsLayout.removeView(defaultStoryTextView);
-        }
+      
         RelativeLayout videoLayout = new RelativeLayout(this);
         RelativeLayout.LayoutParams paramsVideoLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 500);
         paramsVideoLayout.addRule(RelativeLayout.BELOW, lastStoryElementId);
@@ -325,10 +379,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
     }
     public void addImage(Uri imageUri) throws Exception{
-        if (storyElements.size() == 0){
-            TextView defaultStoryTextView = findViewById(R.id.defaultPostStory);
-            storyComponentsLayout.removeView(defaultStoryTextView);
-        }
+
         ImageView imageView = new ImageView(this);
         imageView.setImageURI(imageUri);
         RelativeLayout.LayoutParams paramsImageView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -339,7 +390,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
         Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        File f = new File(this.getCacheDir(), filename);
+        File f = new File(this.getCacheDir(), "" + (storyElements.size() + 1));
         f.createNewFile();
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -350,12 +401,8 @@ public class CreatePostActivity extends AppCompatActivity {
         fos.write(bitmapdata);
         fos.flush();
         fos.close();
-        RequestBody requestFile = RequestBody.create(
-                MediaType.parse("image/png"), f);
 
-        MultipartBody.Part image = MultipartBody.Part.createFormData("story[" + (storyElements.size()+1) +"]", "a",requestFile);
-
-        storyElements.add(image);
+        storyElements.add(f);
     }
 
 
@@ -378,6 +425,25 @@ public class CreatePostActivity extends AppCompatActivity {
     public void pickPresiceDate(View view) {
         DateDialogFragment newFragment = new DateDialogFragment();
         newFragment.show(getSupportFragmentManager(), "missiles");
+    }
+
+    void getScreenSize() {
+        android.view.Display display = getWindowManager().getDefaultDisplay();
+        android.graphics.Point size = new android.graphics.Point();
+        display.getSize(size);
+        screenWidth = size.x;
+        screenHeight = size.y;
+    }
+
+    public void onMapReady(final GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+                allPoints.add(point);
+                googleMap.addMarker(new MarkerOptions().position(point));
+            }
+        });
     }
 
 }

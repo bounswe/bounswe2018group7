@@ -81,15 +81,6 @@
                         android:paddingLeft="5dp"
                         android:hint="TITLE"/>
 
-                    <TextView
-                        android:id="@+id/defaultPostStory"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/addTitleEditText"
-                        android:layout_margin="5dp"
-                        android:padding="5dp"
-                        android:text="@string/default_post_story"/>
-
                 </RelativeLayout>
 
                 <!--ADD LINE HERE-->
@@ -201,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/addTimeTextView"
                     android:layout_toRightOf="@+id/addTimePreciseButton"
-                    android:text="duration"
+                    android:text="interval"
                     android:onClick="pickPresiceDate"/>
 
                 <Button
@@ -229,23 +220,6 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/back">
 
-                <com.google.android.gms.maps.MapView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:map="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/mapView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    map:uiCompass="true"
-                    map:zOrderOnTop="true"
-                    map:uiZoomControls="true"
-                    android:background="#00000000" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Location"
-                    android:layout_alignParentEnd="true"/>
 
             </RelativeLayout>
 
