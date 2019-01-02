@@ -481,4 +481,20 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		else {
 		}
 	}
+
+	public String makeURL (double sourcelat, double sourcelog, double destlat, double destlog ){
+		StringBuilder urlString = new StringBuilder();
+		urlString.append("http://maps.googleapis.com/maps/api/directions/json");
+		urlString.append("?origin=");// from
+		urlString.append(Double.toString(sourcelat));
+		urlString.append(",");
+		urlString.append(Double.toString( sourcelog));
+		urlString.append("&destination=");// to
+		urlString.append(Double.toString( destlat));
+		urlString.append(",");
+		urlString.append(Double.toString( destlog));
+		urlString.append("&sensor=false&mode=driving&alternatives=true");
+		urlString.append("&key=AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM");
+		return urlString.toString();
+	}
 }
