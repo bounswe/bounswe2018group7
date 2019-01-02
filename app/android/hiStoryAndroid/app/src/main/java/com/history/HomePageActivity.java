@@ -761,6 +761,7 @@ public class HomePageActivity extends AppCompatActivity implements ScrollView
             Intent intent = new Intent(this, SearchActivity.class);
             intent.putExtra("searchText", searchEditText.getText().toString());
             intent.putExtra("authToken", authToken);
+            System.out.println("abc: " + authToken);
             startActivity(intent);
         }
     }

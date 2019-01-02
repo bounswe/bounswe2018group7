@@ -104,6 +104,7 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 
 		apiEndpoints = retrofit.create(ApiEndpoints.class);
 
+		System.out.println("Auth Token : " + authToken);
 		final Call<MemoryPost> call = apiEndpoints.getMemoryPost("Token " + authToken , Integer.toString(memoryPostId));
 
 

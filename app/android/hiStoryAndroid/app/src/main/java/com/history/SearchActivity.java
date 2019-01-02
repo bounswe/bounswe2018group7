@@ -36,7 +36,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        getSupportActionBar().hide();
         mainLayout = findViewById(R.id.searchActivityMainLayout);
         scrollLayout = new RelativeLayout(this);
         mainLayout.addView(scrollLayout);
@@ -46,6 +46,7 @@ public class SearchActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         searchText = (String) extras.get("searchText");
         authToken = (String) extras.get("authToken");
+        System.out.println("abcde: " + authToken);
         search();
     }
     public void search(){
@@ -73,7 +74,7 @@ public class SearchActivity extends AppCompatActivity {
                 ArrayList users = (ArrayList) response.body().get("users");
                 if (users.size() > 0) addUsers(users);
                 Map memoryPosts = ((Map) response.body().get("memory_posts"));
-                if (memoryPosts.size() > 0) addMemoryPosts(memoryPosts);
+                if (((ArrayList) memoryPosts.get("ids")).size() > 0) addMemoryPosts(memoryPosts);
             }
 
             @Override
@@ -94,20 +95,21 @@ public class SearchActivity extends AppCompatActivity {
         paramsUsersTextView.topMargin = 30;
         usersTextView.setId(View.generateViewId());
         lastViewId = usersTextView.getId();
-        scrollLayout.addView(usersTextView);
+        scrollLayout.addView(usersTextView, paramsUsersTextView);
 
+        System.out.println("a");
         for (int i=0; i<users.size(); i++){
+            System.out.println("b");
             final TextView usernameView = new TextView(this);
             RelativeLayout.LayoutParams paramsUsernameView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             usernameView.setText(((String) users.get(i)));
-            usernameView.setGravity(Gravity.CENTER);
-            usernameView.setTextSize(16);
+            usernameView.setTextSize(19);
             if (lastViewId != 0) paramsUsernameView.addRule(RelativeLayout.BELOW, lastViewId);
             paramsUsernameView.topMargin = 15;
-            paramsUsernameView.leftMargin = 20;
+            paramsUsernameView.leftMargin = 40;
             usernameView.setId(View.generateViewId());
             lastViewId = usernameView.getId();
-            scrollLayout.addView(usernameView);
+            scrollLayout.addView(usernameView , paramsUsernameView);
             usernameView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -132,28 +134,31 @@ public class SearchActivity extends AppCompatActivity {
         paramsMemoryPostsTextView.topMargin = 30;
         memoryPostsTextView.setId(View.generateViewId());
         lastViewId = memoryPostsTextView.getId();
-        scrollLayout.addView(memoryPostsTextView);
+        scrollLayout.addView(memoryPostsTextView , paramsMemoryPostsTextView);
 
+        System.out.println("c");
         for (int i=0; i<titles.size(); i++){
+            System.out.println("d");
             final TextView titleTextView = new TextView(this);
             RelativeLayout.LayoutParams paramsTitleTextView = new RelativeLayout.LayoutParams
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             titleTextView.setText(((String) titles.get(i)));
-            titleTextView.setGravity(Gravity.CENTER);
-            titleTextView.setTextSize(16);
+            titleTextView.setTextSize(19);
             if (lastViewId != 0) paramsTitleTextView.addRule(RelativeLayout.BELOW, lastViewId);
             paramsTitleTextView.topMargin = 15;
-            paramsTitleTextView.leftMargin = 20;
+            paramsTitleTextView.leftMargin = 40;
             titleTextView.setId(View.generateViewId());
             lastViewId = titleTextView.getId();
-            scrollLayout.addView(titleTextView);
+            scrollLayout.addView(titleTextView ,paramsTitleTextView);
             titleTextView.setTag(ids.get(i));
             titleTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(SearchActivity.this, ProfilePageActivity.class);
-                    intent.putExtra("memoryPostId",(int) v.getTag());
-                    intent.putExtra("authToken", authToken);
+                    Intent intent = new Intent(SearchActivity.this, MemoryPostDetailActivity.class);
+                    intent.putExtra("memoryPostId" ,Integer.valueOf(((Double) v.getTag())
+                            .intValue()));
+                    intent.putExtra("authToken", (String) SearchActivity.this.getIntent().getExtras().get("authToken"));
+                    System.out.println("c: " + authToken);
                     startActivity(intent);
                 }
             });
