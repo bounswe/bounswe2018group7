@@ -4,6 +4,7 @@ import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -38,6 +39,12 @@ public interface ApiEndpoints {
 
     @GET("/api/v1/memory_posts/")
     public Call<MemoryPostPage> getMemoryPostsGuest();
+
+    @GET("/api/v1/recommendations/")
+    public Call<ArrayList<MemoryPost>> getRecommendations(@Header("Authorization") String token);
+
+    @POST("/api/v1/search")
+    public Call<Map> search(@Header("Authorization") String token, @Body SearchBody text);
 
     @GET("/api/v1/memory_posts/")
     public Call<MemoryPostPage> getMemoryPostsUser(@Header("Authorization") String token, @Query("page") String page);

@@ -44,7 +44,9 @@ import com.google.maps.model.DirectionsRoute;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -110,7 +112,12 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			public void onResponse(Call<MemoryPost> call, Response<MemoryPost> response) {
 				if (response.isSuccessful()) {
 					memoryPost = response.body();
-					listPost();
+					try {
+						listPost();
+					}
+					catch (Exception e){
+
+					}
 					Toast.makeText(MemoryPostDetailActivity.this, "Successfully got memory post", Toast.LENGTH_SHORT).show();
 				}
 			}
@@ -216,12 +223,23 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 			});
 		}
 	}
-	public void listPost(){
+	public void listPost() throws Exception{
 		RelativeLayout showPost = findViewById(R.id.showPost);
 
 		RelativeLayout memoryPostLayout = findViewById(R.id.showPostBody);
 
 		ImageView profilePicture = findViewById(R.id.iconImageView);
+
+		RelativeLayout infoLayout = findViewById(R.id.navigationBarActivityMemoryPost);
+		infoLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MemoryPostDetailActivity.this, ProfilePageActivity.class);
+				intent.putExtra("username", memoryPost.username);
+				intent.putExtra("authToken", authToken);
+				startActivity(intent);
+			}
+		});
 
 		TextView authorTextView = findViewById(R.id.showUsernameTextView);
 		authorTextView.setText(memoryPost.username);
@@ -237,14 +255,19 @@ public class MemoryPostDetailActivity extends AppCompatActivity implements OnMap
 		int id = titleTextView.getId();
 
 		if (memoryPost.time != null){
-			if (memoryPost.time.data.getClass().equals(String.class)){
-				timeTextView.setText(memoryPost.time.data.toString());
+			if (memoryPost.time.type.equals("certain")){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+				Date parsedDate = sdf.parse(((String) memoryPost.time.data));
+				String time = new SimpleDateFormat("EEEE, MMM dd yyyy, HH:mm").format(parsedDate);
+				timeTextView.setText(time);
 			}
-			else if (memoryPost.time.data.getClass().equals(ArrayList.class)){
+			else if(memoryPost.time.type.equals("duration")){
 				ArrayList list = (ArrayList) memoryPost.time.data;
 				timeTextView.setText((String) list.get(0).toString());
 			}
-			System.out.println("Data class : " + memoryPost.time.data.getClass());
+			else if(memoryPost.time.type.equals("general")){
+				timeTextView.setText(memoryPost.time.data.toString());
+			}
 			timeTextView.setId(View.generateViewId());
 			id = timeTextView.getId();
 		}

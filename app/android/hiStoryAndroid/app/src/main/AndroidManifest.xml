@@ -28,7 +28,8 @@
             android:value="AIzaSyCL5j3Ggh6q_OEdf8uEC4FY1B0YzeKICqM" />
 
         <activity android:name=".MemoryPostDetailActivity" />
-        <activity android:name=".ProfilePageActivity"></activity>
+        <activity android:name=".ProfilePageActivity" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>
