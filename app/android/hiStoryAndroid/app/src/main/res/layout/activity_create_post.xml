@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/addTimeTextView"
                     android:layout_toRightOf="@+id/addTimePreciseButton"
-                    android:text="duration"
+                    android:text="interval"
                     android:onClick="pickPresiceDate"/>
 
                 <Button
