@@ -2,6 +2,9 @@ import os
 
 import dj_database_url
 import django_heroku
+from dotenv import load_dotenv
+
+load_dotenv()  # Loads environment variables from `.env` file if it exists
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
