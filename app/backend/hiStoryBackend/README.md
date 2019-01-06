@@ -33,7 +33,7 @@ You can see the provided API endpoints [here](https://github.com/bounswe/bounswe
 
     `python manage.py runserver`
 
-#### ABOUT ENVIRONMENT VARIABLES
+#### CONFIGURATION
 There are several variables in `hiStoryBackend/settings.py` that you might need to know about:
 * `DEBUG`: By default, the project runs in debug mode. To turn it off, set this to a` False` equivalent (in Python) value (e.g. the empty string).
 
@@ -60,3 +60,7 @@ There are several variables in `hiStoryBackend/settings.py` that you might need 
 * `MEDIA_ROOT`: By default, media files uploaded to the sytem will be stored under the path stated by this variable. To use an `Amazon S3 Bucket` as the storage backend, set the following variables: `AWS_S3_ACCESS_KEY_ID`, `AWS_S3_SECRET_ACCESS_KEY` and `AWS_STORAGE_BUCKET_NAME`.
 
 * `REC_REQUEST_URL`: The **Recommendation** system of the project relies on [this](https://github.com/bounswe/bounswe2018group7/tree/backend/app/backend/tag_similarity) CPP program. For the system to work, this CPP program must be available on the url stated by this variable. (One instance of the CPP program is available on `http://ec2-3-81-240-210.compute-1.amazonaws.com/ready/`)
+
+You can create a file named `.env` in the root directory of the project and store the environment variables above in it. For more details, see [here](https://github.com/theskumar/python-dotenv).
+
+**NOTE**: A `.env` file which contains the environment variables currently used in production will be provided to the customers.
