@@ -67,7 +67,7 @@ class RecommendationView(APIView):
 			if len(request_body) == 0:
 				continue
 
-			response = requests.get(settings.REC_AWS_URL, data=request_body)
+			response = requests.get(settings.REC_REQUEST_URL, data=request_body)
 			if response.ok:
 				results = [float(similarity) for similarity in response.text.split('\n') if len(similarity) != 0]
 

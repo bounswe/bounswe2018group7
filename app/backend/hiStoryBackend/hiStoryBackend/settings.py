@@ -15,8 +15,12 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'tr52&u^)2b$ro+q(#s!q^8w5b(3*us
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
+# URL of the server on which this project runs
 SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000/')
+
+# URL of the media storage server
 MEDIA_SITE_URL = os.environ.get('MEDIA_SITE_URL', '')
+
 API_VERSION = os.environ.get('API_VERSION', '1')
 
 ALLOWED_HOSTS = ['*']
@@ -46,21 +50,18 @@ REST_FRAMEWORK = {
 	'DATETIME_FORMAT': '%d-%m-%Y %H:%M:%S',
 }
 
-# GMAIL CREDENTIALS
-GMAIL_USERNAME = os.environ.get('DJANGO_GMAIL_USERNAME')
-GMAIL_PASSWORD = os.environ.get('DJANGO_GMAIL_PASSWORD')
-
 # EMAIL SETTINGS
 FRONTEND_CONFIRMATION_BASE_URL = os.environ.get('DJANGO_FRONTEND_CONFIRMATION_BASE_URL')
 FRONTEND_PASSWORD_RESET_BASE_URL = os.environ.get('DJANGO_FRONTEND_PASSWORD_RESET_BASE_URL')
 
-if GMAIL_USERNAME and GMAIL_PASSWORD:
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+if EMAIL_HOST and EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
 	EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-	EMAIL_HOST = 'smtp.gmail.com'
-	EMAIL_PORT = 587
-	EMAIL_HOST_USER = GMAIL_USERNAME
-	EMAIL_HOST_PASSWORD = GMAIL_PASSWORD
-	EMAIL_USE_TLS = True
+	EMAIL_PORT = os.getenv('EMAIL_PORT', 587)
+	EMAIL_USE_TLS = bool(os.getenv('EMAIL_USE_TLS', True))
 else:
 	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -153,15 +154,15 @@ AWS_S3_ACCESS_KEY_ID = os.environ.get('DJANGO_AWS_S3_ACCESS_KEY_ID')
 AWS_S3_SECRET_ACCESS_KEY = os.environ.get('DJANGO_AWS_S3_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('DJANGO_AWS_STORAGE_BUCKET_NAME')
 
-# RECOMMENDATION MECHANISM
-REC_AWS_URL = os.environ.get('REC_AWS_URL')
-REC_NUMBER_OF_RANDOM_USER_POSTS = int(os.environ.get('REC_NUMBER_OF_RANDOM_USER_POSTS', 5))
-REC_NUMBER_OF_RANDOM_OTHER_POSTS = int(os.environ.get('REC_NUMBER_OF_RANDOM_OTHER_POSTS', 15))
-REC_NUMBER_OF_RESULTS = int(os.environ.get('REC_NUMBER_OF_RESULTS', 5))
-
 if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
 	DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 	AWS_QUERYSTRING_AUTH = False  # Don't add complex authentication-related query parameters for requests
+
+# RECOMMENDATION MECHANISM
+REC_REQUEST_URL = os.environ.get('REC_REQUEST_URL')
+REC_NUMBER_OF_RANDOM_USER_POSTS = int(os.environ.get('REC_NUMBER_OF_RANDOM_USER_POSTS', 5))
+REC_NUMBER_OF_RANDOM_OTHER_POSTS = int(os.environ.get('REC_NUMBER_OF_RANDOM_OTHER_POSTS', 15))
+REC_NUMBER_OF_RESULTS = int(os.environ.get('REC_NUMBER_OF_RESULTS', 5))
 
 
 django_heroku.settings(locals())

@@ -111,7 +111,7 @@ class User(AbstractUser):
             sent_email_count = send_mail(
                 'hiStory - Email Confirmation',
                 text_message,
-                settings.GMAIL_USERNAME,
+                settings.EMAIL_HOST_USER,
                 [self.email],
                 html_message=html_message
             )
@@ -136,7 +136,7 @@ class User(AbstractUser):
             sent_email_count = send_mail(
                 'hiStory - Password Reset',
                 text_message,
-                settings.GMAIL_USERNAME,
+                settings.EMAIL_HOST_USER,
                 [self.email],
                 html_message=html_message
             )
