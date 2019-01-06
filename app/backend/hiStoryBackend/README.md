@@ -35,9 +35,9 @@ You can see the provided API endpoints [here](https://github.com/bounswe/bounswe
 
 #### ABOUT ENVIRONMENT VARIABLES
 There are several variables in `hiStoryBackend/settings.py` that you might need to know about:
-* `DEBUG`: By default, the project runs in debug mode. To turn it off set this to a` False` equivalent (in Python) value (e.g. the empty string)
+* `DEBUG`: By default, the project runs in debug mode. To turn it off, set this to a` False` equivalent (in Python) value (e.g. the empty string).
 
-* `DATABASE_URL`: By default, the porject uses `Sqlite3` as its database. To use another database system, set this variable. 
+* `DATABASE_URL`: By default, the project uses `Sqlite3` as its database. To use another database system, set this variable. 
 
 * `SITE_URL`: The url of the server on which the project runs. Default is local (`http://127.0.0.1:8000/`)
 
@@ -49,14 +49,14 @@ There are several variables in `hiStoryBackend/settings.py` that you might need 
 
 ***
 
-* `EMAIL_HOST`: Host of the email server (e.g., `smtp.gmail.com`)
+* `EMAIL_HOST`: Host of the email server (e.g., `smtp.gmail.com`).
 * `EMAIL_HOST_USER`: The email address which will be used to send emails to users
-* `EMAIL_HOST_PASSWORD`: The password of `EMAIL_HOST_USER`
+* `EMAIL_HOST_PASSWORD`: The password of `EMAIL_HOST_USER`.
 
-    **NOTE:** If the 3 variables above are sent, actual emails will be sent to the users. Else, email body will be printed on the console.
+    **NOTE:** If the 3 variables above are set, actual emails will be sent to the users. Else, email body will be printed on the console.
 
 ***
 
-* `MEDIA_ROOT`: By default, media files uploaded to the sytem will be stored under the path stated by this variable. To use an `Amazon S3 Bucket` as storage backend, set the following variables: `AWS_S3_ACCESS_KEY_ID`, `AWS_S3_SECRET_ACCESS_KEY` and `AWS_STORAGE_BUCKET_NAME`
+* `MEDIA_ROOT`: By default, media files uploaded to the sytem will be stored under the path stated by this variable. To use an `Amazon S3 Bucket` as the storage backend, set the following variables: `AWS_S3_ACCESS_KEY_ID`, `AWS_S3_SECRET_ACCESS_KEY` and `AWS_STORAGE_BUCKET_NAME`.
 
-* `REC_REQUEST_URL`: The **Recommendation** system of the project relies on [this](https://github.com/bounswe/bounswe2018group7/tree/backend/app/backend/tag_similarity) CPP program. For the system to work, this CPP program must be available on the url stated by this variable.
+* `REC_REQUEST_URL`: The **Recommendation** system of the project relies on [this](https://github.com/bounswe/bounswe2018group7/tree/backend/app/backend/tag_similarity) CPP program. For the system to work, this CPP program must be available on the url stated by this variable. (One instance of the CPP program is available on `http://ec2-3-81-240-210.compute-1.amazonaws.com/ready/`)
