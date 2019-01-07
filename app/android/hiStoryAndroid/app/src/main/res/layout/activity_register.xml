@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context=".RegisterActivity"
+    android:background="@drawable/bck">
+
+    <EditText
+        android:id="@+id/getFirstNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/getLastNameEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:hint="@string/first_name" />
+
+    <EditText
+        android:id="@+id/getLastNameEditText"
+        android:layout_alignLeft="@+id/getFirstNameEditText"
+        android:layout_alignRight="@+id/getFirstNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/getUsernameEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:hint="Last Name" />
+
+    <EditText
+        android:id="@+id/getUsernameEditText"
+        android:layout_alignLeft="@+id/getFirstNameEditText"
+        android:layout_alignRight="@+id/getFirstNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/getEmailEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:hint="Username" />
+
+    <EditText
+        android:id="@+id/getEmailEditText"
+        android:layout_alignLeft="@+id/getFirstNameEditText"
+        android:layout_alignRight="@+id/getFirstNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/getPasswordEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:hint="Email" />
+
+    <EditText
+        android:id="@+id/getPasswordEditText"
+        android:layout_alignLeft="@+id/getFirstNameEditText"
+        android:layout_alignRight="@+id/getFirstNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:hint="Password" />
+
+    <EditText
+        android:id="@+id/getPasswordConfirmationEditText"
+        android:layout_alignLeft="@+id/getFirstNameEditText"
+        android:layout_alignRight="@+id/getFirstNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/getPasswordEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:hint="Confirm Password" />
+
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_alignLeft="@+id/getFirstNameEditText"
+        android:layout_alignRight="@+id/getFirstNameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/getPasswordConfirmationEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:onClick="register"
+        android:background="@color/btnBackground1"
+        android:text="Sign Up" />
+
+    <Button
+        android:id="@+id/goBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="#640d4cc2"
+        android:text="@string/back"
+        android:textColor="#091660"
+        android:onClick="openLoginActivity"/>
+
+</android.widget.RelativeLayout>

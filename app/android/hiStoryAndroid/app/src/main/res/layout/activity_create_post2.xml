@@ -1,0 +1,134 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    tools:context=".CreatePostActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:text=" Title:"
+            android:textSize="8pt"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/titleText"
+            android:layout_alignRight="@+id/titleText"
+            android:layout_below="@id/titleText"
+            android:layout_marginBottom="10dp"
+            android:gravity="left"
+            android:hint="Title" />
+
+        <TextView
+            android:id="@+id/storyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleEditText"
+            android:layout_marginLeft="10dp"
+            android:text="Story:"
+            android:textSize="8pt"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/storyEditText"
+            android:layout_alignLeft="@+id/titleEditText"
+            android:layout_alignRight="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/storyText"
+            android:gravity="left"
+            android:hint="You can write your memories here." />
+
+
+        <RelativeLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/storyEditText">
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick Date"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:onClick="showDatePicker" />
+
+            <EditText
+                android:id="@+id/locationEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/button"
+                android:layout_marginRight="10dp"
+                android:hint="Location" />
+
+        </RelativeLayout>
+
+        <!--<Button-->
+        <!--android:id="@+id/addImageButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/line"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:text="Add Media"-->
+        <!--android:onClick="addImage"/>-->
+
+        <Button
+            android:id="@+id/addImageButton"
+            android:layout_alignLeft="@+id/titleEditText"
+            android:layout_alignRight="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line"
+            android:layout_centerHorizontal="true"
+            android:text="ADD MEDIA"
+            android:onClick="selectImage"/>
+
+        <Button
+            android:id="@+id/createButton"
+            android:layout_alignLeft="@+id/titleEditText"
+            android:layout_alignRight="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addImageButton"
+            android:layout_centerHorizontal="true"
+            android:text="CREATE POST"
+            android:onClick="create"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/createButton"/>
+
+        <Button
+            android:id="@+id/goBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/createButton"
+            android:layout_alignLeft="@+id/titleEditText"
+            android:layout_marginBottom="10dp"
+            android:text="Back"
+            android:onClick="backToHomePage"/>
+
+    </RelativeLayout>
+
+</ScrollView>
